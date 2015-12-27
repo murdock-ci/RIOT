@@ -43,7 +43,6 @@ extern "C"
 #define KINETIS_MCG_ERC_RANGE             0
 #define KINETIS_MCG_ERC_FREQ              (32768U)
 
-/* Base clocks, used by SystemCoreClockUpdate */
 /** Value of the external crystal or oscillator clock frequency in Hz */
 #define CPU_XTAL_CLK_HZ                 8000000u
 /** Value of the external 32k crystal or oscillator clock frequency in Hz */
@@ -56,7 +55,8 @@ extern "C"
 #define DEFAULT_SYSTEM_CLOCK            (CPU_XTAL32k_CLK_HZ * 2929u)
 
 /* bus clock for the peripherals */
-#define CLOCK_BUSCLOCK                  (DEFAULT_SYSTEM_CLOCK / 2)
+#define CLOCK_CORECLOCK                 (DEFAULT_SYSTEM_CLOCK)
+#define CLOCK_BUSCLOCK                  (CLOCK_CORECLOCK / 2)
 /** @} */
 
 /**
@@ -108,7 +108,7 @@ extern "C"
 #define UART_0_DEV          UART1
 #define UART_0_CLKEN()      (BITBAND_REG32(SIM->SCGC4, SIM_SCGC4_UART1_SHIFT) = 1)
 #define UART_0_CLKDIS()     (BITBAND_REG32(SIM->SCGC4, SIM_SCGC4_UART1_SHIFT) = 0)
-#define UART_0_CLK          (SystemSysClock)
+#define UART_0_CLK          (CLOCK_CORECLOCK)
 #define UART_0_IRQ_CHAN     UART1_RX_TX_IRQn
 #define UART_0_ISR          isr_uart1_status
 /* UART 0 pin configuration */
@@ -126,7 +126,7 @@ extern "C"
 #define UART_1_DEV          UART0
 #define UART_1_CLKEN()      (BITBAND_REG32(SIM->SCGC4, SIM_SCGC4_UART0_SHIFT) = 1)
 #define UART_1_CLKDIS()     (BITBAND_REG32(SIM->SCGC4, SIM_SCGC4_UART0_SHIFT) = 0)
-#define UART_1_CLK          (SystemSysClock)
+#define UART_1_CLK          (CLOCK_CORECLOCK)
 #define UART_1_IRQ_CHAN     UART0_RX_TX_IRQn
 #define UART_1_ISR          isr_uart0_status
 /* UART 1 pin configuration */
@@ -293,6 +293,18 @@ static const spi_conf_t spi_config[] = {
 #define SPI_NUMOF           (sizeof(spi_config) / sizeof(spi_config[0]))
 /** @} */
 
+/** @} */
+
+/**
+ * @name I2C configuration
+ * @{
+ */
+#define I2C_NUMOF               (1U)
+#define I2C_CLK                 CLOCK_BUSCLOCK
+#define I2C_0_EN                1
+#define I2C_1_EN                0
+#define I2C_IRQ_PRIO            CPU_DEFAULT_IRQ_PRIO
+
 /**
  * @name I2C baud rate configuration
  * @{
@@ -310,16 +322,6 @@ static const spi_conf_t spi_config[] = {
 #define KINETIS_I2C_F_ICR_FAST_PLUS  (0x10)
 #define KINETIS_I2C_F_MULT_FAST_PLUS (0)
 /** @} */
-
-/**
- * @name I2C configuration
- * @{
- */
-#define I2C_NUMOF               (1U)
-#define I2C_CLK                 SystemBusClock
-#define I2C_0_EN                1
-#define I2C_1_EN                0
-#define I2C_IRQ_PRIO            CPU_DEFAULT_IRQ_PRIO
 
 /* I2C 0 device configuration */
 #define I2C_0_DEV               I2C0
