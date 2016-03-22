@@ -191,7 +191,7 @@ include $(RIOTBOARD)/$(BOARD)/Makefile.include
 include $(RIOTCPU)/$(CPU)/Makefile.include
 
 # Import all toolchain settings
-include $(RIOTCPU)/Makefile.include.$(TOOLCHAIN)
+include $(RIOTMAKE)/toolchain/$(TOOLCHAIN).mk
 
 # get number of interfaces straight before resolving dependencies
 GNRC_NETIF_NUMOF ?= 1
