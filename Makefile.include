@@ -512,7 +512,7 @@ endif
 include $(RIOTBASE)/dist/tools/desvirt/Makefile.desvirt
 
 # include bindist target
-include $(RIOTBASE)/Makefile.bindist
+include $(RIOTMAKE)/bindist.mk
 
 # Add all USEMODULE modules to CFLAGS
 include $(RIOTMAKE)/modules.mk
