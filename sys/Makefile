@@ -109,6 +109,10 @@ ifneq (,$(filter gcoap,$(USEMODULE)))
     DIRS += net/application_layer/coap
 endif
 
+ifneq (,$(filter constfs,$(USEMODULE)))
+    DIRS += fs/constfs
+endif
+
 DIRS += $(dir $(wildcard $(addsuffix /Makefile, ${USEMODULE})))
 
 include $(RIOTBASE)/Makefile.base
