@@ -597,6 +597,7 @@ ifneq (,$(filter emcute,$(USEMODULE)))
   USEMODULE += xtimer
 endif
 
+<<<<<<< a9bdd86b6849f8a8ebc6b3148bc4deb78694442a
 ifneq (,$(filter constfs,$(USEMODULE)))
   USEMODULE += vfs
 endif
@@ -609,6 +610,13 @@ ifneq (,$(filter vfs,$(USEMODULE)))
     ifeq (native, $(BOARD))
         USEMODULE += native_vfs
     endif
+endif
+
+ifneq (,$(filter spiffs,$(USEMODULE)))
+    USEPKG += spiffs
+    USEMODULE += vfs
+    USEMODULE += spiffs_fs
+    USEMODULE += mtd
 endif
 
 # include package dependencies
