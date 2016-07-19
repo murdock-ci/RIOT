@@ -65,6 +65,10 @@ const char *_native_unix_socket_path = NULL;
 netdev2_tap_params_t netdev2_tap_params[NETDEV2_TAP_MAX];
 #endif
 
+#ifdef MODULE_MTD_NATIVE
+const char *_native_mtd_file = NULL;
+#endif
+
 static const char short_opts[] = ":hi:s:deEoc:";
 static const struct option long_opts[] = {
     { "help", no_argument, NULL, 'h' },
@@ -75,6 +79,9 @@ static const struct option long_opts[] = {
     { "stderr-noredirect", no_argument, NULL, 'E' },
     { "stdout-pipe", no_argument, NULL, 'o' },
     { "uart-tty", required_argument, NULL, 'c' },
+#ifdef MODULE_MTD_NATIVE
+    { "mtd", required_argument, NULL, 'm' },
+#endif
     { NULL, 0, NULL, '\0' },
 };
 
@@ -230,6 +237,11 @@ void usage_exit(int status)
 "    -c <tty>, --uart-tty=<tty>\n"
 "        specify TTY device for UART. This argument can be used multiple\n"
 "        times (up to UART_NUMOF)\n");
+#ifdef MODULE_MTD_NATIVE
+    real_printf(
+"    -m <mtd>, --mtd=<mtd>\n"
+"       specify the file name of mtd emulated device\n");
+#endif
     real_exit(status);
 }
 
@@ -284,6 +296,9 @@ __attribute__((constructor)) static void startup(int argc, char **argv)
                 break;
             case 'c':
                 tty_uart_setup(uart++, optarg);
+                break;
+            case 'm':
+                _native_mtd_file = &argv[optind];
                 break;
             default:
                 usage_exit(EXIT_FAILURE);
