@@ -33,9 +33,12 @@
 extern "C" {
 #endif
 
+/**
+ * @brief MTD power states
+ */
 enum mtd_power_state {
-    MTD_POWER_UP,
-    MTD_POWER_DOWN,
+    MTD_POWER_UP,    /**< Power up */
+    MTD_POWER_DOWN,  /**< Power down */
 };
 
 typedef struct mtd_desc mtd_desc_t;
