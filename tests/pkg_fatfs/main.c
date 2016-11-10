@@ -19,26 +19,37 @@
  */
 
 #include "fatfs/ff.h"
-#include "sdcard_spi.h"
 #include "periph/rtc.h"
 #include "shell.h"
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <inttypes.h>
+#include <stdbool.h>
 
 #define RTC_YEAR_OFFSET   1900
 #define FATFS_YEAR_OFFSET 1980
-#define TEST_FATFS_READ_BUFFER_SIZE 8
-
-extern sd_card_t cards[NUM_OF_SD_CARDS];
+#define TEST_FATFS_READ_BUFFER_SIZE 64
+#define TEST_FATFS_MAX_VOL_STR_LEN 8
 
 FATFS fat_fs;        /* FatFs work area needed for each volume */
 
 static int _mount(int argc, char **argv)
 {
-    printf("mounting sd card...");
+    printf("mounting file system image...");
+    int vol_idx;
+    if(argc == 2){
+        vol_idx = (int)atoi(argv[1]);
+    }else{
+        printf("usage: %s <volume_idx>\n", argv[0]);
+        return -1;
+    }
+
+    char volume_str[TEST_FATFS_MAX_VOL_STR_LEN];
+    sprintf(volume_str, "%d:/", vol_idx);
 
     /* "0:/" points to the root dir of drive 0 */
-    FRESULT mountresu = f_mount(&fat_fs, "0:/", 1);
+    FRESULT mountresu = f_mount(&fat_fs, volume_str, 1);
     TCHAR label[64];
 
     if (mountresu == FR_OK) {
@@ -48,7 +59,7 @@ static int _mount(int argc, char **argv)
         }
 
         FATFS *fs;
-        uint32_t fre_clust;
+        DWORD fre_clust;
 
         /* Get volume information and free clusters of drive 1 */
         if (f_getfree("0:", &fre_clust, &fs) != FR_OK) {
@@ -73,8 +84,8 @@ static int _mount(int argc, char **argv)
             uint32_t fr_gib_i = free_bytes / (1024 * 1024 * 1024);
             uint32_t fr_gib_f = ((((free_bytes/(1024 * 1024)) - fr_gib_i * 1024) * 1000) / 1024);
 
-            printf("%lu,%03lu GiB of %lu,%03lu GiB available\n", 
-                    fr_gib_i, fr_gib_f, to_gib_i, to_gib_f);
+            printf("%"PRIu32",%03"PRIu32" GiB of %"PRIu32",%03"PRIu32" \
+                    GiB available\n", fr_gib_i, fr_gib_f, to_gib_i, to_gib_f);
         }
     }
     else {
@@ -137,8 +148,8 @@ static int _read(int argc, char **argv)
     if (open_resu == FR_OK) {
         UINT read_chunk;
 
-        for (int read = 0; read < (f_size(&fd)); read += read_chunk) {
-            int to_read = (f_size(&fd)) - read;
+        for (uint32_t read = 0; read < (f_size(&fd)); read += read_chunk) {
+            uint32_t to_read = (f_size(&fd)) - read;
 
             if (to_read > sizeof(buffer)) {
                 to_read = sizeof(buffer);
@@ -159,7 +170,7 @@ static int _read(int argc, char **argv)
                 break;
             }
 
-            for (int i = 0; i < read_chunk; i++) {
+            for (uint32_t i = 0; i < read_chunk; i++) {
                 printf("%c", buffer[i]);
             }
         }
@@ -194,10 +205,10 @@ static int _write(int argc, char **argv)
         return -1;
     }
 
-    int len = strlen(argv[2]);
+    uint32_t len = strlen(argv[2]);
     FRESULT open_resu = f_open(&fd, argv[1], FA_WRITE | FA_CREATE_ALWAYS);
     if (open_resu == FR_OK) {
-        printf("writing %d bytes to %s ...", len, argv[1]);
+        printf("writing %"PRId32" bytes to %s ...", len, argv[1]);
         FRESULT write_resu = f_write(&fd, argv[2], len, &bw);
         if (write_resu != FR_OK || (bw < len)) {
             printf("[FAILED] (f_write error %d)\n", write_resu);
@@ -269,12 +280,9 @@ static const shell_command_t shell_commands[] = {
 
 int main(void)
 {
-    cards[0].spi_dev = TEST_SDCARD_SPI;
-    cards[0].cs_pin = TEST_SDCARD_CS;
-    cards[0].init_done = false;
-
     /* the rtc is used in diskio.c for timestamps of files */
     printf("Initializing the RTC driver");
+    rtc_poweron();
     rtc_init();
 
     struct tm time;
