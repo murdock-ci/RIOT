@@ -1,21 +1,19 @@
 APPLICATION = pkg_fatfs
 include ../Makefile.tests_common
 
-FEATURES_REQUIRED += periph_gpio
-FEATURES_REQUIRED += periph_spi
 FEATURES_REQUIRED += periph_rtc
 
-USEMODULE += sdcard_spi
 USEMODULE += shell
 
 USEPKG += fatfs
 
-# set default device parameters in case they are undefined
-TEST_SDCARD_SPI ?= SPI_1
-TEST_SDCARD_CS  ?= GPIO_PIN\(0,14\)
-
-# export parameters
-CFLAGS += -DTEST_SDCARD_SPI=$(TEST_SDCARD_SPI)
-CFLAGS += -DTEST_SDCARD_CS=$(TEST_SDCARD_CS)
+ifeq ($(BOARD),native)
+  DIRS += fatfs_diskio_native
+  USEMODULE += fatfs_diskio_native
+else
+  DIRS += fatfs_diskio_sdcard_spi
+  USEMODULE += fatfs_diskio_sdcard_spi
+  USEMODULE += sdcard_spi
+endif
 
 include $(RIOTBASE)/Makefile.include
