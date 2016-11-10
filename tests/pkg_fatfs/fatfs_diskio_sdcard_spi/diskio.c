@@ -112,6 +112,11 @@ DSTATUS disk_status (BYTE pdrv)
  */
 DSTATUS disk_initialize (BYTE pdrv)
 {
+
+	cards[0].spi_dev = TEST_SDCARD_SPI;
+    cards[0].cs_pin = TEST_SDCARD_CS;
+    cards[0].init_done = false;
+
 	sd_card_t *card = get_sd_card(pdrv);
 	
 	if(card == NULL){
