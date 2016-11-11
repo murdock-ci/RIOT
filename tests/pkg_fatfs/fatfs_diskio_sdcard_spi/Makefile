@@ -1,1 +1,9 @@
 include $(RIOTBASE)/Makefile.base
+
+# set default device parameters in case they are undefined
+TEST_SDCARD_SPI  ?= SPI_1
+TEST_SDCARD_CS   ?= GPIO_PIN\(0,14\)
+
+# export parameters
+CFLAGS += -DTEST_SDCARD_SPI=$(TEST_SDCARD_SPI)
+CFLAGS += -DTEST_SDCARD_CS=$(TEST_SDCARD_CS)

@@ -18,8 +18,11 @@
  * @}
  */
 
-#include "fatfs/ff.h"
+#ifdef FATFS_RTC_AVAILABLE
 #include "periph/rtc.h"
+#endif
+#include "fatfs/ff.h"
+
 #include "shell.h"
 #include <string.h>
 #include <stdlib.h>
@@ -280,6 +283,7 @@ static const shell_command_t shell_commands[] = {
 
 int main(void)
 {
+    #ifdef FATFS_RTC_AVAILABLE
     /* the rtc is used in diskio.c for timestamps of files */
     printf("Initializing the RTC driver");
     rtc_poweron();
@@ -301,6 +305,8 @@ int main(void)
            time.tm_min,
            time.tm_sec);
     rtc_set_time(&time);
+    #endif
+
     char line_buf[SHELL_DEFAULT_BUFSIZE];
     shell_run(shell_commands, line_buf, SHELL_DEFAULT_BUFSIZE);
 

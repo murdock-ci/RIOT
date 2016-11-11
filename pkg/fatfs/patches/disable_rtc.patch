@@ -1,0 +1,4 @@
+218c218
+< #define _FS_NORTC	0
+---
+> #define _FS_NORTC	1
