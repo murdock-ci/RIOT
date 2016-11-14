@@ -99,6 +99,12 @@ endif
 ifneq (,$(filter sema,$(USEMODULE)))
     DIRS += sema
 endif
+ifneq (,$(filter fatfs_diskio_native,$(USEMODULE)))
+    DIRS += fatfs_diskio/native
+endif
+ifneq (,$(filter fatfs_diskio_sdcard_spi,$(USEMODULE)))
+    DIRS += fatfs_diskio/sdcard_spi
+endif
 
 DIRS += $(dir $(wildcard $(addsuffix /Makefile, ${USEMODULE})))
 

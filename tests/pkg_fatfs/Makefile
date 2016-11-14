@@ -4,22 +4,14 @@ include ../Makefile.tests_common
 # import list of provided features
 include $(RIOTBASE)/boards/$(BOARD)/Makefile.features
 
-#if periph_rtc is available use it. Otherwise use static timestamps
-ifneq (, $(filter $(periph_rtc), $(FEATURES_PROVIDED)))
-   CFLAGS += -DFATFS_RTC_AVAILABLE
-endif
-
 USEMODULE += shell
 
-USEPKG += fatfs
-
 ifeq ($(BOARD),native)
-  DIRS += fatfs_diskio_native
   USEMODULE += fatfs_diskio_native
 else
-  DIRS += fatfs_diskio_sdcard_spi
   USEMODULE += fatfs_diskio_sdcard_spi
-  USEMODULE += sdcard_spi
 endif
+
+USEPKG += fatfs
 
 include $(RIOTBASE)/Makefile.include
