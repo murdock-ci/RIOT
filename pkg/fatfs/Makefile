@@ -6,6 +6,8 @@ PKG_BUILDDIR = $(BINDIRBASE)/pkg/$(BOARD)/$(PKG_NAME)
 MODULE_MAKEFILE := $(CURDIR)/Makefile.module
 DOWNLOAD_PATH = $(RIOTBASE)/pkg/$(PKG_NAME)
 
+# import list of provided features
+include $(RIOTBASE)/boards/$(BOARD)/Makefile.features
 
 ifneq ($(RIOTBASE),)
 include $(RIOTBASE)/Makefile.base
