@@ -7,7 +7,7 @@
  */
 
 /**
- * @ingroup  tests
+ * @ingroup  sys_fatfs_diskio
  * @{
  *
  * @file
@@ -19,6 +19,7 @@
  * @}
  */
 #include "fatfs/diskio.h"       /* FatFs lower layer API */
+#include "fatfs_diskio_common.h"
 #include "fatfs/integer.h"
 #include "sdcard_spi.h"
 
@@ -28,25 +29,6 @@
 #include "periph/rtc.h"
 #include "xtimer.h"
 #include "debug.h"
-
-/* Complete pending write process (needed at _FS_READONLY == 0) */
-#define CTRL_SYNC           0   
-
-/* Get media size (needed at _USE_MKFS == 1) */
-#define GET_SECTOR_COUNT    1   
-
-/* Get sector size (needed at ) */
-#define GET_SECTOR_SIZE     2   
-
-/* Get erase block size (needed at _USE_MKFS == 1) */
-#define GET_BLOCK_SIZE      3   
-
-/* Inform device that the data on the block of sectors is 
-   no longer used (needed at _USE_TRIM == 1) */
-#define CTRL_TRIM           4   
-
-#define RTC_YEAR_OFFSET   1900
-#define FATFS_YEAR_OFFSET 1980
 
 bool rtc_init_done = false;
 
