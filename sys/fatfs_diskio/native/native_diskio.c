@@ -7,7 +7,7 @@
  */
 
 /**
- * @ingroup  tests
+ * @ingroup  sys_fatfs_diskio
  * @{
  *
  * @file
@@ -19,9 +19,10 @@
  *
  * @}
  */
-#define ENABLE_DEBUG    (1)
+#define ENABLE_DEBUG    (0)
 #include "debug.h"
 #include "fatfs/diskio.h" /* FatFs lower layer API */
+#include "fatfs_diskio_common.h"
 #include "fatfs/integer.h"
 
 #include <stdio.h>
@@ -31,27 +32,6 @@
 #include "xtimer.h"
 #include <stdlib.h>
 #include <errno.h>
-
-/* Complete pending write process (needed at _FS_READONLY == 0) */
-#define CTRL_SYNC           0   
-
-/* Get media size (needed at _USE_MKFS == 1) */
-#define GET_SECTOR_COUNT    1   
-
-/* Get sector size (needed at ) */
-#define GET_SECTOR_SIZE     2   
-
-/* Get erase block size (needed at _USE_MKFS == 1) */
-#define GET_BLOCK_SIZE      3   
-
-/* Inform device that the data on the block of sectors is 
-   no longer used (needed at _USE_TRIM == 1) */
-#define CTRL_TRIM           4   
-
-#define RTC_YEAR_OFFSET   1900
-#define FATFS_YEAR_OFFSET 1980
-
-#define FIXED_BLOCK_SIZE 512
 
 bool rtc_init_done = false;
 
@@ -63,7 +43,7 @@ typedef struct {
 
 static dummy_volume_t volume_files[] = {
     {
-        .image_path = "../../riot_fatfs_disk.img",
+        .image_path = FATFS_DISKIO_NATIVE_DEFAULT_FILE,
         .fd = NULL,
         .opened  = false
     },
@@ -73,7 +53,8 @@ static inline dummy_volume_t *get_volume_file(uint32_t idx)
 {
     if(idx < sizeof(volume_files) / sizeof(dummy_volume_t)){
         return &volume_files[idx];
-    }else{
+    }
+    else{
         return NULL;
     }
 }
@@ -114,7 +95,8 @@ DSTATUS disk_status (BYTE pdrv)
     }
     if(volume->opened){
         return 0;
-    }else{
+    }
+    else{
         return STA_NOINIT;  
     }
 }
@@ -134,7 +116,8 @@ DSTATUS disk_initialize (BYTE pdrv)
     
     if(volume == NULL){
         return STA_NODISK;
-    }else if(!volume->opened){
+    }
+    else if(!volume->opened){
         /* open file for r/w but don't create if it doesn't exist */
         FILE *fd = fopen(volume->image_path, "r+"); 
         DEBUG("fd: %p\n", (void*)fd);
@@ -142,12 +125,14 @@ DSTATUS disk_initialize (BYTE pdrv)
             DEBUG("diskio_native.c: disk_initialize: fopen: \
 errno: 0x%08x\n", errno);
             return STA_NOINIT;
-        }else{
+        }
+        else{
             volume->fd = fd;
             volume->opened = true;
             return 0;
         }
-    }else{
+    }
+    else{
         return STA_NOINIT;
     }
 }
@@ -172,11 +157,13 @@ DRESULT disk_read (BYTE pdrv, BYTE *buff, DWORD sector, UINT count)
         if(fseek(volume->fd, sector * FIXED_BLOCK_SIZE, SEEK_SET) == 0){
             if(fread(buff, FIXED_BLOCK_SIZE, count, volume->fd) == count){
                 return RES_OK;
-            }else{
+            }
+            else{
                 DEBUG("diskio_native.c: disk_read: fread: \
 errno: 0x%08x\n", errno);
             }
-        }else{
+        }
+        else{
             DEBUG("diskio_native.c: disk_read: fseek: errno: 0x%08x\n", errno);
         }
     }
@@ -199,22 +186,25 @@ DRESULT disk_write (BYTE pdrv, const BYTE *buff, DWORD sector, UINT count)
 {
     dummy_volume_t *volume = get_volume_file(pdrv);
 
-    if(volume != NULL && volume->opened){
+    if((volume != NULL) && volume->opened){
         //TODO: f_lseek, f_write, f_flush;
         /* set write pointer to secor aquivalent position */
         if(fseek(volume->fd, sector * FIXED_BLOCK_SIZE, SEEK_SET) == 0){
             if(fwrite(buff, FIXED_BLOCK_SIZE, count, volume->fd) == count){
                 if(fflush(volume->fd) == 0){
                     return RES_OK;
-                }else{
+                }
+                else{
                     DEBUG("diskio_native.c: disk_write: fflush: \
 errno: 0x%08x\n", errno);    
                 }
-            }else{
+            }
+            else{
                 DEBUG("diskio_native.c: disk_write: fwrite: \
 errno: 0x%08x\n", errno);
             }
-        }else{
+        }
+        else{
             DEBUG("diskio_native.c: disk_write: fseek: errno: 0x%08x\n", errno);
         }
     }
