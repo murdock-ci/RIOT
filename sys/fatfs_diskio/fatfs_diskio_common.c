@@ -22,8 +22,8 @@
 #include "fatfs/diskio.h" /* FatFs lower layer API */
 #include "fatfs_diskio_common.h"
 
-DWORD get_fattime (void)
-{
+#ifdef FATFS_RTC_AVAILABLE
+DWORD get_fattime (void){
     struct tm time;
 
     rtc_get_time(&time);
@@ -39,3 +39,4 @@ DWORD get_fattime (void)
     return year << 25 | month << 21 | day_of_month << 16 | 
            hour << 11 | minute << 5 | second; 
 }
+#endif

@@ -39,11 +39,11 @@ FATFS fat_fs;        /* FatFs work area needed for each volume */
 
 static int _mount(int argc, char **argv)
 {
-    printf("mounting file system image...");
     int vol_idx;
-    if(argc == 2){
+    if (argc == 2) {
         vol_idx = (int)atoi(argv[1]);
-    }else{
+    }
+    else {
         printf("usage: %s <volume_idx>\n", argv[0]);
         return -1;
     }
@@ -51,12 +51,13 @@ static int _mount(int argc, char **argv)
     char volume_str[TEST_FATFS_MAX_VOL_STR_LEN];
     sprintf(volume_str, "%d:/", vol_idx);
 
+    puts("mounting file system image...\n");
     /* "0:/" points to the root dir of drive 0 */
     FRESULT mountresu = f_mount(&fat_fs, volume_str, 1);
     TCHAR label[64];
 
     if (mountresu == FR_OK) {
-        printf("[OK]\n");
+        puts("[OK]\n");
         if (f_getlabel("", label, NULL) == FR_OK) {
             printf("Volume name: %s\n", label);
         }
@@ -66,7 +67,7 @@ static int _mount(int argc, char **argv)
 
         /* Get volume information and free clusters of drive 1 */
         if (f_getfree("0:", &fre_clust, &fs) != FR_OK) {
-            printf("wasn't able to get volume size info!\n");
+            puts("wasn't able to get volume size info!\n");
         }
         else {
 
@@ -82,27 +83,27 @@ static int _mount(int argc, char **argv)
             free_bytes *= sector_size;
 
             uint32_t to_gib_i = total_bytes / (1024 * 1024 * 1024);
-            uint32_t to_gib_f = ((((total_bytes/(1024 * 1024)) - to_gib_i * 1024) * 1000) / 1024);
+            uint32_t to_gib_f = ((((total_bytes / (1024 * 1024)) - to_gib_i * 1024) * 1000) / 1024);
 
             uint32_t fr_gib_i = free_bytes / (1024 * 1024 * 1024);
-            uint32_t fr_gib_f = ((((free_bytes/(1024 * 1024)) - fr_gib_i * 1024) * 1000) / 1024);
+            uint32_t fr_gib_f = ((((free_bytes / (1024 * 1024)) - fr_gib_i * 1024) * 1000) / 1024);
 
-            printf("%"PRIu32",%03"PRIu32" GiB of %"PRIu32",%03"PRIu32" \
-                    GiB available\n", fr_gib_i, fr_gib_f, to_gib_i, to_gib_f);
+            printf("%" PRIu32 ",%03" PRIu32 " GiB of %" PRIu32 ",%03" PRIu32 " \
+GiB available\n", fr_gib_i, fr_gib_f, to_gib_i, to_gib_f);
         }
     }
     else {
-        printf("[FAILED]\n");
+        puts("[FAILED]\n");
         switch (mountresu) {
             case FR_NO_FILESYSTEM:
-                printf("no filesystem -> you need to format the card to FAT\n");
+                puts("no filesystem -> you need to format the card to FAT\n");
                 break;
             case FR_DISK_ERR:
-                printf("error in the low-level disk driver (sdcard_spi)!\n");
+                puts("error in the low-level disk driver (sdcard_spi)!\n");
                 break;
             default:
                 printf("error %d -> look ff.h of fatfs package for \
-                        further details\n", mountresu);
+further details\n", mountresu);
         }
         return -1;
     }
@@ -121,7 +122,7 @@ static int _mk(int argc, char **argv)
     if (f_open(&fd, argv[1], FA_WRITE | FA_CREATE_ALWAYS) == FR_OK) {
         FRESULT close_resu = f_close(&fd);
         if (close_resu == FR_OK) {
-            printf("[OK]\n");
+            puts("[OK]\n");
             return 0;
         }
         else {
@@ -177,11 +178,11 @@ static int _read(int argc, char **argv)
                 printf("%c", buffer[i]);
             }
         }
-        printf("\n");
+        puts("\n");
 
         FRESULT close_resu = f_close(&fd);
         if (close_resu == FR_OK) {
-            printf("[OK]\n");
+            puts("[OK]\n");
             resu = 0;
         }
         else {
@@ -211,16 +212,16 @@ static int _write(int argc, char **argv)
     uint32_t len = strlen(argv[2]);
     FRESULT open_resu = f_open(&fd, argv[1], FA_WRITE | FA_CREATE_ALWAYS);
     if (open_resu == FR_OK) {
-        printf("writing %"PRId32" bytes to %s ...", len, argv[1]);
+        printf("writing %" PRId32 " bytes to %s ...", len, argv[1]);
         FRESULT write_resu = f_write(&fd, argv[2], len, &bw);
-        if (write_resu != FR_OK || (bw < len)) {
+        if ((write_resu != FR_OK) || (bw < len)) {
             printf("[FAILED] (f_write error %d)\n", write_resu);
             return -2;
         }
         else {
             FRESULT close_resu = f_close(&fd);
             if (close_resu == FR_OK) {
-                printf("[OK]\n");
+                puts("[OK]\n");
                 return 0;
             }
             else {
@@ -253,7 +254,7 @@ static int _ls(int argc, char **argv)
     if (res == FR_OK) {
         while (true) {
             res = f_readdir(&dir, &fno);    /* Read a directory item */
-            if (res != FR_OK || fno.fname[0] == 0) {
+            if ((res != FR_OK) || fno.fname[0] == 0) {
                 break;                      /* Break on error or end of dir */
             }
             if (fno.fattrib & AM_DIR) {     /* if this element is a directory */
@@ -285,7 +286,7 @@ int main(void)
 {
     #ifdef FATFS_RTC_AVAILABLE
     /* the rtc is used in diskio.c for timestamps of files */
-    printf("Initializing the RTC driver");
+    puts("Initializing the RTC driver");
     rtc_poweron();
     rtc_init();
 
