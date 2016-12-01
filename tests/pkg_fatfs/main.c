@@ -141,7 +141,7 @@ static int _read(int argc, char **argv)
     FIL fd;
     int resu = 0;
 
-    if (argc != 2) {
+    if ((argc < 2) || (argc > 3)) {
         printf("usage: %s <filename> [<len>]\n", argv[0]);
         return -1;
     }
@@ -151,9 +151,10 @@ static int _read(int argc, char **argv)
     FRESULT open_resu = f_open(&fd, argv[1], FA_READ | FA_OPEN_EXISTING);
     if (open_resu == FR_OK) {
         UINT read_chunk;
+        uint32_t len = ((argc == 3) ? (uint32_t)atoi(argv[2]) : f_size(&fd));
 
-        for (uint32_t read = 0; read < (f_size(&fd)); read += read_chunk) {
-            uint32_t to_read = (f_size(&fd)) - read;
+        for (uint32_t read = 0; read < len; read += read_chunk) {
+            uint32_t to_read = len - read;
 
             if (to_read > sizeof(buffer)) {
                 to_read = sizeof(buffer);
@@ -210,7 +211,7 @@ static int _write(int argc, char **argv)
     }
 
     uint32_t len = strlen(argv[2]);
-    FRESULT open_resu = f_open(&fd, argv[1], FA_WRITE | FA_CREATE_ALWAYS);
+    FRESULT open_resu = f_open(&fd, argv[1], FA_WRITE | FA_OPEN_APPEND);
     if (open_resu == FR_OK) {
         printf("writing %" PRId32 " bytes to %s ...", len, argv[1]);
         FRESULT write_resu = f_write(&fd, argv[2], len, &bw);

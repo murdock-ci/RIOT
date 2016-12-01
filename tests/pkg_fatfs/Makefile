@@ -3,6 +3,8 @@ include ../Makefile.tests_common
 
 USEMODULE += shell
 
+BOARD ?= native
+
 ifeq ($(BOARD),native)
   USEMODULE += fatfs_diskio_native
 else
