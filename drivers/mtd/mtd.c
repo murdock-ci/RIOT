@@ -1,7 +1,26 @@
+/*
+ * Copyright (C) 2016  OTA keys S.A.
+ *
+ * This file is subject to the terms and conditions of the GNU Lesser
+ * General Public License v2.1. See the file LICENSE in the top level
+ * directory for more details.
+ */
 
-#include "mtd.h"
+/**
+ * @ingroup     mtd
+ * @{
+ * @brief       Low level Memory Technology Device interface
+ *
+ * Generic memory technology device interface
+ *
+ * @file
+ *
+ * @author      Vincent Dupont <vincent@otakeys.com>
+ */
 
 #include <errno.h>
+
+#include "mtd.h"
 
 int mtd_init(mtd_dev_t *mtd)
 {
@@ -72,3 +91,5 @@ int mtd_power(mtd_dev_t *mtd, enum mtd_power_state power)
         return -ENOTSUP;
     }
 }
+
+/** @} */
