@@ -17,9 +17,9 @@
 #include "embUnit.h"
 
 #include "mtd.h"
-#include "mtd_native.h"
+#include "board.h"
 
-MTD_NATIVE_DESC(_dev, "MEMORY.bin");
+#define _dev MTD_0
 
 static void setup_teardown(void)
 {

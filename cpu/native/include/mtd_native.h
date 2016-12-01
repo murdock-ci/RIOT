@@ -6,6 +6,16 @@
  * directory for more details.
  */
 
+/**
+ * @defgroup    mtd Memory Technology Device
+ * @{
+ * @brief       mtd flash emulation for native
+ *
+ * @file
+ *
+ * @author      Vincent Dupont <vincent@otakeys.com>
+ */
+
 #ifndef MTD_NATIVE_H
 #define MTD_NATIVE_H
 
@@ -13,35 +23,12 @@
 extern "C" {
 #endif
 
-#include "board.h"
+#include "mtd.h"
 
-#ifndef MTD_NATIVE_PAGE_SIZE
-#define MTD_NATIVE_PAGE_SIZE     256
-#endif
-#ifndef MTD_NATIVE_SECTOR_SIZE
-#define MTD_NATIVE_SECTOR_SIZE   4096
-#endif
-#ifndef MTD_NATIVE_SECTOR_NUM
-#define MTD_NATIVE_SECTOR_NUM    2048
-#endif
-#ifndef MTD_NATIVE_FLASH_SIZE
-#define MTD_NATIVE_FLASH_SIZE    (MTD_NATIVE_SECTOR_SIZE * MTD_NATIVE_SECTOR_NUM)
-#endif
-
-#define MTD_NATIVE_DESC(_dev, _name) \
-    static mtd_native_dev_t _dev = { \
-        .dev = { \
-            .driver = &native_flash_driver, \
-            .sector_count = MTD_NATIVE_SECTOR_NUM, \
-            .pages_per_sector = MTD_NATIVE_SECTOR_SIZE / MTD_NATIVE_PAGE_SIZE, \
-            .page_size = MTD_NATIVE_PAGE_SIZE, \
-        }, \
-        .fname = _name, \
-    }
-
+/** mtd native descriptor */
 typedef struct mtd_native_dev {
-    mtd_dev_t dev;
-    char *fname;
+    mtd_dev_t dev;  /**< mtd generic device */
+    char *fname;    /**< optional filename, used if command line is not set */
 } mtd_native_dev_t;
 
 extern const mtd_desc_t native_flash_driver;
@@ -51,3 +38,5 @@ extern const mtd_desc_t native_flash_driver;
 #endif
 
 #endif /* MTD_NATIVE_H */
+
+/** @} */
