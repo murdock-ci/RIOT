@@ -30,37 +30,17 @@
 #include "xtimer.h"
 #include "debug.h"
 
-bool rtc_init_done = false;
-
 extern sd_card_t cards[NUM_OF_SD_CARDS];
 
-static inline sd_card_t *get_sd_card(int idx){
-    if(idx < NUM_OF_SD_CARDS){
+static inline sd_card_t *get_sd_card(int idx)
+{
+    if (idx < NUM_OF_SD_CARDS) {
         return &(cards[idx]);
-    }else{
+    }
+    else {
         return NULL;
     }
 }
-
-#ifdef FATFS_RTC_AVAILABLE
-DWORD get_fattime (void){
-    struct tm time;
-
-    rtc_get_time(&time);
-
-    /* bit 31:25 Year origin from 1980 (0..127) */
-    uint8_t year = time.tm_year + RTC_YEAR_OFFSET - FATFS_YEAR_OFFSET; 
-    uint8_t month = time.tm_mon + 1;        /* bit 24:21 month (1..12) */
-    uint8_t day_of_month = time.tm_mon + 1; /* bit 20:16 day (1..31) */
-    uint8_t hour = time.tm_hour;            /* bit 15:11 hour (0..23) */
-    uint8_t minute = time.tm_min;           /* bit 10:5 minute (0..59) */
-    uint8_t second = (time.tm_sec / 2);     /* bit 4:0 second/2 (0..29) */
-
-    return year << 25 | month << 21 | day_of_month << 16 | 
-           hour << 11 | minute << 5 | second; 
-}
-#endif
-
 
 /**
  * @brief           returns the status of the disk
@@ -69,19 +49,20 @@ DWORD get_fattime (void){
  *
  * @return          STA_NODISK if no disk exists with the given id
  * @return          0 if disk is initialized
- * @return          STA_NOINIT if disk id exists, but disk isn't initialized 
+ * @return          STA_NOINIT if disk id exists, but disk isn't initialized
  */
-DSTATUS disk_status (BYTE pdrv)
+DSTATUS disk_status(BYTE pdrv)
 {
     sd_card_t *card = get_sd_card(pdrv);
 
-    if(card == NULL){
+    if (card == NULL) {
         return STA_NODISK;
     }
-    if(card->init_done){
+    if (card->init_done) {
         return 0;
-    }else{
-        return STA_NOINIT;  
+    }
+    else {
+        return STA_NOINIT;
     }
 }
 
@@ -92,22 +73,19 @@ DSTATUS disk_status (BYTE pdrv)
  *
  * @return          STA_NODISK if no disk exists with the given id
  * @return          0 if disk was initialized sucessfully
- * @return          STA_NOINIT if disk id exists, but couldn't be initialized 
+ * @return          STA_NOINIT if disk id exists, but couldn't be initialized
  */
-DSTATUS disk_initialize (BYTE pdrv)
+DSTATUS disk_initialize(BYTE pdrv)
 {
-
-    cards[0].spi_dev = TEST_SDCARD_SPI;
-    cards[0].cs_pin = TEST_SDCARD_CS;
-    cards[0].init_done = false;
-
     sd_card_t *card = get_sd_card(pdrv);
-    
-    if(card == NULL){
+
+    if (card == NULL) {
         return STA_NODISK;
-    }else if(sdcard_spi_init(card)){
+    }
+    else if (sdcard_spi_init(card)) {
         return 0;
-    }else{
+    }
+    else {
         return STA_NOINIT;
     }
 }
@@ -123,22 +101,23 @@ DSTATUS disk_initialize (BYTE pdrv)
  * @return             RES_OK if no error occurred
  * @return             RES_NOTRDY if data wasn't read completely
  */
-DRESULT disk_read (BYTE pdrv, BYTE *buff, DWORD sector, UINT count)
+DRESULT disk_read(BYTE pdrv, BYTE *buff, DWORD sector, UINT count)
 {
     sd_card_t *card = get_sd_card(pdrv);
 
-    if(card != NULL && card->init_done){
+    if ((card != NULL) && card->init_done) {
         sd_rw_response_t state;
-        int read = sdcard_spi_read_blocks(card, sector, (char*)buff, 
+        int read = sdcard_spi_read_blocks(card, sector, (char *)buff,
                                           SD_HC_BLOCK_SIZE, count, &state);
-        if(read == count){
+        if (read == count) {
             return RES_OK;
-        }else{
+        }
+        else {
             printf("disk_read: sdcard_spi_read_blocks: ERROR:%d\n", state);
         }
     }
 
-    return RES_NOTRDY;      
+    return RES_NOTRDY;
 }
 
 /**
@@ -152,19 +131,18 @@ DRESULT disk_read (BYTE pdrv, BYTE *buff, DWORD sector, UINT count)
  * @return             RES_OK if no error occurred
  * @return             RES_NOTRDY if data wasn't written completely
  */
-DRESULT disk_write (BYTE pdrv, const BYTE *buff, DWORD sector, UINT count)
+DRESULT disk_write(BYTE pdrv, const BYTE *buff, DWORD sector, UINT count)
 {
-    //printf("diskio.c: disk_write called!\n");
-
     sd_card_t *card = get_sd_card(pdrv);
 
-    if(card != NULL && card->init_done){
+    if ((card != NULL) && card->init_done) {
         sd_rw_response_t state;
-        int written = sdcard_spi_write_blocks(card, sector, (char*)buff, 
+        int written = sdcard_spi_write_blocks(card, sector, (char *)buff,
                                               SD_HC_BLOCK_SIZE, count, &state);
-        if(written == count){
+        if (written == count) {
             return RES_OK;
-        }else{
+        }
+        else {
             printf("disk_write: sdcard_spi_write_blocks: ERROR:%d\n", state);
         }
     }
@@ -182,44 +160,41 @@ DRESULT disk_write (BYTE pdrv, const BYTE *buff, DWORD sector, UINT count)
  * @return                 RES_ERROR if an error occurred
  * @return                 RES_PARERR if an error occurred
  */
-DRESULT disk_ioctl (
-    BYTE pdrv,      /*  */
-    BYTE cmd,       /*  */
-    void *buff      /* Buffer to send/receive control data */
-)
+DRESULT disk_ioctl(BYTE pdrv, BYTE cmd, void *buff)
 {
-    switch(cmd){
-        #if(_FS_READONLY == 0)
-        case CTRL_SYNC: 
+    switch (cmd) {
+        #if (_FS_READONLY == 0)
+        case CTRL_SYNC:
             /* r/w is always finished within r/w-functions of sdcard_spi */
             return RES_OK;
         #endif
 
-        #if(_USE_MKFS == 1)
+        #if (_USE_MKFS == 1)
         case GET_SECTOR_COUNT:
             sd_card_t card = get_sd_card(pdrv);
-            if(card != NULL && get_sd_card(pdrv)->init_done){
-                *(DWORD*)buff = sdcard_spi_get_sector_count(card);
+            if ((card != NULL) && get_sd_card(pdrv)->init_done) {
+                *(DWORD *)buff = sdcard_spi_get_sector_count(card);
                 return RES_OK;
-            }else{
-                return RES_ERROR;   
             }
-            
+            else {
+                return RES_ERROR;
+            }
+
         #endif
 
-        #if(_MAX_SS != _MIN_SS)
+        #if (_MAX_SS != _MIN_SS)
         case GET_SECTOR_SIZE;
-            *buff = 512;
+            *buff = SD_HC_BLOCK_SIZE;
             return RES_OK;
         #endif
 
-        #if(_USE_MKFS == 1)
+        #if (_USE_MKFS == 1)
         case GET_BLOCK_SIZE
-            *buff = 512;
-            return RES_OK;   
+            *buff = SD_HC_BLOCK_SIZE;
+            return RES_OK;
         #endif
 
-        #if(_USE_TRIM == 1)
+        #if (_USE_TRIM == 1)
         case CTRL_TRIM:
             return RES_OK;
         #endif
@@ -227,4 +202,3 @@ DRESULT disk_ioctl (
 
     return RES_PARERR;
 }
-
