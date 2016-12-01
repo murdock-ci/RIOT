@@ -152,8 +152,8 @@ DRESULT disk_read (BYTE pdrv, BYTE *buff, DWORD sector, UINT count)
 {
     dummy_volume_t *volume = get_volume_file(pdrv);
 
-    if(volume != NULL && volume->opened){
-        /* set read pointer to secor aquivalent position */
+    if((volume != NULL) && volume->opened){
+        /* set read pointer to secor equivalent position */
         if(fseek(volume->fd, sector * FIXED_BLOCK_SIZE, SEEK_SET) == 0){
             if(fread(buff, FIXED_BLOCK_SIZE, count, volume->fd) == count){
                 return RES_OK;
@@ -188,7 +188,7 @@ DRESULT disk_write (BYTE pdrv, const BYTE *buff, DWORD sector, UINT count)
 
     if((volume != NULL) && volume->opened){
         //TODO: f_lseek, f_write, f_flush;
-        /* set write pointer to secor aquivalent position */
+        /* set write pointer to secor equivalent position */
         if(fseek(volume->fd, sector * FIXED_BLOCK_SIZE, SEEK_SET) == 0){
             if(fwrite(buff, FIXED_BLOCK_SIZE, count, volume->fd) == count){
                 if(fflush(volume->fd) == 0){
@@ -238,22 +238,6 @@ DRESULT disk_ioctl (
             return RES_OK;
         #endif
 
-        #if(_USE_MKFS == 1)
-        case GET_SECTOR_COUNT:
-
-            dummy_volume_t *volume = get_volume_file(pdrv);
-
-            if(volume != NULL && volume->opened){
-                struct stat s; 
-                if (stat(volume->image_path, &s) == 0){
-                    *(DWORD*)buff = s.st_size / FIXED_BLOCK_SIZE;
-                    return RES_OK;
-                }
-            }
-            return RES_ERROR;
-            
-        #endif
-
         #if(_MAX_SS != _MIN_SS)
         case GET_SECTOR_SIZE;
             *buff = FIXED_BLOCK_SIZE;
@@ -261,6 +245,19 @@ DRESULT disk_ioctl (
         #endif
 
         #if(_USE_MKFS == 1)
+        case GET_SECTOR_COUNT:
+
+            dummy_volume_t *volume = get_volume_file(pdrv);
+
+            if((volume != NULL) && volume->opened){
+                struct stat s; 
+                if (stat(volume->image_path, &s) == 0){
+                    *(DWORD*)buff = s.st_size / FIXED_BLOCK_SIZE;
+                    return RES_OK;
+                }
+            }
+        return RES_ERROR;
+
         case GET_BLOCK_SIZE
             *buff = FIXED_BLOCK_SIZE;
             return RES_OK;   
