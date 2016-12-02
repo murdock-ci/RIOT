@@ -37,9 +37,8 @@ static inline sd_card_t *get_sd_card(int idx)
     if (idx < NUM_OF_SD_CARDS) {
         return &(cards[idx]);
     }
-    else {
-        return NULL;
-    }
+
+    return NULL;
 }
 
 /**
@@ -58,12 +57,11 @@ DSTATUS disk_status(BYTE pdrv)
     if (card == NULL) {
         return STA_NODISK;
     }
-    if (card->init_done) {
+    else if (card->init_done) {
         return 0;
     }
-    else {
-        return STA_NOINIT;
-    }
+
+    return STA_NOINIT;
 }
 
 /**
@@ -85,9 +83,8 @@ DSTATUS disk_initialize(BYTE pdrv)
     else if (sdcard_spi_init(card)) {
         return 0;
     }
-    else {
-        return STA_NOINIT;
-    }
+    
+    return STA_NOINIT;
 }
 
 /**
@@ -107,16 +104,13 @@ DRESULT disk_read(BYTE pdrv, BYTE *buff, DWORD sector, UINT count)
 
     if ((card != NULL) && card->init_done) {
         sd_rw_response_t state;
-        int read = sdcard_spi_read_blocks(card, sector, (char *)buff,
-                                          SD_HC_BLOCK_SIZE, count, &state);
-        if (read == count) {
-            return RES_OK;
-        }
-        else {
+        if (count != sdcard_spi_read_blocks(card, sector, (char *)buff,
+                                            SD_HC_BLOCK_SIZE, count, &state)) {
             printf("disk_read: sdcard_spi_read_blocks: ERROR:%d\n", state);
+            return RES_NOTRDY;
         }
+        return RES_OK;
     }
-
     return RES_NOTRDY;
 }
 
@@ -137,14 +131,12 @@ DRESULT disk_write(BYTE pdrv, const BYTE *buff, DWORD sector, UINT count)
 
     if ((card != NULL) && card->init_done) {
         sd_rw_response_t state;
-        int written = sdcard_spi_write_blocks(card, sector, (char *)buff,
-                                              SD_HC_BLOCK_SIZE, count, &state);
-        if (written == count) {
-            return RES_OK;
-        }
-        else {
+        if (count != sdcard_spi_write_blocks(card, sector, (char *)buff,
+                                             SD_HC_BLOCK_SIZE, count, &state)) {
             printf("disk_write: sdcard_spi_write_blocks: ERROR:%d\n", state);
+            return RES_NOTRDY;        
         }
+        return RES_OK;
     }
     return RES_NOTRDY;
 }
