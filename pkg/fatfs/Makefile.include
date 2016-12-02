@@ -1,2 +1,6 @@
 INCLUDES += -I$(BINDIRBASE)/pkg/$(BOARD)
 DIRS += $(BINDIRBASE)/pkg/$(BOARD)/fatfs
+
+ifeq ($(shell uname -s),Darwin)
+    CFLAGS += -Wno-empty-body
+endif
