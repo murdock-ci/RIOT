@@ -7,6 +7,7 @@ BOARD ?= native
 
 ifeq ($(BOARD),native)
   USEMODULE += fatfs_diskio_native
+  FATFS_DISKIO_NATIVE_DEFAULT_FILE ?= \"riot_fatfs_disk.img\"
 else
   USEMODULE += fatfs_diskio_sdcard_spi  
   NUM_OF_SD_CARDS ?= 1
