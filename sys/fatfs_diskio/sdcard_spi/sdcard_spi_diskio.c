@@ -20,6 +20,7 @@
  */
 #include "fatfs/diskio.h"       /* FatFs lower layer API */
 #include "fatfs_diskio_common.h"
+#include "fatfs/ffconf.h"
 #include "fatfs/integer.h"
 #include "sdcard_spi.h"
 
@@ -154,6 +155,10 @@ DRESULT disk_write(BYTE pdrv, const BYTE *buff, DWORD sector, UINT count)
  */
 DRESULT disk_ioctl(BYTE pdrv, BYTE cmd, void *buff)
 {
+    #if (_USE_MKFS == 1)
+    sd_card_t *card = get_sd_card(pdrv);
+    #endif
+
     switch (cmd) {
         #if (_FS_READONLY == 0)
         case CTRL_SYNC:
@@ -163,8 +168,7 @@ DRESULT disk_ioctl(BYTE pdrv, BYTE cmd, void *buff)
 
         #if (_USE_MKFS == 1)
         case GET_SECTOR_COUNT:
-            sd_card_t card = get_sd_card(pdrv);
-            if ((card != NULL) && get_sd_card(pdrv)->init_done) {
+            if ((card != NULL) && card->init_done) {
                 *(DWORD *)buff = sdcard_spi_get_sector_count(card);
                 return RES_OK;
             }
@@ -172,16 +176,18 @@ DRESULT disk_ioctl(BYTE pdrv, BYTE cmd, void *buff)
                 return RES_ERROR;
             }
 
+        case GET_BLOCK_SIZE:
+            if ((card != NULL) && card->init_done) {
+                /* erase block size in unit of sector */
+                *(DWORD *)buff = sdcard_spi_get_au_size(card) / SD_HC_BLOCK_SIZE;
+                return RES_OK;
+            }
+            *(DWORD *)buff = 0;
+            return RES_ERROR;
         #endif
 
         #if (_MAX_SS != _MIN_SS)
-        case GET_SECTOR_SIZE;
-            *buff = SD_HC_BLOCK_SIZE;
-            return RES_OK;
-        #endif
-
-        #if (_USE_MKFS == 1)
-        case GET_BLOCK_SIZE
+        case GET_SECTOR_SIZE:
             *buff = SD_HC_BLOCK_SIZE;
             return RES_OK;
         #endif
