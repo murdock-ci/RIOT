@@ -51,7 +51,8 @@ static int _mount(int argc, char **argv)
     char volume_str[TEST_FATFS_MAX_VOL_STR_LEN];
     sprintf(volume_str, "%d:/", vol_idx);
 
-    puts("mounting file system image...\n");
+    puts("mounting file system image...");
+
     /* "0:/" points to the root dir of drive 0 */
     FRESULT mountresu = f_mount(&fat_fs, volume_str, 1);
     TCHAR label[64];
@@ -88,8 +89,8 @@ static int _mount(int argc, char **argv)
             uint32_t fr_gib_i = free_bytes / (1024 * 1024 * 1024);
             uint32_t fr_gib_f = ((((free_bytes / (1024 * 1024)) - fr_gib_i * 1024) * 1000) / 1024);
 
-            printf("%" PRIu32 ",%03" PRIu32 " GiB of %" PRIu32 ",%03" PRIu32 " \
-GiB available\n", fr_gib_i, fr_gib_f, to_gib_i, to_gib_f);
+            printf("%" PRIu32 ",%03" PRIu32 " GiB of %" PRIu32 ",%03" PRIu32
+                   " GiB available\n", fr_gib_i, fr_gib_f, to_gib_i, to_gib_f);
         }
     }
     else {
@@ -102,8 +103,8 @@ GiB available\n", fr_gib_i, fr_gib_f, to_gib_i, to_gib_f);
                 puts("error in the low-level disk driver (sdcard_spi)!\n");
                 break;
             default:
-                printf("error %d -> look ff.h of fatfs package for \
-further details\n", mountresu);
+                printf("error %d -> look ff.h of fatfs package for "
+                       "further details\n", mountresu);
         }
         return -1;
     }
@@ -274,8 +275,52 @@ static int _ls(int argc, char **argv)
     return 0;
 }
 
+static int _mkfs(int argc, char **argv)
+{
+    int vol_idx;
+    BYTE opt;
+    if (argc == 3) {
+        vol_idx = (int)atoi(argv[1]);
+        if (strcmp(argv[2], "fat") == 0) {
+            opt = FM_FAT;
+        }
+        else if (strcmp(argv[2], "fat32") == 0) {
+            opt = FM_FAT32;
+        }
+        else if (strcmp(argv[2], "exfat") == 0) {
+            opt = FM_EXFAT;
+        }
+        else {
+            opt = FM_ANY;
+        }
+    }
+    else {
+        printf("usage: %s <volume_idx> <fat|fat32|exfat|any>\n", argv[0]);
+        return -1;
+    }
+
+    char volume_str[TEST_FATFS_MAX_VOL_STR_LEN];
+    sprintf(volume_str, "%d:/", vol_idx);
+    BYTE work[_MAX_SS];
+
+    puts("formatting media...");
+
+    /* au = 0: use default allocation unit size depending on volume size */
+    FRESULT mkfs_resu = f_mkfs (volume_str, opt, 0,  work, sizeof(work));
+
+    if (mkfs_resu == FR_OK) {
+        printf("[OK]\n");
+        return 0;
+    }
+    else {
+        printf("[FAILED] error %d\n", mkfs_resu);
+        return -1;
+    }
+}
+
 static const shell_command_t shell_commands[] = {
     { "mount", "mount file system", _mount },
+    { "mkfs", "format volume", _mkfs },
     { "mk", "create file", _mk },
     { "read", "print file content to console", _read },
     { "write", "append string to file", _write },
@@ -299,7 +344,7 @@ int main(void)
     time.tm_min  = 42;
     time.tm_sec  = 00;
 
-    printf("Setting clock to %04d-%02d-%02d %02d:%02d:%02d\n",
+    printf("Setting RTC to %04d-%02d-%02d %02d:%02d:%02d\n",
            time.tm_year + RTC_YEAR_OFFSET,
            time.tm_mon + 1,
            time.tm_mday,
