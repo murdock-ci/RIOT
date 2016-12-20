@@ -27,6 +27,20 @@ else
                               .miso_pin = GPIO_PIN(2,6), \
                               .power_pin = GPIO_PIN(0,6), \
                               .power_pin_act_high = false } }
+  else ifeq ($(BOARD), pba-d-01-kw2x)
+    SDCARD_SPI_CONFIGS ?= { { .spi_dev = SPI_0, \
+                              .cs_pin = GPIO_PIN(2,4), \
+                              .clk_pin = GPIO_PIN(2,5), \
+                              .mosi_pin = GPIO_PIN(2,6), \
+                              .miso_pin = GPIO_PIN(2,7), \
+                              .power_pin = GPIO_UNDEF } }
+  else ifeq ($(BOARD), stm32f4discovery)
+    SDCARD_SPI_CONFIGS ?= { { .spi_dev = SPI_1, \
+                              .cs_pin = GPIO_PIN(1,12), \
+                              .clk_pin = GPIO_PIN(1,13), \
+                              .mosi_pin = GPIO_PIN(1,15), \
+                              .miso_pin = GPIO_PIN(1,14), \
+                              .power_pin = GPIO_UNDEF } }
   endif
 
   CFLAGS += "-DSDCARD_SPI_CONFIGS=$(SDCARD_SPI_CONFIGS)"
