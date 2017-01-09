@@ -19,6 +19,7 @@ all: $(PKG_BUILDDIR)/.patched
 
 ffconf_patches += $(CURDIR)/patches/enable_use_lable.patch
 ffconf_patches += $(CURDIR)/patches/set_code_page_to_ascii.patch
+ffconf_patches += $(CURDIR)/patches/enable_use_mkfs.patch
 
 #if periph_rtc is available use it. Otherwise use static timestamps
 ifeq (, $(filter $(periph_rtc), $(FEATURES_PROVIDED)))
@@ -36,7 +37,7 @@ $(PKG_BUILDDIR)/.prepared: $(PKG_BUILDDIR)/.extracted
 	$(AD)rm -rf $(PKG_BUILDDIR)/src
 	$(AD)rm -rf $(PKG_BUILDDIR)/doc
 	
-#this file is only a dummy that should be replaced by a compatible implementation 
+#this file is only a dummy that should be replaced by a compatible implementation
 	$(AD)rm $(PKG_BUILDDIR)/diskio.c
 	$(AD)cp $(MODULE_MAKEFILE) $(PKG_BUILDDIR)/Makefile
 	$(AD)cp $(MODULE_MAKEFILE) $(PKG_BUILDDIR)/option
