@@ -40,13 +40,12 @@ FATFS fat_fs;        /* FatFs work area needed for each volume */
 static int _mount(int argc, char **argv)
 {
     int vol_idx;
-    if (argc == 2) {
-        vol_idx = (int)atoi(argv[1]);
-    }
-    else {
+    if (argc != 2) {
         printf("usage: %s <volume_idx>\n", argv[0]);
         return -1;
     }
+
+    vol_idx = (int)atoi(argv[1]);
 
     char volume_str[TEST_FATFS_MAX_VOL_STR_LEN];
     sprintf(volume_str, "%d:/", vol_idx);
@@ -126,15 +125,13 @@ static int _mk(int argc, char **argv)
             puts("[OK]\n");
             return 0;
         }
-        else {
-            printf("[FAILED] (f_close error %d)\n", close_resu);
-            return -2;
-        }
+
+        printf("[FAILED] (f_close error %d)\n", close_resu);
+        return -2;
     }
-    else {
-        printf("failed to create file '%s'\n", argv[1]);
-    }
-    return 0;
+
+    printf("failed to create file '%s'\n", argv[1]);
+    return -3;
 }
 
 static int _read(int argc, char **argv)
@@ -226,16 +223,14 @@ static int _write(int argc, char **argv)
                 puts("[OK]\n");
                 return 0;
             }
-            else {
-                printf("[FAILED] (f_close error %d)\n", open_resu);
-                return -3;
-            }
+
+            printf("[FAILED] (f_close error %d)\n", open_resu);
+            return -3;
         }
     }
-    else {
-        printf("[FAILED] (f_open error %d)\n", open_resu);
-        return -1;
-    }
+
+    printf("[FAILED] (f_open error %d)\n", open_resu);
+    return -1;
 }
 
 static int _ls(int argc, char **argv)
@@ -267,12 +262,11 @@ static int _ls(int argc, char **argv)
             }
         }
         f_closedir(&dir);
+        return 0;
     }
-    else {
-        printf("[FAILED] error %d\n", res);
-        return -1;
-    }
-    return 0;
+
+    printf("[FAILED] error %d\n", res);
+    return -1;
 }
 
 static int _mkfs(int argc, char **argv)
@@ -312,10 +306,9 @@ static int _mkfs(int argc, char **argv)
         printf("[OK]\n");
         return 0;
     }
-    else {
-        printf("[FAILED] error %d\n", mkfs_resu);
-        return -1;
-    }
+
+    printf("[FAILED] error %d\n", mkfs_resu);
+    return -1;
 }
 
 static const shell_command_t shell_commands[] = {
