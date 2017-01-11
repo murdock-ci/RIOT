@@ -24,7 +24,7 @@ extern "C" {
 
 #include "fatfs/diskio.h" /* FatFs lower layer API */
 
-#define CTRL_SYNC        0 /* Complete pending write process 
+#define CTRL_SYNC        0 /* Complete pending write process
                               (needed when _FS_READONLY == 0) */
 
 #define GET_SECTOR_COUNT 1 /* (needed when _USE_MKFS == 1) */
@@ -40,6 +40,8 @@ extern "C" {
 #define FATFS_YEAR_OFFSET 1980
 
 #define FIXED_BLOCK_SIZE 512
+
+#define FATFS_DISKIO_DSTASTUS_OK 0
 
 #ifdef __cplusplus
 }

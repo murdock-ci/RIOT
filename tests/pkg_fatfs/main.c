@@ -22,7 +22,6 @@
 #include "periph/rtc.h"
 #endif
 #include "fatfs/ff.h"
-
 #include "shell.h"
 #include <string.h>
 #include <stdlib.h>
@@ -71,7 +70,7 @@ static int _mount(int argc, char **argv)
     TCHAR label[TEST_FATFS_MAX_LBL_SIZE];
 
     if (mountresu == FR_OK) {
-        puts("[OK]\n");
+        puts("[OK]");
         if (f_getlabel("", label, NULL) == FR_OK) {
             printf("Volume name: %s\n", label);
         }
@@ -81,7 +80,7 @@ static int _mount(int argc, char **argv)
 
         /* Get volume information and free clusters of selected drive */
         if (f_getfree(volume_str, &fre_clust, &fs) != FR_OK) {
-            puts("wasn't able to get volume size info!\n");
+            puts("wasn't able to get volume size info!");
         }
         else {
 
@@ -109,16 +108,16 @@ static int _mount(int argc, char **argv)
         }
     }
     else {
-        puts("[FAILED]\n");
+        puts("[FAILED]");
         switch (mountresu) {
             case FR_NO_FILESYSTEM:
-                puts("no filesystem -> you need to format the card to FAT\n");
+                puts("no filesystem -> you need to format the card to FAT");
                 break;
             case FR_DISK_ERR:
-                puts("error in the low-level disk driver (sdcard_spi)!\n");
+                puts("error in the low-level disk driver!");
                 break;
             default:
-                printf("error %d -> look ff.h of fatfs package for "
+                printf("error %d -> see ff.h of fatfs package for "
                        "further details\n", mountresu);
         }
         return -1;
@@ -126,7 +125,7 @@ static int _mount(int argc, char **argv)
     return 0;
 }
 
-static int _mk(int argc, char **argv)
+static int _touch(int argc, char **argv)
 {
     FIL fd;
 
@@ -135,10 +134,11 @@ static int _mk(int argc, char **argv)
         return -1;
     }
 
-    if (f_open(&fd, argv[1], FA_WRITE | FA_CREATE_ALWAYS) == FR_OK) {
+    FRESULT open_resu = f_open(&fd, argv[1], FA_WRITE | FA_CREATE_ALWAYS);
+    if (open_resu == FR_OK) {
         FRESULT close_resu = f_close(&fd);
         if (close_resu == FR_OK) {
-            puts("[OK]\n");
+            puts("[OK]");
             return 0;
         }
 
@@ -146,7 +146,7 @@ static int _mk(int argc, char **argv)
         return -2;
     }
 
-    printf("failed to create file '%s'\n", argv[1]);
+    printf("[FAILED] (f_open error %d)\n", open_resu);
     return -3;
 }
 
@@ -194,12 +194,12 @@ static int _read(int argc, char **argv)
                 printf("%c", buffer[i]);
             }
         }
-        puts("\n");
+        puts("");
 
         FRESULT close_resu = f_close(&fd);
 
         if (close_resu == FR_OK) {
-            puts("[OK]\n");
+            puts("[OK]");
             resu = 0;
         }
         else {
@@ -241,7 +241,7 @@ static int _write(int argc, char **argv)
             FRESULT close_resu = f_close(&fd);
 
             if (close_resu == FR_OK) {
-                puts("[OK]\n");
+                puts("[OK]");
                 return 0;
             }
 
@@ -341,7 +341,7 @@ static int _mkfs(int argc, char **argv)
 static const shell_command_t shell_commands[] = {
     { "mount", "mount file system", _mount },
     { "mkfs", "format volume", _mkfs },
-    { "mk", "create file", _mk },
+    { "touch", "create file", _touch },
     { "read", "print file content to console", _read },
     { "write", "append string to file", _write },
     { "ls", "list files", _ls },
