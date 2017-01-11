@@ -30,16 +30,30 @@
 #include <inttypes.h>
 #include <stdbool.h>
 
-#define RTC_YEAR_OFFSET   1900
-#define FATFS_YEAR_OFFSET 1980
+#define TEST_FATFS_RTC_YEAR_OFFSET   1900
 #define TEST_FATFS_READ_BUFFER_SIZE 64
+#define TEST_FATFS_MAX_LBL_SIZE 64
 #define TEST_FATFS_MAX_VOL_STR_LEN 8
+#define TEST_FATFS_FIXED_SECTOR_SIZE 512
+#define TEST_FATFS_FATENT_OFFSET 2
+#define TEST_FATFS_SHIFT_B_TO_GIB 30
+#define TEST_FATFS_SHIFT_B_TO_MIB 20
+#define TEST_FATFS_RTC_MON_OFFSET 1
+#define TEST_FATFS_RTC_YEAR 2000
+#define TEST_FATFS_RTC_MON  1
+#define TEST_FATFS_RTC_DAY  1
+#define TEST_FATFS_RTC_H    0
+#define TEST_FATFS_RTC_M    0
+#define TEST_FATFS_RTC_S    0
+#define IEC_KIBI 1024
+#define SI_KILO 1000
 
 FATFS fat_fs;        /* FatFs work area needed for each volume */
 
 static int _mount(int argc, char **argv)
 {
     int vol_idx;
+
     if (argc != 2) {
         printf("usage: %s <volume_idx>\n", argv[0]);
         return -1;
@@ -54,7 +68,7 @@ static int _mount(int argc, char **argv)
 
     /* "0:/" points to the root dir of drive 0 */
     FRESULT mountresu = f_mount(&fat_fs, volume_str, 1);
-    TCHAR label[64];
+    TCHAR label[TEST_FATFS_MAX_LBL_SIZE];
 
     if (mountresu == FR_OK) {
         puts("[OK]\n");
@@ -65,28 +79,30 @@ static int _mount(int argc, char **argv)
         FATFS *fs;
         DWORD fre_clust;
 
-        /* Get volume information and free clusters of drive 1 */
-        if (f_getfree("0:", &fre_clust, &fs) != FR_OK) {
+        /* Get volume information and free clusters of selected drive */
+        if (f_getfree(volume_str, &fre_clust, &fs) != FR_OK) {
             puts("wasn't able to get volume size info!\n");
         }
         else {
 
             #if _MAX_SS == _MIN_SS
-            uint16_t sector_size = 512;
+            uint16_t sector_size = TEST_FATFS_FIXED_SECTOR_SIZE;
             #else
             uint16_t sector_size = fs->ssize;
             #endif
 
-            uint64_t total_bytes = (fs->n_fatent - 2) * fs->csize;
+            uint64_t total_bytes = (fs->n_fatent - TEST_FATFS_FATENT_OFFSET) * fs->csize;
             total_bytes *= sector_size;
             uint64_t free_bytes = fre_clust * fs->csize;
             free_bytes *= sector_size;
 
-            uint32_t to_gib_i = total_bytes / (1024 * 1024 * 1024);
-            uint32_t to_gib_f = ((((total_bytes / (1024 * 1024)) - to_gib_i * 1024) * 1000) / 1024);
+            uint32_t to_gib_i = total_bytes >> TEST_FATFS_SHIFT_B_TO_GIB;
+            uint32_t to_gib_f = ((((total_bytes >> TEST_FATFS_SHIFT_B_TO_MIB) - to_gib_i * IEC_KIBI)
+                                  * SI_KILO) / IEC_KIBI);
 
-            uint32_t fr_gib_i = free_bytes / (1024 * 1024 * 1024);
-            uint32_t fr_gib_f = ((((free_bytes / (1024 * 1024)) - fr_gib_i * 1024) * 1000) / 1024);
+            uint32_t fr_gib_i = free_bytes >> TEST_FATFS_SHIFT_B_TO_GIB;
+            uint32_t fr_gib_f = ((((free_bytes >> TEST_FATFS_SHIFT_B_TO_MIB) - fr_gib_i * IEC_KIBI)
+                                  * SI_KILO) / IEC_KIBI);
 
             printf("%" PRIu32 ",%03" PRIu32 " GiB of %" PRIu32 ",%03" PRIu32
                    " GiB available\n", fr_gib_i, fr_gib_f, to_gib_i, to_gib_f);
@@ -159,6 +175,7 @@ static int _read(int argc, char **argv)
             }
 
             FRESULT lseek_resu = f_lseek(&fd, read);
+
             if (lseek_resu != FR_OK) {
                 printf("[FAILED] f_lseek error %d\n", lseek_resu);
                 resu = -3;
@@ -180,6 +197,7 @@ static int _read(int argc, char **argv)
         puts("\n");
 
         FRESULT close_resu = f_close(&fd);
+
         if (close_resu == FR_OK) {
             puts("[OK]\n");
             resu = 0;
@@ -210,15 +228,18 @@ static int _write(int argc, char **argv)
 
     uint32_t len = strlen(argv[2]);
     FRESULT open_resu = f_open(&fd, argv[1], FA_WRITE | FA_OPEN_APPEND);
+
     if (open_resu == FR_OK) {
         printf("writing %" PRId32 " bytes to %s ...", len, argv[1]);
         FRESULT write_resu = f_write(&fd, argv[2], len, &bw);
+
         if ((write_resu != FR_OK) || (bw < len)) {
             printf("[FAILED] (f_write error %d)\n", write_resu);
             return -2;
         }
         else {
             FRESULT close_resu = f_close(&fd);
+
             if (close_resu == FR_OK) {
                 puts("[OK]\n");
                 return 0;
@@ -248,12 +269,15 @@ static int _ls(int argc, char **argv)
     }
 
     res = f_opendir(&dir, path);/* Open the directory */
+
     if (res == FR_OK) {
         while (true) {
             res = f_readdir(&dir, &fno);    /* Read a directory item */
+
             if ((res != FR_OK) || fno.fname[0] == 0) {
                 break;                      /* Break on error or end of dir */
             }
+
             if (fno.fattrib & AM_DIR) {     /* if this element is a directory */
                 printf("%s%s/\n", path, fno.fname);
             }
@@ -261,6 +285,7 @@ static int _ls(int argc, char **argv)
                 printf("%s/%s\n", path, fno.fname);
             }
         }
+
         f_closedir(&dir);
         return 0;
     }
@@ -273,8 +298,10 @@ static int _mkfs(int argc, char **argv)
 {
     int vol_idx;
     BYTE opt;
+
     if (argc == 3) {
         vol_idx = (int)atoi(argv[1]);
+
         if (strcmp(argv[2], "fat") == 0) {
             opt = FM_FAT;
         }
@@ -300,10 +327,10 @@ static int _mkfs(int argc, char **argv)
     puts("formatting media...");
 
     /* au = 0: use default allocation unit size depending on volume size */
-    FRESULT mkfs_resu = f_mkfs (volume_str, opt, 0,  work, sizeof(work));
+    FRESULT mkfs_resu = f_mkfs(volume_str, opt, 0,  work, sizeof(work));
 
     if (mkfs_resu == FR_OK) {
-        printf("[OK]\n");
+        puts("[OK]");
         return 0;
     }
 
@@ -339,7 +366,7 @@ int main(void)
 
     printf("Setting RTC to %04d-%02d-%02d %02d:%02d:%02d\n",
            time.tm_year + RTC_YEAR_OFFSET,
-           time.tm_mon + 1,
+           time.tm_mon + RTC_MON_OFFSET,
            time.tm_mday,
            time.tm_hour,
            time.tm_min,
