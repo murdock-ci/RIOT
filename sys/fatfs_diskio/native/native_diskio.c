@@ -21,15 +21,12 @@
  */
 #define ENABLE_DEBUG    (0)
 #include "debug.h"
-#include "fatfs/diskio.h" /* FatFs lower layer API */
+#include "fatfs/diskio.h"
 #include "fatfs_diskio_common.h"
 #include "fatfs/integer.h"
-
+#include "periph/rtc.h"
 #include <stdio.h>
 #include <time.h>
-#include "periph_conf.h"
-#include "periph/rtc.h"
-#include "xtimer.h"
 #include <stdlib.h>
 #include <errno.h>
 
@@ -59,24 +56,6 @@ static inline dummy_volume_t *get_volume_file(uint32_t idx)
     }
 }
 
-DWORD get_fattime(void)
-{
-    struct tm time;
-
-    rtc_get_time(&time);
-
-    /* bit 31:25 Year origin from 1980 (0..127) */
-    uint8_t year = time.tm_year + RTC_YEAR_OFFSET - FATFS_YEAR_OFFSET;
-    uint8_t month = time.tm_mon + 1;        /* bit 24:21 month (1..12) */
-    uint8_t day_of_month = time.tm_mon + 1; /* bit 20:16 day (1..31) */
-    uint8_t hour = time.tm_hour;            /* bit 15:11 hour (0..23) */
-    uint8_t minute = time.tm_min;           /* bit 10:5 minute (0..59) */
-    uint8_t second = (time.tm_sec / 2);     /* bit 4:0 second/2 (0..29) */
-
-    return year << 25 | month << 21 | day_of_month << 16 |
-           hour << 11 | minute << 5 | second;
-}
-
 /**
  * @brief           returns the status of the disk
  *
@@ -94,7 +73,7 @@ DSTATUS disk_status(BYTE pdrv)
         return STA_NODISK;
     }
     if (volume->opened) {
-        return 0;
+        return FATFS_DISKIO_DSTASTUS_OK;
     }
     else {
         return STA_NOINIT;
@@ -129,7 +108,7 @@ DSTATUS disk_initialize(BYTE pdrv)
         else {
             volume->fd = fd;
             volume->opened = true;
-            return 0;
+            return FATFS_DISKIO_DSTASTUS_OK;
         }
     }
     else {
@@ -187,7 +166,6 @@ DRESULT disk_write(BYTE pdrv, const BYTE *buff, DWORD sector, UINT count)
     dummy_volume_t *volume = get_volume_file(pdrv);
 
     if ((volume != NULL) && volume->opened) {
-        //TODO: f_lseek, f_write, f_flush;
         /* set write pointer to secor equivalent position */
         if (fseek(volume->fd, sector * FIXED_BLOCK_SIZE, SEEK_SET) == 0) {
             if (fwrite(buff, FIXED_BLOCK_SIZE, count, volume->fd) == count) {
@@ -234,7 +212,7 @@ DRESULT disk_ioctl(
     switch (cmd) {
         #if (_FS_READONLY == 0)
         case CTRL_SYNC:
-            /* r/w is always finished within r/w-functions of sdcard_spi */
+            /* r/w is always finished within r/w-functions */
             return RES_OK;
         #endif
 
@@ -271,4 +249,3 @@ DRESULT disk_ioctl(
 
     return RES_PARERR;
 }
-
