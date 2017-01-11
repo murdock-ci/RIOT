@@ -59,7 +59,7 @@ DSTATUS disk_status(BYTE pdrv)
         return STA_NODISK;
     }
     else if (card->init_done) {
-        return 0;
+        return FATFS_DISKIO_DSTASTUS_OK;
     }
 
     return STA_NOINIT;
@@ -82,9 +82,9 @@ DSTATUS disk_initialize(BYTE pdrv)
         return STA_NODISK;
     }
     else if (sdcard_spi_init(card)) {
-        return 0;
+        return FATFS_DISKIO_DSTASTUS_OK;
     }
-    
+
     return STA_NOINIT;
 }
 
@@ -107,11 +107,12 @@ DRESULT disk_read(BYTE pdrv, BYTE *buff, DWORD sector, UINT count)
         sd_rw_response_t state;
         if (count != sdcard_spi_read_blocks(card, sector, (char *)buff,
                                             SD_HC_BLOCK_SIZE, count, &state)) {
-            printf("disk_read: sdcard_spi_read_blocks: ERROR:%d\n", state);
+            printf("[ERROR] disk_read: sdcard_spi_read_blocks: %d\n", state);
             return RES_NOTRDY;
         }
         return RES_OK;
     }
+
     return RES_NOTRDY;
 }
 
@@ -134,11 +135,12 @@ DRESULT disk_write(BYTE pdrv, const BYTE *buff, DWORD sector, UINT count)
         sd_rw_response_t state;
         if (count != sdcard_spi_write_blocks(card, sector, (char *)buff,
                                              SD_HC_BLOCK_SIZE, count, &state)) {
-            printf("disk_write: sdcard_spi_write_blocks: ERROR:%d\n", state);
-            return RES_NOTRDY;        
+            printf("[ERROR] disk_write: sdcard_spi_write_blocks: %d\n", state);
+            return RES_NOTRDY;
         }
         return RES_OK;
     }
+
     return RES_NOTRDY;
 }
 
