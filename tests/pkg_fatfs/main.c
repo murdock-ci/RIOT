@@ -357,12 +357,12 @@ int main(void)
     rtc_init();
 
     struct tm time;
-    time.tm_year = 2016 - RTC_YEAR_OFFSET;  /* years are counted from 1900 */
-    time.tm_mon  = 10;                      /* 0 = January, 11 = December */
-    time.tm_mday = 7;
-    time.tm_hour = 17;
-    time.tm_min  = 42;
-    time.tm_sec  = 00;
+    time.tm_year = TEST_FATFS_RTC_YEAR - RTC_YEAR_OFFSET;  /* years are counted from 1900 */
+    time.tm_mon  = TEST_FATFS_RTC_MON;                     /* 0 = January, 11 = December */
+    time.tm_mday = TEST_FATFS_RTC_DAY;
+    time.tm_hour = TEST_FATFS_RTC_H;
+    time.tm_min  = TEST_FATFS_RTC_M;
+    time.tm_sec  = TEST_FATFS_RTC_S;
 
     printf("Setting RTC to %04d-%02d-%02d %02d:%02d:%02d\n",
            time.tm_year + RTC_YEAR_OFFSET,

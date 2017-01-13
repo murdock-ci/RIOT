@@ -31,9 +31,9 @@
 #include "xtimer.h"
 #include "debug.h"
 
-extern sd_card_t cards[NUM_OF_SD_CARDS];
+extern sdcard_spi_t sdcard_spi_devs[sizeof(sdcard_spi_params) / sizeof(sdcard_spi_params[0])];
 
-static inline sd_card_t *get_sd_card(int idx)
+static inline sdcard_spi_t *get_sd_card(int idx)
 {
     if (idx < NUM_OF_SD_CARDS) {
         return &(cards[idx]);
@@ -53,7 +53,7 @@ static inline sd_card_t *get_sd_card(int idx)
  */
 DSTATUS disk_status(BYTE pdrv)
 {
-    sd_card_t *card = get_sd_card(pdrv);
+    sdcard_spi_t *card = get_sd_card(pdrv);
 
     if (card == NULL) {
         return STA_NODISK;
@@ -76,7 +76,7 @@ DSTATUS disk_status(BYTE pdrv)
  */
 DSTATUS disk_initialize(BYTE pdrv)
 {
-    sd_card_t *card = get_sd_card(pdrv);
+    sdcard_spi_t *card = get_sd_card(pdrv);
 
     if (card == NULL) {
         return STA_NODISK;
@@ -101,7 +101,7 @@ DSTATUS disk_initialize(BYTE pdrv)
  */
 DRESULT disk_read(BYTE pdrv, BYTE *buff, DWORD sector, UINT count)
 {
-    sd_card_t *card = get_sd_card(pdrv);
+    sdcard_spi_t *card = get_sd_card(pdrv);
 
     if ((card != NULL) && card->init_done) {
         sd_rw_response_t state;
@@ -129,7 +129,7 @@ DRESULT disk_read(BYTE pdrv, BYTE *buff, DWORD sector, UINT count)
  */
 DRESULT disk_write(BYTE pdrv, const BYTE *buff, DWORD sector, UINT count)
 {
-    sd_card_t *card = get_sd_card(pdrv);
+    sdcard_spi_t *card = get_sd_card(pdrv);
 
     if ((card != NULL) && card->init_done) {
         sd_rw_response_t state;
@@ -158,7 +158,7 @@ DRESULT disk_write(BYTE pdrv, const BYTE *buff, DWORD sector, UINT count)
 DRESULT disk_ioctl(BYTE pdrv, BYTE cmd, void *buff)
 {
     #if (_USE_MKFS == 1)
-    sd_card_t *card = get_sd_card(pdrv);
+    sdcard_spi_t *card = get_sd_card(pdrv);
     #endif
 
     switch (cmd) {
