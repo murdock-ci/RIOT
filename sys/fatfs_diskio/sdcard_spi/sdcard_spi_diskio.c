@@ -23,6 +23,8 @@
 #include "fatfs/ffconf.h"
 #include "fatfs/integer.h"
 #include "sdcard_spi.h"
+#include "sdcard_spi_internal.h"
+#include "sdcard_spi_params.h"
 
 #include <stdio.h>
 #include <time.h>
@@ -31,12 +33,13 @@
 #include "xtimer.h"
 #include "debug.h"
 
-extern sdcard_spi_t sdcard_spi_devs[sizeof(sdcard_spi_params) / sizeof(sdcard_spi_params[0])];
+#define NUM_OF_SD_CARDS (sizeof(sdcard_spi_params) / sizeof(sdcard_spi_params[0]))
+extern sdcard_spi_t sdcard_spi_devs[NUM_OF_SD_CARDS];
 
 static inline sdcard_spi_t *get_sd_card(int idx)
 {
     if (idx < NUM_OF_SD_CARDS) {
-        return &(cards[idx]);
+        return &(sdcard_spi_devs[idx]);
     }
 
     return NULL;
@@ -81,7 +84,7 @@ DSTATUS disk_initialize(BYTE pdrv)
     if (card == NULL) {
         return STA_NODISK;
     }
-    else if (sdcard_spi_init(card)) {
+    else if (sdcard_spi_init(card, &sdcard_spi_params[pdrv]) == 0) {
         return FATFS_DISKIO_DSTASTUS_OK;
     }
 
