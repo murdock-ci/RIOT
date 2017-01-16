@@ -53,4 +53,7 @@ $(DOWNLOAD_PATH)/$(PKG_NAME)-$(PKG_VERSION).$(PKG_EXT):
 	$(AD)$(DOWNLOAD_TO_FILE) $@ $(PKG_URL)/$(PKG_VERSION).$(PKG_EXT)
 
 clean::
-	rm -rf $(PKG_BUILDDIR)
+	$(AD)rm -rf $(PKG_BUILDDIR)
+
+distclean::
+	$(AD)rm -f $(DOWNLOAD_PATH)/$(PKG_NAME)-$(PKG_VERSION).$(PKG_EXT)
