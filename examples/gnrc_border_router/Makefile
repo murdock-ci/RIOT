@@ -27,6 +27,10 @@ USEMODULE += ethos gnrc_netdev
 ETHOS_BAUDRATE ?= 115200
 CFLAGS += '-DETHOS_UART=UART_DEV(0)' -DETHOS_BAUDRATE=$(ETHOS_BAUDRATE) -DUSE_ETHOS_FOR_STDIO
 FEATURES_REQUIRED += periph_uart
+else
+GNRC_NETIF_NUMOF := 2
+TERMFLAGS += -z [::1]:17754
+USEMODULE += socket_zep
 endif
 
 # Include packages that pull up and auto-init the link layer.
@@ -61,8 +65,16 @@ include $(RIOTBASE)/Makefile.include
 
 .PHONY: host-tools
 
+ifeq (,$(filter native,$(BOARD)))
+# use ethos tool instead of terminal software for non-native boards
 term: host-tools
 	$(Q)sudo sh $(RIOTBASE)/dist/tools/ethos/start_network.sh $(PORT) $(TAP) $(IPV6_PREFIX)
+else
+term: uhcpd-daemon
+
+uhcpd-daemon: host-tools
+	$(RIOTBASE)/dist/tools/uhcpd/bin/uhcpd $(TAP) $(IPV6_PREFIX) &
+endif
 
 host-tools:
 	$(Q)env -u CC -u CFLAGS make -C $(RIOTBASE)/dist/tools
