@@ -50,15 +50,21 @@ static void *_server_thread(void *args)
     printf("Success: started IP server on protocol %u\n", protocol);
     while (1) {
         int res;
+        sock_ip_ep_t src;
 
         if ((res = sock_ip_recv(&server_sock, sock_inbuf, sizeof(sock_inbuf),
-                                SOCK_NO_TIMEOUT, NULL)) < 0) {
+                                SOCK_NO_TIMEOUT, &src)) < 0) {
             puts("Error on receive");
         }
         else if (res == 0) {
             puts("No data received");
         }
         else {
+            char addrstr[IPV6_ADDR_MAX_STR_LEN];
+
+            printf("Received IP data from [%s]:\n",
+                   ipv6_addr_to_str(addrstr, (ipv6_addr_t *)&src.addr.ipv6,
+                                    sizeof(addrstr)));
             od_hex_dump(sock_inbuf, res, 0);
         }
     }
@@ -91,7 +97,7 @@ static int ip_send(char *addr_str, char *port_str, char *data, unsigned int num,
             puts("could not send");
         }
         else {
-            printf("Success: send %u byte to %s (next header: %u)\n",
+            printf("Success: send %u byte over IPv6 to %s (next header: %u)\n",
                    (unsigned)data_len, addr_str, protocol);
         }
         xtimer_usleep(delay);

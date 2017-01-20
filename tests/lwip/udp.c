@@ -64,8 +64,10 @@ static void *_server_thread(void *args)
         }
         else {
             char addrstr[IPV6_ADDR_MAX_STR_LEN];
-            printf("Received from [%s]:%" PRIu16 ":\n", ipv6_addr_to_str(addrstr,
-                   (ipv6_addr_t *)&src.addr.ipv6, sizeof(addrstr)), src.port);
+
+            printf("Received UDP data from [%s]:%" PRIu16 ":\n",
+                   ipv6_addr_to_str(addrstr, (ipv6_addr_t *)&src.addr.ipv6,
+                                    sizeof(addrstr)), src.port);
             od_hex_dump(sock_inbuf, res, 0);
         }
     }
@@ -97,7 +99,7 @@ static int udp_send(char *addr_str, char *port_str, char *data, unsigned int num
             puts("could not send");
         }
         else {
-            printf("Success: send %u byte to [%s]:%" PRIu16 ")\n",
+            printf("Success: send %u byte over UDP to [%s]:%" PRIu16 ")\n",
                    (unsigned)data_len, addr_str, dst.port);
         }
         xtimer_usleep(delay);
