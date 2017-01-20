@@ -69,7 +69,11 @@ netdev2_tap_params_t netdev2_tap_params[NETDEV2_TAP_MAX];
 const char *_native_mtd_file = NULL;
 #endif
 
-static const char short_opts[] = ":hi:s:deEoc:";
+static const char short_opts[] = ":hi:s:deEoc:"
+#ifdef MODULE_MTD_NATIVE
+    "m:"
+#endif
+    "";
 static const struct option long_opts[] = {
     { "help", no_argument, NULL, 'h' },
     { "id", required_argument, NULL, 'i' },
@@ -298,7 +302,7 @@ __attribute__((constructor)) static void startup(int argc, char **argv)
                 tty_uart_setup(uart++, optarg);
                 break;
             case 'm':
-                _native_mtd_file = &argv[optind];
+                _native_mtd_file = strndup(optarg, PATH_MAX - 1);
                 break;
             default:
                 usage_exit(EXIT_FAILURE);
