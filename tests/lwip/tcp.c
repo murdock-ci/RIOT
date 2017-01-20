@@ -54,20 +54,30 @@ static void *_server_thread(void *args)
     printf("Success: started TCP server on port %" PRIu16 "\n",
            server_addr.port);
     while (1) {
+        char client_addr[IPV6_ADDR_MAX_STR_LEN];
         sock_tcp_t *sock = NULL;
         int res;
+        unsigned client_port;
 
         if ((res = sock_tcp_accept(&server_queue, &sock, SOCK_NO_TIMEOUT)) < 0) {
-            puts("Error on accept");
+            puts("Error on TCP accept");
         }
         else {
-            puts("Client connected");
+            sock_tcp_ep_t client;
+
+            sock_tcp_get_remote(sock, &client);
+            ipv6_addr_to_str(client_addr, (ipv6_addr_t *)&client.addr.ipv6,
+                             sizeof(client_addr));
+            client_port = client.port;
+            printf("TCP client [%s]:%u connected\n",
+                   client_addr, client_port);
         }
         /* we don't use timeouts so all errors should be related to a lost
          * connection */
         while ((res = sock_tcp_read(sock, sock_inbuf, sizeof(sock_inbuf),
                                     SOCK_NO_TIMEOUT)) >= 0) {
-            puts("Received data from client:");
+            printf("Received TCP data from client [%s]:%u:\n",
+                   client_addr, client_port);
             if (res > 0) {
                 od_hex_dump(sock_inbuf, res, 0);
             }
@@ -75,7 +85,8 @@ static void *_server_thread(void *args)
                 puts("(nul)");
             }
         }
-        puts("Connection reset, starting to accept again\n");
+        printf("TCP connection to [%s]:%u reset, starting to accept again\n",
+               client_addr, client_port);
         sock_tcp_disconnect(sock);
     }
     return NULL;
@@ -104,6 +115,7 @@ static int tcp_connect(char *addr_str, char *port_str, char *local_port_str)
         puts("Error: unable to connect");
         return 1;
     }
+    client_running = true;
     return 0;
 }
 
