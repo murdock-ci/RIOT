@@ -61,6 +61,7 @@ static void *_server_thread(void *args)
 
         if ((res = sock_tcp_accept(&server_queue, &sock, SOCK_NO_TIMEOUT)) < 0) {
             puts("Error on TCP accept");
+            continue;
         }
         else {
             sock_tcp_ep_t client;
