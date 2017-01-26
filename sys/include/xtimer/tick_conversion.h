@@ -29,6 +29,79 @@ extern "C" {
 #endif
 
 /* Some optimizations for common timer frequencies */
+/*
+ * Adaptation for frequencies multiple of 921600, usually used to match
+ * baud rates on serial communications
+ */
+#if (XTIMER_HZ % 576 == 0)
+#if (XTIMER_SHIFT != 0)
+#if (XTIMER_HZ % 576 != 0)
+#error XTIMER_HZ must be a multiple of 576 when using XTIMER_SHIFT
+#endif
+/* This is a common frequency for baud rate generation. We use the fact that
+ * the greatest common divisor between 921600 and 1000000 is 1600, so instead of
+ * multiplying by the fraction (921600 / 1000000), we will instead use
+ * (576 / 625), which reduces the truncation caused by the integer widths */
+#if (XTIMER_HZ > 921600ul)
+#if (XTIMER_HZ != (921600ul << XTIMER_SHIFT))
+#error XTIMER_HZ != (921600ul << XTIMER_SHIFT)
+#endif
+/* XTIMER_HZ is a power-of-two multiple of 921600 Hz */
+/* e.g. Waspmote-pro uses a 1843200 Hz timer */
+inline static uint32_t _xtimer_ticks_from_usec(uint32_t usec) {
+    return div_u32_by_625div576(usec) << XTIMER_SHIFT;
+}
+
+inline static uint64_t _xtimer_ticks_from_usec64(uint64_t usec) {
+    return div_u64_by_625div576(usec) << XTIMER_SHIFT;
+}
+
+inline static uint32_t _xtimer_usec_from_ticks(uint32_t ticks) {
+    return div_u32_by_576div625(ticks) >> XTIMER_SHIFT;
+}
+
+inline static uint64_t _xtimer_usec_from_ticks64(uint64_t ticks) {
+    return div_u64_by_576div625(ticks) >> XTIMER_SHIFT;
+}
+#else /* (XTIMER_HZ < 921600ul) */
+#if ((XTIMER_HZ << XTIMER_SHIFT) != 921600ul)
+#error (XTIMER_HZ << XTIMER_SHIFT) != 921600ul
+#endif
+inline static uint32_t _xtimer_ticks_from_usec(uint32_t usec) {
+    return div_u32_by_625div576(usec) >> XTIMER_SHIFT;
+}
+
+inline static uint64_t _xtimer_ticks_from_usec64(uint64_t usec) {
+    return div_u64_by_625div576(usec) >> XTIMER_SHIFT;
+}
+
+inline static uint32_t _xtimer_usec_from_ticks(uint32_t ticks) {
+    return div_u32_by_576div625(ticks) << XTIMER_SHIFT;
+}
+
+inline static uint64_t _xtimer_usec_from_ticks64(uint64_t ticks) {
+    return div_u64_by_576div625(ticks) << XTIMER_SHIFT;
+}
+#endif /* defined(XTIMER_SHIFT) && (XTIMER_SHIFT != 0) */
+#elif (XTIMER_HZ == 921600ul)
+inline static uint32_t _xtimer_ticks_from_usec(uint32_t usec) {
+    return div_u32_by_625div576(usec);
+}
+
+inline static uint64_t _xtimer_ticks_from_usec64(uint64_t usec) {
+    return div_u64_by_625div576(usec);
+}
+
+inline static uint32_t _xtimer_usec_from_ticks(uint32_t ticks) {
+    return div_u32_by_576div625(ticks);
+}
+
+inline static uint64_t _xtimer_usec_from_ticks64(uint64_t ticks) {
+    return div_u64_by_576div625(ticks);
+}
+#endif /* (XTIMER_HZ == 921600ul) */
+#endif /* (XTIMER_HZ % 576 == 0) */
+
 #if (XTIMER_SHIFT != 0)
 #if (XTIMER_HZ % 15625 != 0)
 #error XTIMER_HZ must be a multiple of 15625 (5^6) when using XTIMER_SHIFT
@@ -38,7 +111,7 @@ extern "C" {
 #error XTIMER_HZ != (1000000ul << XTIMER_SHIFT)
 #endif
 /* XTIMER_HZ is a power-of-two multiple of 1 MHz */
-/* e.g. cc2538 uses a 16 MHz timer */
+/* e.g. remote boards use a 16 MHz timer */
 inline static uint32_t _xtimer_ticks_from_usec(uint32_t usec) {
     return (usec << XTIMER_SHIFT); /* multiply by power of two */
 }
@@ -60,7 +133,7 @@ inline static uint64_t _xtimer_usec_from_ticks64(uint64_t ticks) {
 #error (XTIMER_HZ << XTIMER_SHIFT) != 1000000ul
 #endif
 /* 1 MHz is a power-of-two multiple of XTIMER_HZ */
-/* e.g. ATmega2560 uses a 250 kHz timer */
+/* e.g. arduino-mega2560 uses a 250 kHz timer */
 inline static uint32_t _xtimer_ticks_from_usec(uint32_t usec) {
     return (usec >> XTIMER_SHIFT); /* divide by power of two */
 }
@@ -76,6 +149,7 @@ inline static uint32_t _xtimer_usec_from_ticks(uint32_t ticks) {
 inline static uint64_t _xtimer_usec_from_ticks64(uint64_t ticks) {
     return (ticks << XTIMER_SHIFT); /* multiply by power of two */
 }
+
 #endif /* defined(XTIMER_SHIFT) && (XTIMER_SHIFT != 0) */
 #elif XTIMER_HZ == (1000000ul)
 /* This is the most straightforward as the xtimer API is based around
