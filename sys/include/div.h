@@ -71,16 +71,6 @@ extern "C" {
 #define DIV_H_INV_625_SHIFT    8
 
 /**
- * @brief Operand for 576/625
- */
-#define MUL_576                576ul
-
-/**
- * @brief Operand for 625/576
- */
-#define MUL_625                625ul
-
-/**
  * @internal
  * @brief Multiply two 64 bit integers into a 128 bit integer and return the upper half.
  *
@@ -169,7 +159,7 @@ static inline uint32_t div_u32_by_15625div512(uint32_t val)
  */
 static inline uint32_t div_u32_by_625div576(uint32_t val)
 {
-    return ((uint64_t)(val) * DIV_H_INV_625_32 * MUL_576) >> (DIV_H_INV_625_SHIFT + 32);
+    return ((uint64_t)(val) * DIV_H_INV_625_32 * 576) >> (DIV_H_INV_625_SHIFT + 32);
 }
 
 /**
@@ -206,17 +196,13 @@ static inline uint64_t div_u64_by_15625div512(uint64_t val)
  */
 static inline uint64_t div_u64_by_625div576(uint64_t val)
 {
-    /*
-     * This saves around 1400 bytes of ROM on Cortex-M platforms (both ARMv6 and
-     * ARMv7) from avoiding linking against __aeabi_uldivmod and related helpers
-     */
     if (val > 10485759996ull) {
         /* this would overflow 2^64 in the multiplication that follows, need to
          * use the long version */
         return (_div_mulhi64(DIV_H_INV_625_64, val) * 576 >> (DIV_H_INV_625_SHIFT));
     }
 
-    return (val * DIV_H_INV_625_32) * MUL_576 >> (DIV_H_INV_625_SHIFT + 32);
+    return (val * DIV_H_INV_625_32) * 576 >> (DIV_H_INV_625_SHIFT + 32);
 }
 
 /**
@@ -230,17 +216,13 @@ static inline uint64_t div_u64_by_625div576(uint64_t val)
  */
 static inline uint32_t div_u64_by_576div625(uint64_t val)
 {
-    /*
-     * This saves around 1400 bytes of ROM on Cortex-M platforms (both ARMv6 and
-     * ARMv7) from avoiding linking against __aeabi_uldivmod and related helpers
-     */
     if (val > 2473900978176ull) {
         /* this would overflow 2^64 in the multiplication that follows, need to
          * use the long version */
-        return (_div_mulhi64(DIV_H_INV_576_64, val) * MUL_625);
+        return (_div_mulhi64(DIV_H_INV_576_64, val) * 625);
     }
 
-    return ((uint64_t)(val) * DIV_H_INV_576_32 * MUL_625) >> 32;
+    return ((uint64_t)(val) * DIV_H_INV_576_32 * 625) >> 32;
 }
 
 /**
@@ -259,7 +241,7 @@ static inline uint32_t div_u64_by_576div625(uint64_t val)
  */
 static inline uint32_t div_u32_by_576div625(uint32_t val)
 {
-    return ((uint64_t)(val) * DIV_H_INV_576_32 * MUL_625) >> 32;
+    return ((uint64_t)(val) * DIV_H_INV_576_32 * 625) >> 32;
 }
 
 /**
