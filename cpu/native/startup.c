@@ -301,9 +301,11 @@ __attribute__((constructor)) static void startup(int argc, char **argv)
             case 'c':
                 tty_uart_setup(uart++, optarg);
                 break;
+#ifdef MODULE_MTD_NATIVE
             case 'm':
                 _native_mtd_file = strndup(optarg, PATH_MAX - 1);
                 break;
+#endif
             default:
                 usage_exit(EXIT_FAILURE);
         }
