@@ -100,9 +100,7 @@ inline static uint64_t _xtimer_usec_from_ticks64(uint64_t ticks) {
     return div_u64_by_576div625(ticks);
 }
 #endif /* (XTIMER_HZ == 921600ul) */
-#endif /* (XTIMER_HZ % 576 == 0) */
-
-#if (XTIMER_SHIFT != 0)
+#elif (XTIMER_SHIFT != 0) /* (XTIMER_HZ % 576 == 0) */
 #if (XTIMER_HZ % 15625 != 0)
 #error XTIMER_HZ must be a multiple of 15625 (5^6) when using XTIMER_SHIFT
 #endif
