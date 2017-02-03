@@ -52,12 +52,15 @@ void periph_clk_en(bus_t bus, uint32_t mask)
         case AHB1:
             RCC->AHB1ENR |= mask;
             break;
+/* STM32F410 RCC doesn't provide AHB2 and AHB3 */
+#if !defined(CPU_MODEL_STM32F410RB)
         case AHB2:
             RCC->AHB2ENR |= mask;
             break;
         case AHB3:
             RCC->AHB3ENR |= mask;
             break;
+#endif
 #endif
         default:
             DEBUG("unsupported bus %d\n", (int)bus);
@@ -85,12 +88,15 @@ void periph_clk_dis(bus_t bus, uint32_t mask)
         case AHB1:
             RCC->AHB1ENR &= ~(mask);
             break;
+/* STM32F410 RCC doesn't provide AHB2 and AHB3 */
+#if !defined(CPU_MODEL_STM32F410RB)
         case AHB2:
             RCC->AHB2ENR &= ~(mask);
             break;
         case AHB3:
             RCC->AHB3ENR &= ~(mask);
             break;
+#endif
 #endif
         default:
             DEBUG("unsupported bus %d\n", (int)bus);
