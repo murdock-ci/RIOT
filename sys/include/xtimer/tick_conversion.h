@@ -43,13 +43,6 @@ extern "C" {
  */
 #if (XTIMER_SHIFT != 0)
 /*
- * If it uses shifting, just check if it's not multiple of 576, if so,
- * throw an error
- */
-#if (XTIMER_HZ % 576 != 0)
-#error XTIMER_HZ must be a multiple of 576 when using XTIMER_SHIFT
-#endif
-/*
  * Since we are using 921600 as a base, first check if the given frequency is
  * greater than it.
  */
