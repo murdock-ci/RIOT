@@ -17,6 +17,7 @@
 #include <errno.h> /* for error codes */
 #include <string.h> /* for strncmp */
 #include <stddef.h> /* for NULL */
+#include <stdatomic.h> /* for atomic_int */
 #include <sys/types.h> /* for off_t etc */
 #include <sys/stat.h> /* for struct stat */
 #include <sys/statvfs.h> /* for struct statvfs */
@@ -269,7 +270,7 @@ int vfs_open(const char *name, int flags, mode_t mode)
     if (fd < 0) {
         DEBUG("vfs_open: _init_fd: ERR %d!\n", fd);
         /* remember to decrement the open_files count */
-        atomic_dec(&mountp->open_files);
+        atomic_fetch_sub(&mountp->open_files, 1);
         return fd;
     }
     vfs_file_t *filp = &_vfs_open_files[fd];
@@ -365,7 +366,7 @@ int vfs_opendir(vfs_DIR *dirp, const char *dirname)
         int res = dirp->d_op->opendir(dirp, rel_path, dirname);
         if (res < 0) {
             /* remember to decrement the open_files count */
-            atomic_dec(&mountp->open_files);
+            atomic_fetch_sub(&mountp->open_files, 1);
             return res;
         }
     }
@@ -403,7 +404,7 @@ int vfs_closedir(vfs_DIR *dirp)
         }
     }
     memset(dirp, 0, sizeof(*dirp));
-    atomic_dec(&mountp->open_files);
+    atomic_fetch_sub(&mountp->open_files, 1);
     return res;
 }
 
@@ -453,8 +454,8 @@ int vfs_umount(vfs_mount_t *mountp)
         return -EINVAL;
     }
     mutex_lock(&_mount_mutex);
-    DEBUG("vfs_umount: -> \"%s\" open=%d\n", mountp->mount_point, ATOMIC_VALUE(mountp->open_files));
-    if (ATOMIC_VALUE(mountp->open_files) > 0) {
+    DEBUG("vfs_umount: -> \"%s\" open=%d\n", mountp->mount_point, atomic_load(&mountp->open_files));
+    if (atomic_load(&mountp->open_files) > 0) {
         mutex_unlock(&_mount_mutex);
         return -EBUSY;
     }
@@ -500,7 +501,7 @@ int vfs_rename(const char *from_path, const char *to_path)
         /* rename not supported */
         DEBUG("vfs_rename: rename not supported by fs!\n");
         /* remember to decrement the open_files count */
-        atomic_dec(&mountp->open_files);
+        atomic_fetch_sub(&mountp->open_files, 1);
         return -EPERM;
     }
     const char *rel_to;
@@ -511,15 +512,15 @@ int vfs_rename(const char *from_path, const char *to_path)
         /* No mount point maps to the requested file name */
         DEBUG("vfs_rename: to: no matching mount\n");
         /* remember to decrement the open_files count */
-        atomic_dec(&mountp->open_files);
+        atomic_fetch_sub(&mountp->open_files, 1);
         return res;
     }
     if (mountp_to != mountp) {
         /* The paths are on different file systems */
         DEBUG("vfs_rename: from_path and to_path are on different mounts\n");
         /* remember to decrement the open_files count */
-        atomic_dec(&mountp->open_files);
-        atomic_dec(&mountp_to->open_files);
+        atomic_fetch_sub(&mountp->open_files, 1);
+        atomic_fetch_sub(&mountp_to->open_files, 1);
         return -EXDEV;
     }
     res = mountp->fs->fs_op->rename(mountp, rel_from, rel_to);
@@ -532,8 +533,8 @@ int vfs_rename(const char *from_path, const char *to_path)
         DEBUG("\n");
     }
     /* remember to decrement the open_files count */
-    atomic_dec(&mountp->open_files);
-    atomic_dec(&mountp_to->open_files);
+    atomic_fetch_sub(&mountp->open_files, 1);
+    atomic_fetch_sub(&mountp_to->open_files, 1);
     return res;
 }
 
@@ -559,7 +560,7 @@ int vfs_unlink(const char *name)
         /* unlink not supported */
         DEBUG("vfs_unlink: unlink not supported by fs!\n");
         /* remember to decrement the open_files count */
-        atomic_dec(&mountp->open_files);
+        atomic_fetch_sub(&mountp->open_files, 1);
         return -EPERM;
     }
     res = mountp->fs->fs_op->unlink(mountp, rel_path);
@@ -572,7 +573,7 @@ int vfs_unlink(const char *name)
         DEBUG("\n");
     }
     /* remember to decrement the open_files count */
-    atomic_dec(&mountp->open_files);
+    atomic_fetch_sub(&mountp->open_files, 1);
     return res;
 }
 
@@ -596,7 +597,7 @@ int vfs_mkdir(const char *name, mode_t mode)
         /* mkdir not supported */
         DEBUG("vfs_mkdir: mkdir not supported by fs!\n");
         /* remember to decrement the open_files count */
-        atomic_dec(&mountp->open_files);
+        atomic_fetch_sub(&mountp->open_files, 1);
         return -EPERM;
     }
     res = mountp->fs->fs_op->mkdir(mountp, rel_path, mode);
@@ -609,7 +610,7 @@ int vfs_mkdir(const char *name, mode_t mode)
         DEBUG("\n");
     }
     /* remember to decrement the open_files count */
-    atomic_dec(&mountp->open_files);
+    atomic_fetch_sub(&mountp->open_files, 1);
     return res;
 }
 
@@ -633,7 +634,7 @@ int vfs_rmdir(const char *name)
         /* rmdir not supported */
         DEBUG("vfs_rmdir: rmdir not supported by fs!\n");
         /* remember to decrement the open_files count */
-        atomic_dec(&mountp->open_files);
+        atomic_fetch_sub(&mountp->open_files, 1);
         return -EPERM;
     }
     res = mountp->fs->fs_op->rmdir(mountp, rel_path);
@@ -646,7 +647,7 @@ int vfs_rmdir(const char *name)
         DEBUG("\n");
     }
     /* remember to decrement the open_files count */
-    atomic_dec(&mountp->open_files);
+    atomic_fetch_sub(&mountp->open_files, 1);
     return res;
 }
 
@@ -670,12 +671,12 @@ int vfs_stat(const char *restrict path, struct stat *restrict buf)
         /* stat not supported */
         DEBUG("vfs_stat: stat not supported by fs!\n");
         /* remember to decrement the open_files count */
-        atomic_dec(&mountp->open_files);
+        atomic_fetch_sub(&mountp->open_files, 1);
         return -EPERM;
     }
     res = mountp->fs->fs_op->stat(mountp, rel_path, buf);
     /* remember to decrement the open_files count */
-    atomic_dec(&mountp->open_files);
+    atomic_fetch_sub(&mountp->open_files, 1);
     return res;
 }
 
@@ -699,12 +700,12 @@ int vfs_statvfs(const char *restrict path, struct statvfs *restrict buf)
         /* statvfs not supported */
         DEBUG("vfs_statvfs: statvfs not supported by fs!\n");
         /* remember to decrement the open_files count */
-        atomic_dec(&mountp->open_files);
+        atomic_fetch_sub(&mountp->open_files, 1);
         return -EPERM;
     }
     res = mountp->fs->fs_op->statvfs(mountp, rel_path, buf);
     /* remember to decrement the open_files count */
-    atomic_dec(&mountp->open_files);
+    atomic_fetch_sub(&mountp->open_files, 1);
     return res;
 }
 
@@ -841,7 +842,7 @@ inline static void _free_fd(int fd)
 {
     DEBUG("_free_fd: %d, pid=%d\n", fd, _vfs_open_files[fd].pid);
     if (_vfs_open_files[fd].mp != NULL) {
-        atomic_dec(&_vfs_open_files[fd].mp->open_files);
+        atomic_fetch_sub(&_vfs_open_files[fd].mp->open_files, 1);
     }
     _vfs_open_files[fd].pid = KERNEL_PID_UNDEF;
 }
@@ -905,7 +906,7 @@ inline static int _find_mount(vfs_mount_t **mountpp, const char *name, const cha
         return -ENOENT;
     }
     /* Increment open files counter for this mount */
-    atomic_inc(&mountp->open_files);
+    atomic_fetch_add(&mountp->open_files, 1);
     mutex_unlock(&_mount_mutex);
     *mountpp = mountp;
     if (rel_path != NULL) {

@@ -54,12 +54,12 @@
 #define VFS_H_
 
 #include <stdint.h>
+#include <stdatomic.h> /* for atomic_int */
 #include <sys/stat.h> /* for struct stat */
 #include <sys/types.h> /* for off_t etc. */
 #include <sys/statvfs.h> /* for struct statvfs */
 
 #include "kernel_types.h"
-#include "atomic.h"
 #include "clist.h"
 
 #ifdef __cplusplus
@@ -165,7 +165,7 @@ struct vfs_mount_struct {
     const vfs_file_system_t *fs; /**< The file system driver for the mount point */
     const char *mount_point;     /**< Mount point, e.g. "/mnt/cdrom" */
     size_t mount_point_len;      /**< Length of mount_point string (set by vfs_mount) */
-    atomic_int_t open_files;     /**< Number of currently open files */
+    atomic_int open_files;       /**< Number of currently open files */
     void *private_data;          /**< File system driver private data, implementation defined */
 };
 
