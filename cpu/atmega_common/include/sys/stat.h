@@ -54,7 +54,7 @@ struct stat {
 };
 
 /* These bitmasks and numbers are the same as in newlib */
-#define S_IFMT       0170000 /* type of file */
+#define     S_IFMT   0170000 /* type of file */
 #define     S_IFDIR  0040000 /* directory */
 #define     S_IFCHR  0020000 /* character special */
 #define     S_IFBLK  0060000 /* block special */
