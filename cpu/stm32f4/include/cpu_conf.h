@@ -31,6 +31,8 @@
 #include "stm32f415xx.h"
 #elif defined(CPU_MODEL_STM32F446RE)
 #include "stm32f446xx.h"
+#elif defined(CPU_MODEL_STM32F429ZI)
+#include "stm32f429xx.h"
 #endif
 
 #ifdef __cplusplus
