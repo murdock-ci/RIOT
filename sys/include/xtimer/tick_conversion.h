@@ -111,7 +111,7 @@ inline static uint64_t _xtimer_usec_from_ticks64(uint64_t ticks) {
  * Check for the actual frequency without any shifting (921600Hz)
  * (XTIMER_SHIFT == 0)
  */
-#elif (XTIMER_HZ == 921600ul)
+#else
 inline static uint32_t _xtimer_ticks_from_usec(uint32_t usec) {
     return div_u32_by_625div576(usec);
 }
@@ -132,17 +132,14 @@ inline static uint64_t _xtimer_usec_from_ticks64(uint64_t ticks) {
  */
 #endif
 /*
- * Now, check again if XTIMER_SHIFT is used and test if XTIMER_HZ is a
- * frequency multiple of 1MHz (or 15675, which is a lower divisor for lower
- * frequencies, e.g. 32768), since we already tested for 921600Hz.
+ * Now, check if XTIMER_HZ is a frequency multiple of 1MHz (or 15675, which is
+ * a lower divisor for lower frequencies, e.g. 32768)
  */
-#elif (XTIMER_SHIFT != 0)
+#elif (XTIMER_HZ % 15625 == 0)
 /*
- * If it's using shifting and is not a multiple of 15625, throw an error.
+ * Then, check if it's using shifting
  */
-#if (XTIMER_HZ % 15625 != 0)
-#error XTIMER_HZ must be a multiple of 15625 (5^6) when using XTIMER_SHIFT
-#endif
+#if (XTIMER_SHIFT != 0)
 /*
  * Check for greater than 1MHz frequencies
  */
@@ -212,7 +209,7 @@ inline static uint64_t _xtimer_usec_from_ticks64(uint64_t ticks) {
  * Check for the actual frequency without any shifting (1MHz)
  * (XTIMER_SHIFT == 0)
  */
-#elif XTIMER_HZ == (1000000ul)
+#else
 /*
  * This is the most straightforward as the xtimer API is based around
  * microseconds for representing time values.
@@ -232,6 +229,10 @@ inline static uint32_t _xtimer_ticks_from_usec(uint32_t usec) {
 inline static uint64_t _xtimer_ticks_from_usec64(uint64_t usec) {
     return usec; /* no-op */
 }
+/*
+ * No more frequencies multiple of 1MHz
+ */
+#endif
 /*
  * Check for 32768Hz XTIMER frequency, without any shifting
  * This is a common frequency for RTC crystals. We use the fact that the
@@ -268,10 +269,13 @@ inline static uint64_t _xtimer_usec_from_ticks64(uint64_t ticks) {
 #else
 #error Unknown hardware timer frequency (XTIMER_HZ), check board.h and/or add an implementation in sys/include/xtimer/tick_conversion.h
 #endif
+/*
+ * End of optimisations
+ */
 #endif
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif
+#endif /* XTIMER_TICK_CONVERSION_H */
