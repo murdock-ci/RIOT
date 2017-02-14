@@ -6,7 +6,7 @@ include ../Makefile.tests_common
 BOARD_BLACKLIST := arduino-uno arduino-duemilanove arduino-mega2560 chronos \
                    msb-430 msb-430h telosb waspmote-pro wsn430-v1_3b \
                    wsn430-v1_4 z1
-BOARD_INSUFFICIENT_MEMORY := airfy-beacon nrf6310 nucleo-f030 nucleo-f042 \
+BOARD_INSUFFICIENT_MEMORY := airfy-beacon nrf6310 nucleo-f030 nucleo32-f042 \
                              nucleo-f334 pca10005 stm32f0discovery weio \
                              yunjia-nrf51822
 
