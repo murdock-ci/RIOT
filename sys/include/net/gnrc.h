@@ -284,7 +284,6 @@
 #define GNRC_NETBASE_H
 
 #include "net/netopt.h"
-#include "net/gnrc/netdev.h"
 #include "net/gnrc/netapi.h"
 #include "net/gnrc/netreg.h"
 #include "net/gnrc/nettype.h"
