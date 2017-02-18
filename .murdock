@@ -4,8 +4,6 @@ export RIOT_CI_BUILD=1
 export STATIC_TESTS=${STATIC_TESTS:-1}
 export CFLAGS_DBG=""
 
-APPS=tests/minimal
-
 error() {
     echo "$@"
     exit 1
@@ -67,6 +65,8 @@ compile() {
     [ -n "$DWQ_WORKER" ] && \
         echo "-- HEAD: $(git describe)" &&
         echo "-- running on worker ${DWQ_WORKER} thread ${DWQ_WORKER_THREAD}, build number $DWQ_WORKER_BUILDNUM."
+
+    [ "$board" = "native" ] && exit 1
 
     # sanity checks
     [ $# -ne 2 ] && error "$0: compile: invalid parameters (expected \$appdir \$board)"
