@@ -6,3 +6,5 @@ include $(RIOTCPU)/Makefile.include.mips_common
 
 export LINKFLAGS += -Tuhi32.ld
 export USEMODULE += periph
+export USEMODULE += newlib
+export USEMODULE += newlib_syscalls_mips_uhi
