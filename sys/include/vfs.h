@@ -54,7 +54,16 @@
 #define VFS_H_
 
 #include <stdint.h>
+/* The stdatomic.h in GCC gives compilation errors with C++
+ * see: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=60932
+ */
+#ifdef __cplusplus
+#include <atomic>
+/* Make atomic_int available without namespace specifier */
+using std::atomic_int;
+#else
 #include <stdatomic.h> /* for atomic_int */
+#endif
 #include <sys/stat.h> /* for struct stat */
 #include <sys/types.h> /* for off_t etc. */
 #include <sys/statvfs.h> /* for struct statvfs */

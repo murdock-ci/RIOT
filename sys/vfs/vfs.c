@@ -17,7 +17,6 @@
 #include <errno.h> /* for error codes */
 #include <string.h> /* for strncmp */
 #include <stddef.h> /* for NULL */
-#include <stdatomic.h> /* for atomic_int */
 #include <sys/types.h> /* for off_t etc */
 #include <sys/stat.h> /* for struct stat */
 #include <sys/statvfs.h> /* for struct statvfs */
