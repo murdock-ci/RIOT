@@ -7,13 +7,13 @@
  */
 
 /**
- * @defgroup    sys_uuid (Locally) Unique ID Generator
+ * @defgroup    sys_luid Locally Unique ID Generator
  * @ingroup     sys
- * @brief       Generate system wide unique IDs
+ * @brief       Generate system wide (locally) unique IDs
  *
  * This module generates system wide, variable length unique IDs based on on the
  * cpuid module. If the cpuid module is not present, the module falls back to a
- * pre-defined, constant seed for creating unique ids.
+ * pre-defined, constant seed for creating unique IDs.
  *
  * The main purpose of this module is to have a unified way for e.g. creating
  * hardware addresses and similar.
@@ -28,20 +28,16 @@
  * value with the LSB of the base ID, or (ii) by XORing the least significant
  * byes with a value given by the user.
  *
- * Example: Calling `uuid_base(&buf, 8)` will always yield an identical  value,
+ * Example: Calling `luid_base(&buf, 8)` will always yield an identical  value,
  * independent how often the function is called. But calling
- * `uuid_base(&buf, 2)` afterwards will results in a different value, if the
+ * `luid_base(&buf, 2)` afterwards will results in a different value, if the
  * cpuid module is present, and in the same (but shorter) value if not.
  *
- * Example: Calling `uuid_get(&buf, 8)` four times in a row, will yield four
+ * Example: Calling `luid_get(&buf, 8)` four times in a row, will yield four
  * different IDs, differing in their LSB.
  *
- * Example: Calling `uuid_custom(&buf, 8, 123)` will always yield the same
- * value, but calling `uuid_custom(&buf, 8, 124)` will differ.
- *
- * @note        This module generates unique IDs without any guarantees on their
- *              structure. These UUIDs are not compatible nor conform to the
- *              UUIDs as defined in RFC4122.
+ * Example: Calling `luid_custom(&buf, 8, 123)` will always yield the same
+ * value, but calling `luid_custom(&buf, 8, 124)` will differ.
  *
  * @{
  * @file
@@ -70,7 +66,7 @@ extern "C" {
 /**
  * @brief   Get a unique ID
  *
- * The resulting ID is built from the base ID generated with uuid_base(), which
+ * The resulting ID is built from the base ID generated with luid_base(), which
  * isXORed with an 8-bit incrementing counter value into the most significant
  * byte.
  *
@@ -80,7 +76,7 @@ extern "C" {
  *                      hold at least @p len bytes
  * @param[in]  len      length of the UUID in bytes
  */
-void uuid_get(void *buf, size_t len);
+void luid_get(void *buf, size_t len);
 
 /**
  * @brief   Get a custom unique ID based on a user given generator value
@@ -96,12 +92,12 @@ void uuid_get(void *buf, size_t len);
  * @param[in]  len      length of the UUID in bytes
  * @param[in]  gen      custom UUID generator value
  */
-void uuid_custom(void *buf, size_t len, int gen);
+void luid_custom(void *buf, size_t len, int gen);
 
 /**
  * @brief   Get a UUID base value
  *
- * The uuid module creates the value dependent on the given @p len value using
+ * The luid module creates the value dependent on the given @p len value using
  * the cpuid module if present or a static seed value (@ref UUID_BACKUP_SEED) if
  * not.
  *
@@ -109,7 +105,7 @@ void uuid_custom(void *buf, size_t len, int gen);
  *                      hold at least @p len bytes
  * @param[in]  len      length of the UUID in bytes
  */
-void uuid_base(void *buf, size_t len);
+void luid_base(void *buf, size_t len);
 
 #ifdef __cplusplus
 }
