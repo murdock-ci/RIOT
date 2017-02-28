@@ -99,7 +99,7 @@ static int udp_send(char *addr_str, char *port_str, char *data, unsigned int num
             puts("could not send");
         }
         else {
-            printf("Success: send %u byte over UDP to [%s]:%" PRIu16 ")\n",
+            printf("Success: send %u byte over UDP to [%s]:%" PRIu16 "\n",
                    (unsigned)data_len, addr_str, dst.port);
         }
         xtimer_usleep(delay);
