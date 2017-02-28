@@ -248,6 +248,9 @@ def test_tcpv6_send(board_group, application, env=None):
         client.sendline(u"tcp send affe:abe")
         client.expect_exact(u"Success: send 4 byte over TCP to server")
         server.expect(u"000000 af fe ab e0")
+        client.sendline(u"tcp disconnect")
+        client.sendline(u"tcp send affe:abe")
+        client.expect_exact(u"could not send")
 
 def test_triple_send(board_group, application, env=None):
     env_sender = os.environ.copy()
