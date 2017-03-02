@@ -17,8 +17,8 @@ extern "C" {
 #endif
 
 struct timeval {
-    time_t         tv_sec;
-    suseconds_t    tv_usec;
+    time_t         tv_sec;      /**< seconds */
+    suseconds_t    tv_usec;     /**< micro-seconds */
 };
 
 #ifdef __cplusplus
