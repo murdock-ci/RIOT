@@ -597,6 +597,10 @@ ifneq (,$(filter emcute,$(USEMODULE)))
   USEMODULE += xtimer
 endif
 
+ifneq (,$(filter sock_dns,$(USEMODULE)))
+  USEMODULE += sock_util
+endif
+
 # include package dependencies
 -include $(USEPKG:%=$(RIOTPKG)/%/Makefile.dep)
 
