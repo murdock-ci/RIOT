@@ -57,11 +57,11 @@ typedef union {
         uint16_t full_update            : 1;    /**< 1 = Redraw all content */
         uint16_t partial_update         : 1;    /**< 1 = Update changes */
 
-        /**< Line only */
+        /* Line only */
         uint16_t line1_full_update      : 1;    /**< 1 = Redraw Line1 content */
         uint16_t line2_full_update      : 1;    /**< 1 = Redraw Line2 content */
 
-        /**< Logic module data update flags */
+        /* Logic module data update flags */
         uint16_t update_time            : 1;    /**< 1 = Time was updated */
         uint16_t update_stopwatch       : 1;    /**< 1 = Stopwatch was updated */
         uint16_t update_temperature     : 1;    /**< 1 = Temperature was updated */
