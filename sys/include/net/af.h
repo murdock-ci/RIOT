@@ -20,7 +20,8 @@
 #ifndef AF_H
 #define AF_H
 
-
+/* avoid RIOT/native header clash */
+#ifndef BOARD_NATIVE
 
 #ifdef __cplusplus
 extern "C" {
@@ -45,6 +46,10 @@ enum {
 
 #ifdef __cplusplus
 }
+#endif
+
+#else /* BOARD_NATIVE */
+#include <arpa/inet.h>
 #endif
 
 #endif /* AF_H */
