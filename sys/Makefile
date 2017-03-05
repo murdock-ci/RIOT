@@ -111,6 +111,9 @@ endif
 ifneq (,$(filter emcute,$(USEMODULE)))
     DIRS += net/application_layer/emcute
 endif
+ifneq (,$(filter sock_util,$(USEMODULE)))
+    DIRS += net/sock
+endif
 
 DIRS += $(dir $(wildcard $(addsuffix /Makefile, ${USEMODULE})))
 
