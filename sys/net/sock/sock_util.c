@@ -27,7 +27,7 @@
 #include "fmt.h"
 #endif
 
-int sock_udp_fmt_endpoint(const sock_udp_ep_t *endpoint, char *addr_str, uint16_t *port)
+int sock_udp_ep_fmt(const sock_udp_ep_t *endpoint, char *addr_str, uint16_t *port)
 {
     void *addr_ptr;
     *addr_str = '\0';
@@ -122,7 +122,7 @@ int sock_urlsplit(const char *url, char *hostport, char *urlpath)
     return 0;
 }
 
-int sock_str2ep(sock_udp_ep_t *ep_out, const char *str)
+int sock_udp_str2ep(sock_udp_ep_t *ep_out, const char *str)
 {
     unsigned brackets_flag;
     char *hoststart = (char*)str;
