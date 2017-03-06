@@ -44,7 +44,7 @@ int main(void)
 {
     uint8_t addr[16] = {0};
 
-    sock_str2ep(&sock_dns_server, DNS_SERVER);
+    sock_udp_str2ep(&sock_dns_server, DNS_SERVER);
 
     puts("waiting for router advertisement...");
     xtimer_usleep(3U*1000000);
