@@ -26,7 +26,7 @@
 #include "xtimer.h"
 
 #ifndef TEST_NAME
-#define TEST_NAME   "riot-os.org"
+#define TEST_NAME   "example.org"
 #endif
 
 #ifndef DNS_SERVER
