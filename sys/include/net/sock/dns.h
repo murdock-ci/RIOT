@@ -28,7 +28,6 @@
 #include <unistd.h>
 
 #include "net/sock/udp.h"
-#include "arpa/inet.h"
 
 #ifdef __cplusplus
 extern "C" {
