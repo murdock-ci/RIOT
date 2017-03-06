@@ -817,7 +817,8 @@ EXCLUDE_SYMLINKS       = NO
 # Note that the wildcards are matched against the file with absolute path, so to
 # exclude all test directories for example use the pattern */test/*
 
-EXCLUDE_PATTERNS       = */board/*/tools/* \
+EXCLUDE_PATTERNS       = */boards/*/tools/* \
+                         */boards/x86-multiboot-common/include/multiboot.h \
                          */cpu/cortexm_common/include/core_cm*.h \
                          */cpu/ezr32wg/include/ezr* \
                          */cpu/*/include/atmel/* \
@@ -846,6 +847,7 @@ EXCLUDE_PATTERNS       = */board/*/tools/* \
                          */drivers/nrf24l01p/include/nrf24l01p_settings.h \
                          */pkg/*/*/* \
                          */pkg/tlsf/patch.txt \
+                         */sys/include/embUnit/* \
                          */sys/random/tinymt32/* \
                          */toolchain/* \
 
