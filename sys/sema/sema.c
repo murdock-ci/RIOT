@@ -70,21 +70,39 @@ int sema_wait_timed(sema_t *sema, uint64_t us)
         return -ECANCELED;
     }
 
+    int timeout = 0;
     unsigned old = irq_disable();
-    if (sema->value == 0) {
+    while (sema->value == 0 && !timeout) {
         irq_restore(old);
-        int timeout = xtimer_mutex_lock_timeout(&sema->mutex, us);
+        if (us == 0) {
+            mutex_lock(&sema->mutex);
+        }
+        else {
+            uint64_t start = xtimer_now_usec64();
+            timeout = xtimer_mutex_lock_timeout(&sema->mutex, us);
+            uint64_t elapsed = xtimer_now_usec64() - start;
+
+            if (elapsed < us) {
+                us -= elapsed;
+            }
+            else {
+                timeout = 1;
+            }
+        }
 
         if (sema->state != SEMA_OK) {
             mutex_unlock(&sema->mutex);
             return -ECANCELED;
         }
 
-        if (timeout) {
-            return -ETIMEDOUT;
-        }
-
         old = irq_disable();
+    }
+
+    /* it's required to be checked again, since it could be that "elapsed",
+     * matched "us" but the semaphore could still be decreased */
+    if (sema->value == 0) {
+        irq_restore(old);
+        return -ETIMEDOUT;
     }
 
     unsigned int value = --sema->value;
