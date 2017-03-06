@@ -38,7 +38,7 @@ extern "C" {
  * @returns     number of bytes written to @p addr_str on success
  * @returns     <0 otherwise
  */
-int sock_udp_fmt_endpoint(const sock_udp_ep_t *endpoint, char *addr_str, uint16_t *port);
+int sock_udp_ep_fmt(const sock_udp_ep_t *endpoint, char *addr_str, uint16_t *port);
 
 /**
  * @brief    Split url to host:port and url path
@@ -69,7 +69,7 @@ int sock_urlsplit(const char *url, char *hostport, char *urlpath);
  * @returns     0 on success
  * @returns     <0 otherwise
  */
-int sock_str2ep(sock_udp_ep_t *ep_out, const char *str);
+int sock_udp_str2ep(sock_udp_ep_t *ep_out, const char *str);
 
 /**
  * @name internal defines
