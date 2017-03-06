@@ -8,12 +8,14 @@ Setup up a tap interface:
 
     # sudo ip tuntap add dev tap0 mode tap user $(id -u -n)
     # sudo ip a a 2001:db8::1/64 dev tap0
+    # sudo ip link set up dev tap0
 
 Start dnsmasq (in another console):
 
-    # sudo dnsmasq -d -2 -z -S 8.8.8.8 -i tap0 -q \
+    # sudo dnsmasq -d -2 -z -i tap0 -q \
         --dhcp-range=::1,constructor:tap0,ra-only \
-        --listen-address 2001:db8::1
+        --listen-address 2001:db8::1 \
+        --host-record=example.org,2001:db8::1
 
 Then run the test application
 
@@ -22,4 +24,4 @@ Then run the test application
 The application will take a little while to auto-configure it's IP address.
 Then you should see something like
 
-    riot-os.org resolves to 2a01:4f8:151:64::11
+    example.org resolves to 2001:db8::1
