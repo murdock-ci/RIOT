@@ -30,7 +30,7 @@
 
 
 #ifndef ERRNO_H
-#define ERRNO_H_ 1
+#define ERRNO_H 1
 
 /**
  *  @addtogroup cpu_atmega_common
@@ -55,6 +55,9 @@
 extern "C" {
 #endif
 
+/**
+ *  number of last error
+ */
 extern int errno;
 
 #ifdef __cplusplus
