@@ -103,7 +103,8 @@ void sema_destroy(sema_t *sema);
  * @pre `(sema != NULL)`
  *
  * @param[in]  sema     A semaphore.
- * @param[in]  timeout  Time in microseconds until the semaphore times out. 0 for no timeout.
+ * @param[in]  timeout  Time in microseconds until the semaphore times out.
+ *                      0 waits forever.
  *
  * @return  0 on success
  * @return  -ETIMEDOUT, if the semaphore times out.
