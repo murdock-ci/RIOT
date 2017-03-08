@@ -24,8 +24,12 @@
 /* min domain name length is 1, so minimum record length is 7 */
 #define DNS_MIN_REPLY_LEN   (unsigned)(sizeof(sock_dns_hdr_t ) + 7)
 
-ssize_t _enc_domain_name(uint8_t *out, const char *domain_name)
+static ssize_t _enc_domain_name(uint8_t *out, const char *domain_name)
 {
+    /*
+     * DNS encodes domain names with "<len><part><len><part>", e.g.,
+     * "example.org" ends up as "\7example\3org" in the packet.
+     */
     uint8_t *part_start = out;
     uint8_t *out_pos = ++out;
 
@@ -33,6 +37,7 @@ ssize_t _enc_domain_name(uint8_t *out, const char *domain_name)
 
     while ((c = *domain_name)) {
         if (c == '.') {
+            /* replace dot with length of name part as byte */
             *part_start = (out_pos - part_start - 1);
             part_start = out_pos++;
         }
@@ -45,7 +50,7 @@ ssize_t _enc_domain_name(uint8_t *out, const char *domain_name)
     *part_start = (out_pos - part_start - 1);
     *out_pos++ = 0;
 
-    return out_pos - out +1;
+    return out_pos - out + 1;
 }
 
 static unsigned _put_short(uint8_t *out, uint16_t val)
@@ -61,7 +66,7 @@ static unsigned _get_short(uint8_t *buf)
     return _tmp;
 }
 
-size_t _skip_hostname(uint8_t *buf)
+static size_t _skip_hostname(uint8_t *buf)
 {
     uint8_t *bufpos = buf;
 
@@ -76,7 +81,7 @@ size_t _skip_hostname(uint8_t *buf)
     return (bufpos - buf + 1);
 }
 
-int _parse_dns_reply(uint8_t *buf, size_t len, void* addr_out, int family)
+static int _parse_dns_reply(uint8_t *buf, size_t len, void* addr_out, int family)
 {
     sock_dns_hdr_t *hdr = (sock_dns_hdr_t*) buf;
     uint8_t *bufpos = buf + sizeof(*hdr);
