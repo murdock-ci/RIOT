@@ -12,14 +12,14 @@ Setup up a tap interface:
 
 Start dnsmasq (in another console):
 
-    $ sudo dnsmasq -d -2 -z -i tap0 -q \
+    $ sudo dnsmasq -d -2 -z -i tap0 -q --no-resolv \
         --dhcp-range=::1,constructor:tap0,ra-only \
         --listen-address 2001:db8::1 \
-        --host-record=example.org,2001:db8::1
+        --host-record=example.org,10.0.0.1,2001:db8::1
 
 Then run the test application
 
-    $ make test
+    $ make term
 
 The application will take a little while to auto-configure it's IP address.
 Then you should see something like
