@@ -27,24 +27,31 @@
 #include "fmt.h"
 #endif
 
+#define SOCK_HOST_MAXLEN    (64U)   /**< maximum length of host part for
+                                         sock_udp_str2ep() */
+
 int sock_udp_ep_fmt(const sock_udp_ep_t *endpoint, char *addr_str, uint16_t *port)
 {
     void *addr_ptr;
     *addr_str = '\0';
 
-    if (endpoint->family==AF_INET) {
+    switch (endpoint->family) {
 #if defined(SOCK_HAS_IPV4)
-        addr_ptr = (void*)&endpoint->addr.ipv4;
-#else
-        return -ENOTSUP;
+        case AF_INET:
+            {
+                addr_ptr = (void*)&endpoint->addr.ipv4;
+                break;
+            }
 #endif
-    }
-    else {
 #if defined(SOCK_HAS_IPV6)
-        addr_ptr = (void*)&endpoint->addr.ipv6;
-#else
-        return -ENOTSUP;
-#endif
+        case AF_INET6:
+            {
+                addr_ptr = (void*)&endpoint->addr.ipv6;
+                break;
+            }
+#endif /* else fall through */
+        default:
+            return -ENOTSUP;
     }
 
     if (!inet_ntop(endpoint->family, addr_ptr, addr_str, INET6_ADDRSTRLEN)) {
