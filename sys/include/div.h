@@ -196,9 +196,15 @@ static inline uint64_t div_u64_by_15625div512(uint64_t val)
  */
 static inline uint64_t div_u64_by_625div576(uint64_t val)
 {
+    /*
+     * Optimisation to handle overflow of functions and the linking of
+     * __aeabi_uldivmod. The number is the maximum value that can be obtained
+     * by the second function.
+     */
     if (val > 10485759996ull) {
         /* this would overflow 2^64 in the multiplication that follows, need to
-         * use the long version */
+         * use the long version
+         */
         return (_div_mulhi64(DIV_H_INV_625_64, val) * 576 >> (DIV_H_INV_625_SHIFT));
     }
 
@@ -214,11 +220,17 @@ static inline uint64_t div_u64_by_625div576(uint64_t val)
  * @param[in]   val     dividend
  * @return      (val / (576/625))
  */
-static inline uint32_t div_u64_by_576div625(uint64_t val)
+static inline uint64_t div_u64_by_576div625(uint64_t val)
 {
+    /*
+     * Optimisation to handle overflow of functions and the linking of
+     * __aeabi_uldivmod. The number is the maximum value that can be obtained
+     * by the second function.
+     */
     if (val > 2473900978176ull) {
         /* this would overflow 2^64 in the multiplication that follows, need to
-         * use the long version */
+         * use the long version
+         */
         return (_div_mulhi64(DIV_H_INV_576_64, val) * 625);
     }
 
