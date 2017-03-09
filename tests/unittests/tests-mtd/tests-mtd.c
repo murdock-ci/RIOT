@@ -19,7 +19,79 @@
 #include "mtd.h"
 #include "board.h"
 
+#ifdef MTD_0
 #define _dev MTD_0
+#else
+#ifndef SECTOR_COUNT
+#define SECTOR_COUNT 8
+#endif
+#ifndef PAGE_PER_SECTOR
+#define PAGE_PER_SECTOR 4
+#endif
+#ifndef PAGE_SIZE
+#define PAGE_SIZE 255
+#endif
+
+static uint8_t dummy_sector[PAGE_PER_SECTOR * PAGE_SIZE];
+
+static int init(mtd_dev_t *dev)
+{
+    memset(dummy_sector, 0xff, sizeof(dummy_sector));
+    return 0;
+}
+
+static int read(mtd_dev_t *dev, void *buff, uint32_t addr, uint32_t size)
+{
+    (void)dev;
+    (void)addr;
+    memcpy(buff, dummy_sector, size);
+
+    return size;
+}
+
+static int write(mtd_dev_t *dev, const void *buff, uint32_t addr, uint32_t size)
+{
+    (void)dev;
+    (void)addr;
+    memcpy(dummy_sector, buff, size);
+
+    return size;
+}
+
+static int erase(mtd_dev_t *dev, uint32_t addr, uint32_t size)
+{
+    (void)dev;
+    (void)addr;
+
+    if (size % (PAGE_PER_SECTOR * PAGE_SIZE) != 0) {
+        return -EOVERFLOW;
+    }
+
+    return 0;
+}
+
+static int power(mtd_dev_t *dev, enum mtd_power_state power)
+{
+    (void)dev;
+    (void)power;
+    return 0;
+}
+
+const mtd_desc_t driver = {
+    .init = init,
+    .read = read,
+    .write = write,
+    .erase = erase,
+    .power = power,
+};
+
+static mtd_dev_t _dev = {
+    .driver = &driver,
+    .sector_count = SECTOR_COUNT,
+    .pages_per_sector = PAGE_PER_SECTOR,
+    .page_size = PAGE_SIZE,
+};
+#endif
 
 static void setup_teardown(void)
 {
@@ -33,7 +105,7 @@ static void test_mtd_init(void)
     mtd_dev_t *dev = (mtd_dev_t*) &_dev;
 
     int ret = mtd_init(dev);
-    TEST_ASSERT_EQUAL_INT(ret, 0);
+    TEST_ASSERT_EQUAL_INT(0, ret);
 }
 
 static void test_mtd_erase(void)
@@ -41,10 +113,10 @@ static void test_mtd_erase(void)
     mtd_dev_t *dev = (mtd_dev_t*) &_dev;
 
     int ret = mtd_erase(dev, 0, dev->pages_per_sector * dev->page_size);
-    TEST_ASSERT_EQUAL_INT(ret, dev->pages_per_sector * dev->page_size);
+    TEST_ASSERT_EQUAL_INT(0, ret);
 
     ret = mtd_erase(dev, 0, dev->pages_per_sector);
-    TEST_ASSERT_EQUAL_INT(ret, -EOVERFLOW);
+    TEST_ASSERT_EQUAL_INT(-EOVERFLOW, ret);
 }
 
 static void test_mtd_write_read(void)
@@ -55,12 +127,12 @@ static void test_mtd_write_read(void)
     char buf_read[sizeof(buf) + sizeof(buf_empty)];
 
     int ret = mtd_write(dev, buf, 0, sizeof(buf));
-    TEST_ASSERT_EQUAL_INT(ret, sizeof(buf));
+    TEST_ASSERT_EQUAL_INT(sizeof(buf), ret);
 
     ret = mtd_read(dev, buf_read, 0, sizeof(buf_read));
-    TEST_ASSERT_EQUAL_INT(ret, sizeof(buf_read));
-    TEST_ASSERT_EQUAL_INT(memcmp(buf, buf_read, sizeof(buf)), 0);
-    TEST_ASSERT_EQUAL_INT(memcmp(buf_empty, buf_read + sizeof(buf), sizeof(buf_empty)), 0);
+    TEST_ASSERT_EQUAL_INT(sizeof(buf_read), ret);
+    TEST_ASSERT_EQUAL_INT(0, memcmp(buf, buf_read, sizeof(buf)));
+    TEST_ASSERT_EQUAL_INT(0, memcmp(buf_empty, buf_read + sizeof(buf), sizeof(buf_empty)));
 }
 
 
