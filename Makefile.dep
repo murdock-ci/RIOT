@@ -597,7 +597,6 @@ ifneq (,$(filter emcute,$(USEMODULE)))
   USEMODULE += xtimer
 endif
 
-<<<<<<< a9bdd86b6849f8a8ebc6b3148bc4deb78694442a
 ifneq (,$(filter constfs,$(USEMODULE)))
   USEMODULE += vfs
 endif
