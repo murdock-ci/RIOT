@@ -49,7 +49,7 @@ static int _init(mtd_dev_t *dev)
         DEBUG("mtd_native: init: creating file %s\n", name);
         f = real_fopen(name, "w+");
         if (!f) {
-            return -EAGAIN;
+            return -EIO;
         }
         unsigned long size = dev->sector_count * dev->pages_per_sector * dev->page_size;
         for (unsigned long i = 0; i < size; i++) {
@@ -83,7 +83,7 @@ static int _read(mtd_dev_t *dev, void *buff, uint32_t addr, uint32_t size)
 
     FILE *f = real_fopen(name, "r");
     if (!f) {
-        return -EAGAIN;
+        return -EIO;
     }
     real_fseek(f, addr, SEEK_SET);
     size = real_fread(buff, 1, size, f);
@@ -117,7 +117,7 @@ static int _write(mtd_dev_t *dev, const void *buff, uint32_t addr, uint32_t size
 
     FILE *f = real_fopen(name, "r+");
     if (!f) {
-        return -EAGAIN;
+        return -EIO;
     }
     fseek(f, addr, SEEK_SET);
     for (unsigned long i = 0; i < size; i++) {
@@ -155,7 +155,7 @@ static int _erase(mtd_dev_t *dev, uint32_t addr, uint32_t size)
 
     FILE *f = real_fopen(name, "r+");
     if (!f) {
-        return -EAGAIN;
+        return -EIO;
     }
     fseek(f, addr, SEEK_SET);
     for (unsigned long i = 0; i < size; i++) {
@@ -163,7 +163,7 @@ static int _erase(mtd_dev_t *dev, uint32_t addr, uint32_t size)
     }
     real_fclose(f);
 
-    return size;
+    return 0;
 }
 
 static int _power(mtd_dev_t *dev, enum mtd_power_state power)
