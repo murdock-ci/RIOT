@@ -66,7 +66,7 @@ extern mtd_native_dev_t mtd0;
 
 #define SPIFFS_HAL_CALLBACK_EXTRA 1
 
-#define SPIFFS_CACHE 0
+#define SPIFFS_CACHE 1
 
 #if SPIFFS_SINGLETON == 1
 #define SPIFFS_CFG_PHYS_SZ(ignore)        (0x800000)
