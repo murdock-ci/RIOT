@@ -88,10 +88,10 @@ static off_t mtd_vfs_lseek(vfs_file_t *filp, off_t off, int whence)
 static ssize_t mtd_vfs_read(vfs_file_t *filp, void *dest, size_t nbytes)
 {
     mtd_dev_t *mtd = filp->private_data.ptr;
-    uint32_t size = mtd->page_size * mtd->sector_count * mtd->pages_per_sector;
     if (mtd == NULL) {
         return -EFAULT;
     }
+    uint32_t size = mtd->page_size * mtd->sector_count * mtd->pages_per_sector;
     uint32_t src = filp->pos;
     if (src >= size) {
         return 0;
@@ -111,10 +111,10 @@ static ssize_t mtd_vfs_read(vfs_file_t *filp, void *dest, size_t nbytes)
 static ssize_t mtd_vfs_write(vfs_file_t *filp, const void *src, size_t nbytes)
 {
     mtd_dev_t *mtd = filp->private_data.ptr;
-    uint32_t size = mtd->page_size * mtd->sector_count * mtd->pages_per_sector;
     if (mtd == NULL) {
         return -EFAULT;
     }
+    uint32_t size = mtd->page_size * mtd->sector_count * mtd->pages_per_sector;
     uint32_t dest = filp->pos;
     if (dest >= size) {
         return 0;
