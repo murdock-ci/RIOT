@@ -21,6 +21,22 @@
 #include <stdint.h>
 #include "vectors_cortexm.h"
 
+#if defined(CPU_MODEL_STM32F030R8)
+#include "vectors/stm32f030r8_isr.h"
+#elif defined(CPU_MODEL_STM32F031K6)
+#include "vectors/stm32f031k6_isr.h"
+#elif defined(CPU_MODEL_STM32F042K6)
+#include "vectors/stm32f042k6_isr.h"
+#elif defined(CPU_MODEL_STM32F051R8)
+#include "vectors/stm32f051r8_isr.h"
+#elif defined(CPU_MODEL_STM32F070RB)
+#include "vectors/stm32f070rb_isr.h"
+#elif defined(CPU_MODEL_STM32F072RB)
+#include "vectors/stm32f072rb_isr.h"
+#elif defined(CPU_MODEL_STM32F091RC)
+#include "vectors/stm32f091rc_isr.h"
+#endif
+
 /* get the start of the ISR stack as defined in the linkerscript */
 extern uint32_t _estack;
 
@@ -63,7 +79,9 @@ WEAK_DEFAULT void isr_spi2(void);
 WEAK_DEFAULT void isr_usart1(void);
 WEAK_DEFAULT void isr_usart2(void);
 WEAK_DEFAULT void isr_usart3_8(void);
+WEAK_DEFAULT void isr_usart3_4(void);
 WEAK_DEFAULT void isr_cec(void);
+WEAK_DEFAULT void isr_usb(void);
 
 /* interrupt vector table */
 ISR_VECTORS const void *interrupt_vector[] = {
@@ -88,36 +106,19 @@ ISR_VECTORS const void *interrupt_vector[] = {
                                      * context switching is happening here */
     (void*) isr_systick,            /* SysTick interrupt, not used in RIOT */
     /* STM specific peripheral handlers */
-    (void*) isr_wwdg,               /* windowed watchdog */
-    (void*) isr_pvd,                /* power control */
-    (void*) isr_rtc,                /* real time clock */
-    (void*) isr_flash,              /* flash memory controller */
-    (void*) isr_rcc,                /* reset and clock control */
-    (void*) isr_exti,               /* external interrupt lines 0 and 1 */
-    (void*) isr_exti,               /* external interrupt lines 2 and 3 */
-    (void*) isr_exti,               /* external interrupt lines 4 to 15 */
-    (void*) isr_ts,                 /* touch sensing input*/
-    (void*) isr_dma1_ch1,           /* direct memory access controller 1, channel 1*/
-    (void*) isr_dma1_ch2_3,         /* direct memory access controller 1, channel 2 and 3*/
-    (void*) isr_dma1_ch4_5,         /* direct memory access controller 1, channel 4 and 5*/
-    (void*) isr_adc1_comp,          /* analog digital converter */
-    (void*) isr_tim1_brk_up_trg_com, /* timer 1 break, update, trigger and communication */
-    (void*) isr_tim1_cc,            /* timer 1 capture compare */
-    (void*) isr_tim2,               /* timer 2 */
-    (void*) isr_tim3,               /* timer 3 */
-    (void*) isr_tim6_dac,           /* timer 6 and digital to analog converter */
-    (void*) isr_tim7,               /* timer 7 */
-    (void*) isr_tim14,              /* timer 14 */
-    (void*) isr_tim15,              /* timer 15 */
-    (void*) isr_tim16,              /* timer 16 */
-    (void*) isr_tim17,              /* timer 17 */
-    (void*) isr_i2c1,               /* I2C 1 */
-    (void*) isr_i2c2,               /* I2C 2 */
-    (void*) isr_spi1,               /* SPI 1 */
-    (void*) isr_spi2,               /* SPI 2 */
-    (void*) isr_usart1,             /* USART 1 */
-    (void*) isr_usart2,             /* USART 2 */
-    (void*) isr_usart3_8,           /* USART 3 to 8 */
-    (void*) isr_cec,                /* consumer electronics control */
-    (void*) (0UL)                   /* reserved */
+#if defined(CPU_MODEL_STM32F030R8)
+STM32F030R8_VECTORS
+#elif defined(CPU_MODEL_STM32F031K6)
+STM32F031K6_VECTORS
+#elif defined(CPU_MODEL_STM32F042K6)
+STM32F042K6_VECTORS
+#elif defined(CPU_MODEL_STM32F051R8)
+STM32F051R8_VECTORS
+#elif defined(CPU_MODEL_STM32F070RB)
+STM32F070RB_VECTORS
+#elif defined(CPU_MODEL_STM32F072RB)
+STM32F072RB_VECTORS
+#elif defined(CPU_MODEL_STM32F091RC)
+STM32F091RC_VECTORS
+#endif
 };
