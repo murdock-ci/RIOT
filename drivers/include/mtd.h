@@ -39,6 +39,16 @@ enum mtd_power_state {
     MTD_POWER_DOWN,  /**< Power down */
 };
 
+/**
+ * @brief MTD driver interface
+ *
+ * This define the functions to access a MTD.
+ *
+ * A MTD is composed of pages combined into sectors. A sector is the smallest erasable unit.
+ * The number of pages in a sector must be constant for the whole MTD.
+ *
+ * The erase operation is available only for entire sectors.
+ */
 typedef struct mtd_desc mtd_desc_t;
 
 /**
@@ -50,7 +60,6 @@ typedef struct {
     uint32_t pages_per_sector; /**< Number of pages by sector in the MTD */
     uint32_t page_size;        /**< Size of the pages in the MTD */
 } mtd_dev_t;
-
 
 /**
  * @brief MTD driver interface
@@ -130,7 +139,7 @@ struct mtd_desc {
      * @brief Control power of Memory Technology Device (MTD)
      *
      * @param[in] dev       Pointer to the selected driver
-     * @param[in] power     Power state to apply (from @ref enum mtd_power_state)
+     * @param[in] power     Power state to apply (from @ref mtd_power_state)
      *
      * @return 0 on success
      * @return < 0 value on error
@@ -219,7 +228,10 @@ int mtd_erase(mtd_dev_t *mtd, uint32_t addr, uint32_t count);
  */
 int mtd_power(mtd_dev_t *mtd, enum mtd_power_state power);
 
-#if MODULE_VFS
+#if defined(MODULE_VFS) || defined(DOXYGEN)
+/**
+ * @brief MTD driver for VFS
+ */
 extern const vfs_file_ops_t mtd_vfs_ops;
 #endif
 
