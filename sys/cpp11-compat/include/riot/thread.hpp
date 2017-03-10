@@ -66,7 +66,7 @@ struct thread_data {
   /** @cond INTERNAL */
   std::atomic<unsigned> ref_count;
   kernel_pid_t joining_thread;
-  char stack[stack_size];
+  std::array<char, stack_size> stack;
   /** @endcond */
 };
 
@@ -107,7 +107,7 @@ public:
   /**
    * @brief Create a thread id from a native handle.
    */
-  inline thread_id(kernel_pid_t handle) : m_handle{handle} {}
+  explicit inline thread_id(kernel_pid_t handle) : m_handle{handle} {}
 
   /**
    * @brief Comparison operator for thread ids.
@@ -165,7 +165,7 @@ namespace this_thread {
 /**
  * @brief Access the id of the currently running thread.
  */
-inline thread_id get_id() noexcept { return thread_getpid(); }
+inline thread_id get_id() noexcept { return thread_id{thread_getpid()}; }
 /**
  * @brief Yield the currently running thread.
  */
@@ -287,7 +287,7 @@ public:
   /**
    * @brief Returns the id of a thread.
    */
-  inline id get_id() const noexcept { return m_handle; }
+  inline id get_id() const noexcept { return thread_id{m_handle}; }
   /**
    * @brief Returns the native handle to a thread.
    */
