@@ -7,7 +7,7 @@
  */
 
 /**
- * @ingroup     mtd
+ * @ingroup     mtd_native
  * @{
  * @brief       mtd flash emulation for native
  *
@@ -32,22 +32,14 @@
 static int _init(mtd_dev_t *dev)
 {
     mtd_native_dev_t *_dev = (mtd_native_dev_t*) dev;
-    const char *name;
 
-    DEBUG("mtd_native: init\n");
+    DEBUG("mtd_native: init, filename=%s\n", _dev->fname);
 
-    if (_native_mtd_file != NULL) {
-        name = _native_mtd_file;
-    }
-    else {
-        name = _dev->fname;
-    }
-
-    FILE *f = real_fopen(name, "r");
+    FILE *f = real_fopen(_dev->fname, "r");
 
     if (!f) {
         DEBUG("mtd_native: init: creating file %s\n", name);
-        f = real_fopen(name, "w+");
+        f = real_fopen(_dev->fname, "w+");
         if (!f) {
             return -EIO;
         }
@@ -65,23 +57,15 @@ static int _init(mtd_dev_t *dev)
 static int _read(mtd_dev_t *dev, void *buff, uint32_t addr, uint32_t size)
 {
     mtd_native_dev_t *_dev = (mtd_native_dev_t*) dev;
-    const char *name;
     unsigned long mtd_size = dev->sector_count * dev->pages_per_sector * dev->page_size;
 
     DEBUG("mtd_native: read from page %" PRIu32 " count %" PRIu32 "\n", addr, size);
-
-    if (_native_mtd_file != NULL) {
-        name = _native_mtd_file;
-    }
-    else {
-        name = _dev->fname;
-    }
 
     if (addr + size > mtd_size) {
         return -EOVERFLOW;
     }
 
-    FILE *f = real_fopen(name, "r");
+    FILE *f = real_fopen(_dev->fname, "r");
     if (!f) {
         return -EIO;
     }
@@ -95,18 +79,10 @@ static int _read(mtd_dev_t *dev, void *buff, uint32_t addr, uint32_t size)
 static int _write(mtd_dev_t *dev, const void *buff, uint32_t addr, uint32_t size)
 {
     mtd_native_dev_t *_dev = (mtd_native_dev_t*) dev;
-    const char *name;
     unsigned long mtd_size = dev->sector_count * dev->pages_per_sector * dev->page_size;
     unsigned long sector_size = dev->pages_per_sector * dev->page_size;
 
     DEBUG("mtd_native: write from page %" PRIu32 " count %" PRIu32 "\n", addr, size);
-
-    if (_native_mtd_file != NULL) {
-        name = _native_mtd_file;
-    }
-    else {
-        name = _dev->fname;
-    }
 
     if (addr + size > mtd_size) {
         return -EOVERFLOW;
@@ -115,11 +91,11 @@ static int _write(mtd_dev_t *dev, const void *buff, uint32_t addr, uint32_t size
         return -EOVERFLOW;
     }
 
-    FILE *f = real_fopen(name, "r+");
+    FILE *f = real_fopen(_dev->fname, "r+");
     if (!f) {
         return -EIO;
     }
-    fseek(f, addr, SEEK_SET);
+    real_fseek(f, addr, SEEK_SET);
     for (unsigned long i = 0; i < size; i++) {
         uint8_t c = real_fgetc(f);
         real_fseek(f, -1, SEEK_CUR);
@@ -133,18 +109,10 @@ static int _write(mtd_dev_t *dev, const void *buff, uint32_t addr, uint32_t size
 static int _erase(mtd_dev_t *dev, uint32_t addr, uint32_t size)
 {
     mtd_native_dev_t *_dev = (mtd_native_dev_t*) dev;
-    const char *name;
     unsigned long mtd_size = dev->sector_count * dev->pages_per_sector * dev->page_size;
     unsigned long sector_size = dev->pages_per_sector * dev->page_size;
 
     DEBUG("mtd_native: erase from sector %" PRIu32 " count %" PRIu32 "\n", addr, size);
-
-    if (_native_mtd_file != NULL) {
-        name = _native_mtd_file;
-    }
-    else {
-        name = _dev->fname;
-    }
 
     if (addr + size > mtd_size) {
         return -EOVERFLOW;
@@ -153,11 +121,11 @@ static int _erase(mtd_dev_t *dev, uint32_t addr, uint32_t size)
         return -EOVERFLOW;
     }
 
-    FILE *f = real_fopen(name, "r+");
+    FILE *f = real_fopen(_dev->fname, "r+");
     if (!f) {
         return -EIO;
     }
-    fseek(f, addr, SEEK_SET);
+    real_fseek(f, addr, SEEK_SET);
     for (unsigned long i = 0; i < size; i++) {
         real_fputc(0xff, f);
     }

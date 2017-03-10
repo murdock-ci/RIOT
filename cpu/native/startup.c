@@ -66,7 +66,8 @@ netdev2_tap_params_t netdev2_tap_params[NETDEV2_TAP_MAX];
 #endif
 
 #ifdef MODULE_MTD_NATIVE
-const char *_native_mtd_file = NULL;
+#include "board.h"
+#include "mtd_native.h"
 #endif
 
 static const char short_opts[] = ":hi:s:deEoc:"
@@ -303,7 +304,7 @@ __attribute__((constructor)) static void startup(int argc, char **argv)
                 break;
 #ifdef MODULE_MTD_NATIVE
             case 'm':
-                _native_mtd_file = strndup(optarg, PATH_MAX - 1);
+                mtd0.fname = strndup(optarg, PATH_MAX - 1);
                 break;
 #endif
             default:

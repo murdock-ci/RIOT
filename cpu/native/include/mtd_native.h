@@ -7,7 +7,8 @@
  */
 
 /**
- * @defgroup    mtd Memory Technology Device
+ * @ingroup    mtd
+ * @defgroup   mtd_native Native MTD
  * @{
  * @brief       mtd flash emulation for native
  *
@@ -27,8 +28,8 @@ extern "C" {
 
 /** mtd native descriptor */
 typedef struct mtd_native_dev {
-    mtd_dev_t dev;  /**< mtd generic device */
-    char *fname;    /**< optional filename, used if command line is not set */
+    mtd_dev_t dev;      /**< mtd generic device */
+    const char *fname;  /**< filename to use for memory emulation */
 } mtd_native_dev_t;
 
 extern const mtd_desc_t native_flash_driver;

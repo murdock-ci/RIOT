@@ -43,8 +43,8 @@ void board_init(void)
 #ifndef MTD_NATIVE_SECTOR_NUM
 #define MTD_NATIVE_SECTOR_NUM    2048
 #endif
-#ifndef MTD_NATIVE_FLASH_SIZE
-#define MTD_NATIVE_FLASH_SIZE    (MTD_NATIVE_SECTOR_SIZE * MTD_NATIVE_SECTOR_NUM)
+#ifndef MTD_NATIVE_FILENAME
+#define MTD_NATIVE_FILENAME    "MEMORY.bin"
 #endif
 
 mtd_native_dev_t mtd0 = {
@@ -54,6 +54,6 @@ mtd_native_dev_t mtd0 = {
         .pages_per_sector = MTD_NATIVE_SECTOR_SIZE / MTD_NATIVE_PAGE_SIZE,
         .page_size = MTD_NATIVE_PAGE_SIZE,
     },
-    .fname = "MEMORY.bin",
+    .fname = MTD_NATIVE_FILENAME,
 };
 #endif
