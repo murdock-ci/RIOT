@@ -152,4 +152,3 @@ const mtd_desc_t native_flash_driver = {
 };
 
 /** @} */
-

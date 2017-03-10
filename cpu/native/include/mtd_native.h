@@ -32,6 +32,9 @@ typedef struct mtd_native_dev {
     const char *fname;  /**< filename to use for memory emulation */
 } mtd_native_dev_t;
 
+/**
+ * @brief Native mtd flash driver
+ */
 extern const mtd_desc_t native_flash_driver;
 
 #ifdef __cplusplus
