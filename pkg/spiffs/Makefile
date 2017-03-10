@@ -13,7 +13,7 @@ all: git-download
 
 	@echo 'MODULE:=spiffs' > $(PKG_BUILDDIR)/riotbuild/Makefile
 	@echo 'include $$(RIOTBASE)/Makefile.base' >> $(PKG_BUILDDIR)/riotbuild/Makefile
-	
+
 	"$(MAKE)" -C $(PKG_BUILDDIR)/riotbuild
 
 include $(RIOTBASE)/pkg/pkg.mk
