@@ -35,7 +35,7 @@ extern "C" {
 #endif
 
 /**
- * @brief A sema_t is a sem_t is a sema_t
+ * @brief POSIX-specific semaphore type
  */
 typedef sema_t sem_t;
 
