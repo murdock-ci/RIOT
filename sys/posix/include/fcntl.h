@@ -15,10 +15,8 @@
  * @see http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/fcntl.h.html
  */
 
-/** @todo Remove ifdef BOARD_MIPS_MALTA special case after
- * [#6639](https://github.com/RIOT-OS/RIOT/pull/6639) is merged */
 #ifndef DOXYGEN
-#if defined(CPU_NATIVE) || MODULE_NEWLIB || defined(BOARD_MIPS_MALTA)
+#if defined(CPU_NATIVE) || MODULE_NEWLIB
 /* If building on native or newlib we need to use the system header instead */
 #pragma GCC system_header
 /* without the GCC pragma above #include_next will trigger a pedantic error */
