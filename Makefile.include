@@ -420,7 +420,7 @@ $(CURDIR)/eclipsesym.xml:
 include $(RIOTMAKE)/buildtests.mk
 
 # process provided features
-include $(RIOTBASE)/Makefile.features
+include $(RIOTMAKE)/features.mk
 
 # Export variables used throughout the whole make system:
 include $(RIOTMAKE)/vars.mk
