@@ -96,7 +96,7 @@ static int power(mtd_dev_t *dev, enum mtd_power_state power)
     return 0;
 }
 
-const mtd_desc_t driver = {
+static const mtd_desc_t driver = {
     .init = init,
     .read = read,
     .write = write,
