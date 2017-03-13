@@ -130,13 +130,15 @@ static int _mount(vfs_mount_t *mountp)
     mtd_dev_t *dev = SPIFFS_MTD_DEV;
 #endif
 
-    DEBUG("spiffs: mount: private_data = 0x%p\n", mountp->private_data);
+    DEBUG("spiffs: mount: private_data = %p\n", mountp->private_data);
 
     fs_desc->config.hal_read_f = _dev_read;
     fs_desc->config.hal_write_f = _dev_write;
     fs_desc->config.hal_erase_f = _dev_erase;
 
 #if SPIFFS_SINGLETON == 0
+    DEBUG("spiffs: mount: mtd page_size=%" PRIu32 ", pages_per_sector=%" PRIu32
+          ", sector_count=%" PRIu32 "\n", dev->page_size, dev->pages_per_sector, dev->sector_count);
     fs_desc->config.phys_size = dev->page_size * dev->pages_per_sector * dev->sector_count;
     fs_desc->config.log_block_size = dev->page_size * dev->pages_per_sector;
     fs_desc->config.log_page_size = dev->page_size;
