@@ -62,6 +62,10 @@ compile() {
     local appdir=$1
     local board=$2
 
+    rm -rf build
+    export BINDIR=$(pwd)/build
+    export PKGDIRBASE=$(pwd)/build/pkg
+
     [ -n "$DWQ_WORKER" ] && \
         echo "-- running on worker ${DWQ_WORKER} thread ${DWQ_WORKER_THREAD}, build number $DWQ_WORKER_BUILDNUM."
 
@@ -82,7 +86,7 @@ compile() {
     fi
 
     # cleanup
-    rm -Rf "${appdir}/bin/${board}" "${appdir}/bin/pkg/${board}"
+    rm -Rf build
 
     return $RES
 }
