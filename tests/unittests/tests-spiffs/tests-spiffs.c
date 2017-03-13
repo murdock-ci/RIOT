@@ -17,14 +17,104 @@
 #include "board.h"
 
 #include <fcntl.h>
+#include <errno.h>
 
 #include "embUnit/embUnit.h"
 
 #include "tests-spiffs.h"
-
-#ifdef BOARD_NATIVE
-#define _dev mtd0
+#undef MTD_0
+/* Define MTD_0 in board.h to use the board mtd if any */
+#ifdef MTD_0
+#define _dev MTD_0
+#else
+/* Test mock object implementing a simple RAM-based mtd */
+#ifndef SECTOR_COUNT
+#define SECTOR_COUNT 8
 #endif
+#ifndef PAGE_PER_SECTOR
+#define PAGE_PER_SECTOR 4
+#endif
+#ifndef PAGE_SIZE
+#define PAGE_SIZE 128
+#endif
+
+static uint8_t dummy_memory[PAGE_PER_SECTOR * PAGE_SIZE * SECTOR_COUNT];
+
+static int _init(mtd_dev_t *dev)
+{
+    (void)dev;
+
+    memset(dummy_memory, 0xff, sizeof(dummy_memory));
+    return 0;
+}
+
+static int _read(mtd_dev_t *dev, void *buff, uint32_t addr, uint32_t size)
+{
+    (void)dev;
+
+    if (addr + size > sizeof(dummy_memory)) {
+        return -EOVERFLOW;
+    }
+    memcpy(buff, dummy_memory + addr, size);
+
+    return size;
+}
+
+static int _write(mtd_dev_t *dev, const void *buff, uint32_t addr, uint32_t size)
+{
+    (void)dev;
+
+    if (addr + size > sizeof(dummy_memory)) {
+        return -EOVERFLOW;
+    }
+    if (size > PAGE_SIZE) {
+        return -EOVERFLOW;
+    }
+    memcpy(dummy_memory + addr, buff, size);
+
+    return size;
+}
+
+static int _erase(mtd_dev_t *dev, uint32_t addr, uint32_t size)
+{
+    (void)dev;
+
+    if (size % (PAGE_PER_SECTOR * PAGE_SIZE) != 0) {
+        return -EOVERFLOW;
+    }
+    if (addr % (PAGE_PER_SECTOR * PAGE_SIZE) != 0) {
+        return -EOVERFLOW;
+    }
+    if (addr + size > sizeof(dummy_memory)) {
+        return -EOVERFLOW;
+    }
+    memset(dummy_memory + addr, 0xff, size);
+
+    return 0;
+}
+
+static int _power(mtd_dev_t *dev, enum mtd_power_state power)
+{
+    (void)dev;
+    (void)power;
+    return 0;
+}
+
+const mtd_desc_t driver = {
+    .init = _init,
+    .read = _read,
+    .write = _write,
+    .erase = _erase,
+    .power = _power,
+};
+
+static mtd_dev_t _dev = {
+    .driver = &driver,
+    .sector_count = SECTOR_COUNT,
+    .pages_per_sector = PAGE_PER_SECTOR,
+    .page_size = PAGE_SIZE,
+};
+#endif /* MTD_0 */
 
 static struct spiffs_desc spiffs_desc = {
     .lock = MUTEX_INIT,
@@ -94,7 +184,7 @@ static void tests_spiffs_write(void)
     TEST_ASSERT_EQUAL_INT(0, res);
 
     res = vfs_read(fd, r_buf, sizeof(r_buf));
-    TEST_ASSERT(res == sizeof(buf));
+    TEST_ASSERT_EQUAL_INT(sizeof(buf), res);
     TEST_ASSERT_EQUAL_STRING(&buf[0], &r_buf[0]);
 
     res = vfs_close(fd);
@@ -104,7 +194,7 @@ static void tests_spiffs_write(void)
     TEST_ASSERT(fd >= 0);
 
     res = vfs_read(fd, r_buf, sizeof(r_buf));
-    TEST_ASSERT(res == sizeof(buf));
+    TEST_ASSERT_EQUAL_INT(sizeof(buf), res);
     TEST_ASSERT_EQUAL_STRING(&buf[0], &r_buf[0]);
 
     res = vfs_close(fd);
@@ -162,7 +252,7 @@ static void tests_spiffs_unlink(void)
     TEST_ASSERT(fd >= 0);
 
     res = vfs_write(fd, buf, sizeof(buf));
-    TEST_ASSERT(res == sizeof(buf));
+    TEST_ASSERT_EQUAL_INT(sizeof(buf), res);
 
     res = vfs_close(fd);
     TEST_ASSERT_EQUAL_INT(0, res);
@@ -194,13 +284,13 @@ static void tests_spiffs_readdir(void)
     TEST_ASSERT(fd2 >= 0);
 
     res = vfs_write(fd0, buf0, sizeof(buf0));
-    TEST_ASSERT(res == sizeof(buf0));
+    TEST_ASSERT_EQUAL_INT(sizeof(buf0), res);
 
     res = vfs_write(fd1, buf1, sizeof(buf1));
-    TEST_ASSERT(res == sizeof(buf1));
+    TEST_ASSERT_EQUAL_INT(sizeof(buf1), res);
 
     res = vfs_write(fd2, buf2, sizeof(buf2));
-    TEST_ASSERT(res == sizeof(buf2));
+    TEST_ASSERT_EQUAL_INT(sizeof(buf2), res);
 
     res = vfs_close(fd0);
     TEST_ASSERT_EQUAL_INT(0, res);
