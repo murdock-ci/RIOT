@@ -63,8 +63,8 @@ compile() {
     local board=$2
 
     rm -rf build
-    export BINDIR=build
-    export PKGDIRBASE=build/pkg
+    export BINDIR=$(pwd)/build
+    export PKGDIRBASE=$(pwd)/build/pkg
 
     [ -n "$DWQ_WORKER" ] && \
         echo "-- running on worker ${DWQ_WORKER} thread ${DWQ_WORKER_THREAD}, build number $DWQ_WORKER_BUILDNUM."
