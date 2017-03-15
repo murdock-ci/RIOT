@@ -194,13 +194,13 @@ static void test_mtd_write_read(void)
     TEST_ASSERT_EQUAL_INT(0, memcmp(buf_empty, buf_read + sizeof(buf), sizeof(buf_empty)));
 
     /* Unaligned write / read */
-    ret = mtd_write(dev, buf, dev->page_size, sizeof(buf));
+    ret = mtd_write(dev, buf, dev->page_size + sizeof(buf_empty), sizeof(buf));
     TEST_ASSERT_EQUAL_INT(sizeof(buf), ret);
 
     ret = mtd_read(dev, buf_read, dev->page_size, sizeof(buf_read));
     TEST_ASSERT_EQUAL_INT(sizeof(buf_read), ret);
-    TEST_ASSERT_EQUAL_INT(0, memcmp(buf, buf_read, sizeof(buf)));
-    TEST_ASSERT_EQUAL_INT(0, memcmp(buf_empty, buf_read + sizeof(buf), sizeof(buf_empty)));
+    TEST_ASSERT_EQUAL_INT(0, memcmp(buf_empty, buf_read, sizeof(buf_empty)));
+    TEST_ASSERT_EQUAL_INT(0, memcmp(buf, buf_read + sizeof(buf_empty), sizeof(buf)));
 
     /* out of bounds write (addr) */
     ret = mtd_write(dev, buf, dev->pages_per_sector * dev->page_size * dev->sector_count,
