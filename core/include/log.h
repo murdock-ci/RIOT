@@ -73,7 +73,18 @@ enum {
 /**
  * @brief Log message if level <= LOG_LEVEL
  */
-#define LOG(level, ...) if (level <= LOG_LEVEL) log_write(level, __VA_ARGS__)
+#ifdef __clang__    /* following pragmas required for clang 3.8.0 */
+    _Pragma("clang diagnostic push")
+    _Pragma("clang diagnostic ignored \"-Wtautological-compare\"")
+#endif /* __clang__ */
+#define LOG(level, ...)   do { \
+                                if ((level) <= LOG_LEVEL) { \
+                                    log_write((level), __VA_ARGS__); \
+                                } \
+                            } while (0U)
+#ifdef __clang__    /* following pragmas required for clang 3.8.0 */
+    _Pragma("clang diagnostic pop")
+#endif /* __clang__ */
 
 /**
  * @brief logging convenience defines
