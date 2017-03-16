@@ -21,6 +21,7 @@
 
 #if MODULE_VFS
 #include <fcntl.h>
+#include <stdio.h>
 #include "vfs.h"
 #endif
 
