@@ -23,16 +23,21 @@
 
 static int read_acc(void *dev, phydat_t *res)
 {
-    adxl345_read((adxl345_t *)dev, (adxl345_data_t *)res);
+    adxl345_t *d = (adxl345_t *)dev;
+    adxl345_read(d, (adxl345_data_t *)res->val);
 
     res->unit = UNIT_G;
     res->scale = -3;
-
     return 3;
+}
+
+static int write(void *dev, phydat_t *state)
+{
+    return -ENOTSUP;
 }
 
 const saul_driver_t adxl345_saul_driver = {
     .read = read_acc,
-    .write = saul_notsup,
+    .write = write,
     .type = SAUL_SENSE_ACCEL,
 };
