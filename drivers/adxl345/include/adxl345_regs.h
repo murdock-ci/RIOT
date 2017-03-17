@@ -58,16 +58,27 @@
 #define ACCEL_ADXL345_FIFO_STATUS    (0x39) /**< FIFO status */
 /** @} */
 
-/** Device ID returned by the ADXL345 accelerometer */
+/**
+ * @name Device ID for ADXL345
+ * @{
+ */
 #define ACCEL_ADXL345_CHIP_ID        (0xE5)
+/** @} */
 
-/** Resolution Mask */
+/**
+ * @name Resolution masks for output data
+ * @{
+ */
 #define RES_10_BITS       (0x03FF)
 #define RES_11_BITS       (0x07FF)
 #define RES_12_BITS       (0x0FFF)
 #define RES_13_BITS       (0x1FFF)
+/** @} */
 
-/** Act Inact Control bits definitions */
+/**
+ * @name bits definitions for ACT_INACT_CTL register
+ * @{
+ */
 #define INACT_Z_ENABLE    (1 << 0)
 #define INACT_Y_ENABLE    (1 << 1)
 #define INACT_X_ENABLE    (1 << 2)
@@ -76,15 +87,23 @@
 #define ACT_Y_ENABLE      (1 << 5)
 #define ACT_X_ENABLE      (1 << 6)
 #define ACT_ACDC          (1 << 7)
+/** @} */
 
-/** Tap axes bits definitions */
+/**
+ * @name bits definitions for TAP_AXES register
+ * @{
+ */
 #define TAP_Z_ENABLE      (1 << 0)
 #define TAP_Y_ENABLE      (1 << 1)
 #define TAP_X_ENABLE      (1 << 2)
 #define SUPPRESS          (1 << 3)
 #define TAP_ALL_ENABLE    (TAP_Z_ENABLE|TAP_Y_ENABLE|TAP_X_ENABLE)
+/** @} */
 
-/** Activity & Tap status definitions */
+/**
+ * @name bits definitions for ACT_TAP_STATUS register
+ * @{
+ */
 #define TAP_Z_SRC         (1 << 0)
 #define TAP_Y_SRC         (1 << 1)
 #define TAP_X_SRC         (1 << 2)
@@ -92,12 +111,20 @@
 #define ACT_Z_SRC         (1 << 4)
 #define ACT_Y_SRC         (1 << 5)
 #define ACT_X_SRC         (1 << 6)
+/** @} */
 
-/** Bandwidth Rate bits & masks definitions */
+/**
+ * @name bits definitions for BW_RATE register
+ * @{
+ */
 #define RATE_MASK         (0x0F)
 #define LOWPOWER          (1 << 4)
+/** @} */
 
-/** Power control bits definitions */
+/**
+ * @name bits definitions for PWR_CTL register
+ * @{
+ */
 #define WAKEUP_8HZ        (0x00)
 #define WAKEUP_4HZ        (0x01)
 #define WAKEUP_2HZ        (0x02)
@@ -106,8 +133,13 @@
 #define MEASURE_BIT       (1 << 3)
 #define AUTOSLEEP_BIT     (1 << 4)
 #define LINK_BIT          (1 << 5)
+/** @} */
 
-/** Interrupts bits definitions */
+/**
+ * @name interrupts pins definitions for INT_ENABLE, INT_MAP and INT_SOURCE
+ * registers
+ * @{
+ */
 #define OVERRUN          (1 << 0)
 #define WATERMARK        (1 << 1)
 #define FREEFALL         (1 << 2)
@@ -116,25 +148,38 @@
 #define DOUBLE_TAP       (1 << 5)
 #define SINGLE_TAP       (1 << 6)
 #define DATA_READY       (1 << 7)
+/** @} */
 
-/** Data Format bits & masks definitions */
+/**
+ * @name bits definitions for DATA_FORMAT register
+ * @{
+ */
 #define RANGE_MASK        (0x03)
 #define JUSTIFY           (1 << 2)
 #define FULL_RES          (1 << 3)
 #define INT_INVERT        (1 << 5)
 #define SPI_BIT           (1 << 6)
 #define SELF_TEST         (1 << 7)
+/** @} */
 
-/** Fifo control bits definitions */
+/**
+ * @name bits definitions for FIFO_CTL register
+ * @{
+ */
 #define SAMPLES_MASK      (0x0F)
 #define FIFO_TRIGGER_POS  (4)
 #define FIFO_TRIGGER      (1 << FIFO_TRIGGER_POS)
 #define FIFO_MODE_POS     (6)
 #define FIFO_MODE_MASK    (0xC0)
+/** @} */
 
-/** Fifo Status mask definitions*/
+/**
+ * @name bits definitions for FIFO_STATUS register
+ * @{
+ */
 #define FIFO_ENTRIES_MASK (0x3F)
 #define FIFO_TRIG         (1 << 7)
+/** @} */
 
 #ifdef __cplusplus
 }

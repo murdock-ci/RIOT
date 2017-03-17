@@ -7,7 +7,7 @@
  */
 
 /**
- * @defgroup    drivers_adxl345
+ * @defgroup    drivers_adxl345 ADXL345 3-Axis accelerometer
  * @ingroup     drivers_sensors
  * @brief       Device driver interface for the ADXL345
  * @{
@@ -134,8 +134,8 @@ typedef struct {
     uint8_t offset[3];             /**< offset axis */
     uint8_t range;                 /**< Sensitivity configuration */
     uint8_t rate;                  /**< Configured sample rate for accel  */
-    uint8_t full_res;              /** < Resolution bit */
-    uint8_t scale_factor;          /** < Scale factor for converting value to mg */
+    uint8_t full_res;              /**< Resolution bit */
+    uint8_t scale_factor;          /**< Scale factor for converting value to mg */
 } adxl345_params_t;
 
 /**
@@ -219,7 +219,7 @@ void adxl345_set_bandwidth_rate(adxl345_t *dev, uint8_t bw_rate);
  *
  * @param[in]  dev          device descriptor of accelerometer
  * @param[in]  mode         fifo mode configuration
- * @param[in]  trigger      set trigger
+ * @param[in]  output       set trigger output
  * @param[in]  value        set trigger's value
  */
 void adxl345_set_fifo_mode(adxl345_t *dev, uint8_t mode,
