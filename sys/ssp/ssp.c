@@ -6,27 +6,6 @@
  * directory for more details.
  */
 
-/**
- * @defgroup    sys_ssp Stack Smashing Protector
- * @ingroup     sys
- * @brief       Stack Smashing protector
- *
- * This module implements necessary helper functions that enable RIOT to make
- * use of GCC's stack smashing protector (SSP).
- *
- * See http://wiki.osdev.org/Stack_Smashing_Protector for a more detailed
- * description.
- *
- * @{
- *
- * @file
- * @brief       Stack Smashing Protector (SSP) helper functions
- *
- * @author      Kaspar Schleiser <kaspar@schleiser.de>
- *
- * @}
- */
-
 #include <stdint.h>
 
 #include "panic.h"
