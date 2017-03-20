@@ -1,7 +1,7 @@
 PKG_NAME=spiffs
 PKG_URL=https://github.com/pellepl/spiffs.git
 PKG_VERSION=39937743fbbec4b82308ee08332bf9180408d23b
-PKG_BUILDDIR ?= $(BINDIRBASE)/pkg/$(BOARD)/$(PKG_NAME)
+PKG_BUILDDIR ?= $(PKGDIRBASE)/$(PKG_NAME)
 
 CFLAGS += -std=c11
 
