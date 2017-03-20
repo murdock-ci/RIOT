@@ -40,8 +40,8 @@ int adxl345_init(adxl345_t *dev, const adxl345_params_t* params)
 
     assert(dev && params);
 
-    /* write device descriptor */
-    memcpy(dev, params, sizeof(adxl345_params_t));
+    /* get device descriptor */
+    dev->params= *params;
 
     /* Acquire exclusive access */
     i2c_acquire(BUS);

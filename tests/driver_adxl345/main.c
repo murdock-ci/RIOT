@@ -46,7 +46,7 @@ int main(void)
    while(1) {
         adxl345_read(&dev, &data);
         printf("Acceleration [in mg]: X axis:%d Y axis:%d Z axis:%d\n",
-                data.x,data.y,data.z);
+                data.x, data.y, data.z);
         xtimer_usleep(SLEEP_DELAY);
     }
     return 0;
