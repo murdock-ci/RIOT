@@ -9,7 +9,7 @@
  */
 
 #include <stdint.h>
-#include "p32mz2048efg100.h"
+#include "vendor/p32mz2048efg100.h"
 
 /*
  * Note banked access only applies to MZ part MX only has 1 set of registers
