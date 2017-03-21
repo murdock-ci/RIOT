@@ -33,8 +33,8 @@ volatile uint32_t _DEVCFG3 __attribute__((used, section(".devcfg3"))) =
 
 
 
-/* Note this sets the PLL to 96MHz (8/2 * 24) which is only supported by 3xx and 4xx parts
- * and assumes an 8MHz XTAL.
+/* Note this sets the PLL to 96MHz (8/2 * 24) which is only supported by 3xx
+ * and 4xx parts and assumes an 8MHz XTAL.
  *
  * 1xx/2xx/53x/57x only support 50MHz (use 8/2 x 24 / 2 = 48Mhz)
  * 5xx/6xx/7xx only support 80Mhz (use 8/2 * 20 = 80MHz).
@@ -108,8 +108,8 @@ volatile uint32_t _DEVCFG0 __attribute__ ((used, section(".devcfg0"))) =
     & (~_DEVCFG0_CP_MASK        |  1        << _DEVCFG0_CP_POSITION);
 
 /*
- * Without a reference to this function from elsewhere LD throws the whole compile unit
- * away even though the data is 'volatile' and 'used' !!!
+ * Without a reference to this function from elsewhere LD throws the whole
+ * compile unit away even though the data is 'volatile' and 'used' !!!
  */
 void dummy(void)
 {
