@@ -12,14 +12,18 @@
 #include "vendor/p32mz2048efg100.h"
 
 /*
- * Note banked access only applies to MZ part MX only has 1 set of registers similar to the MZ's lower alias.
- * Thus when working with MX parts comment out the *_B* entries, note the address in the comments are different for MX too
- * so a different linker script is required between MX and MZ to place these registers at the correct addresses.
- * MM parts have completely different config registers, so this file is not applicable.
+ * Note banked access only applies to MZ part MX only has 1 set of registers
+ * similar to the MZ's lower alias.Thus when working with MX parts comment
+ * out the *_B* entries, note the address in the comments are different for MX
+ * too so a different linker script is required between MX and MZ to place
+ * these registers at the correct addresses. MM parts have completely different
+ * config registers, so this file is not applicable.
  *
- * Note when programming via Microchip IPE (tested using a Pickit-3) entries need to exist in the programming
- * file for both the lower alias and the config1 configuration spaces (starting at 0x1FC0FFC0 and 0x1FC4FFC0)
- * hence the duplicate entries in different sections allowing the linker to place them at different addresses.
+ * Note when programming via Microchip IPE (tested using a Pickit-3) entries
+ * need to exist in the programming file for both the lower alias and the 
+ * config1 configuration spaces (starting at 0x1FC0FFC0 and 0x1FC4FFC0)
+ * hence the duplicate entries in different sections allowing the linker to
+ * place them at different addresses.
  */
 
 
@@ -79,9 +83,14 @@ volatile uint32_t ADEVCFG3_B1 __attribute__((used, section(".adevcfg3_b1"))) =
     & (~_DEVCFG3_PMDL1WAY_MASK   |  0        << _DEVCFG3_PMDL1WAY_POSITION)
     & (~_DEVCFG3_IOL1WAY_MASK    |  0        << _DEVCFG3_IOL1WAY_POSITION)
     & (~_DEVCFG3_FUSBIDIO_MASK   |  0        << _DEVCFG3_FUSBIDIO_POSITION);
-/* Not needed by default: */
-/* volatile uint32_t DEVCFG3_B2 __attribute__((used,section(".devcfg3_b2"))) = DEVCFG3_LA;   */
-/* volatile uint32_t ADEVCFG3_B2 __attribute__((used,section(".adevcfg3_la"))) = DEVCFG3_LA; */
+/* 
+ * Not needed by default:
+ * volatile uint32_t DEVCFG3_B2 __attribute__((used,section(".devcfg3_b2")))
+ * = DEVCFG3_LA;
+ * volatile uint32_t ADEVCFG3_B2 __attribute__((used,section(".adevcfg3_la")))
+ * = DEVCFG3_LA;
+ *
+ */
 
 /*
  * DEVCFG2_LA  @ 0x1FC0FFC4 (lower alias)
@@ -329,8 +338,13 @@ volatile uint32_t ADEVCFG0_B1  __attribute__ ((used, section(".adevcfg0_b1")))=
     & (~_DEVCFG0_POSCBOOST_MASK   |  0x1      << _DEVCFG0_POSCBOOST_POSITION)
     & (~_DEVCFG0_EJTAGBEN_MASK    |  0x1      << _DEVCFG0_EJTAGBEN_POSITION);
 
-/* uint32_t DEVCFG0_B2  __attribute__ ((section(".devcfg0_b2"))) = 0xFFFFF7D7; */
-/* uint32_t ADEVCFG0_B2  __attribute__ ((section(".adevcfg0_b2"))) = 0xFFFFF7D7;*/
+/* 
+ * uint32_t DEVCFG0_B2  __attribute__ ((section(".devcfg0_b2")))
+ * = 0xFFFFF7D7; 
+ * uint32_t ADEVCFG0_B2  __attribute__ ((section(".adevcfg0_b2")))
+ * = 0xFFFFF7D7;
+ *
+ */
 
 
 /*
@@ -376,8 +390,9 @@ volatile uint32_t SEQ_B1[4] __attribute__ ((used, section(".seq_b1"))) =
 
 
 /*
- * STUPIDLY Microchip has hard coded the MSB bit of devsign to 0, So even if you erase the whole device,
- * everything returns 0xFFFFFFF except this 1 register (and its alternate) which return 0x7FFFFFF!!
+ * STUPIDLY Microchip has hard coded the MSB bit of devsign to 0, So even if
+ * you erase the whole device, everything returns 0xFFFFFFF except this 1
+ * register (and its alternate) which return 0x7FFFFFF!!
  *
  * We set it in the output image so verification doesn't fail
  *
@@ -395,8 +410,8 @@ volatile uint32_t ADEVSIGN_B2 __attribute__ ((used, section(".adevsign_b2"))) = 
 
 
 /*
- * Without a reference to this function from elsewhere LD throws the whole compile unit
- * away even though the data is 'volatile' and 'used' !!!
+ * Without a reference to this function from elsewhere LD throws the whole 
+ * compile unit away even though the data is 'volatile' and 'used' !!!
  */
 void dummy(void)
 {
