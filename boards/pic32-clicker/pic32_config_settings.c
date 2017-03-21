@@ -9,7 +9,7 @@
  */
 
 #include <stdint.h>
-#include "p32mx470f512h.h"
+#include "vendor/p32mx470f512h.h"
 /*
  *  DEVCFG3  @ 0x1FC02FF0
  *
