@@ -68,7 +68,7 @@ int (*real_getifaddrs)(struct ifaddrs **ifap);
 int (*real_getpid)(void);
 int (*real_chdir)(const char *path);
 int (*real_close)(int);
-int (*real_fcntl)(int, ...);
+int (*real_fcntl)(int, int, ...);
 int (*real_creat)(const char *path, ...);
 int (*real_dup2)(int, int);
 int (*real_execve)(const char *, char *const[], char *const[]);
