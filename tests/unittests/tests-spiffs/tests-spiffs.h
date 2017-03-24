@@ -22,14 +22,14 @@
 
 #ifdef __cplusplus
 extern "C" {
-    #endif
+#endif
 
-    /**
-     * @brief   The entry point of this test suite.
-     */
-    void tests_spiffs(void);
+/**
+ * @brief   The entry point of this test suite.
+ */
+void tests_spiffs(void);
 
-    #ifdef __cplusplus
+#ifdef __cplusplus
 }
 #endif
 
