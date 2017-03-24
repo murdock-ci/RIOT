@@ -84,20 +84,6 @@ void SystemCoreClockUpdate(void)
             /* FLL is selected */
             if ((MCG->C1 & MCG_C1_IREFS_MASK) == 0x0u) {
                 /* External reference clock is selected */
-#if K60_CPU_REV == 1
-                /* rev.1 silicon */
-                if ((SIM->SOPT2 & SIM_SOPT2_MCGCLKSEL_MASK) == 0x0u) {
-                    /* System oscillator drives MCG clock */
-                    MCGOUT_clock = CPU_XTAL_CLK_HZ;
-                }
-                else {
-                    /* RTC 32 kHz oscillator drives MCG clock */
-                    MCGOUT_clock = CPU_XTAL32k_CLK_HZ;
-                }
-
-#else /* K60_CPU_REV */
-
-                /* rev.2 silicon */
                 if ((MCG->C7 & MCG_C7_OSCSEL_MASK) == 0x0u) {
                     /* System oscillator drives MCG clock */
                     MCGOUT_clock = CPU_XTAL_CLK_HZ;
@@ -106,8 +92,6 @@ void SystemCoreClockUpdate(void)
                     /* RTC 32 kHz oscillator drives MCG clock */
                     MCGOUT_clock = CPU_XTAL32k_CLK_HZ;
                 }
-
-#endif /* K60_CPU_REV */
                 uint8_t divider = (uint8_t)(1u << ((MCG->C1 & MCG_C1_FRDIV_MASK) >> MCG_C1_FRDIV_SHIFT));
                 /* Calculate the divided FLL reference clock */
                 MCGOUT_clock /= divider;
@@ -178,32 +162,12 @@ void SystemCoreClockUpdate(void)
         }
         else {
             /* Fast internal reference clock selected */
-#if K60_CPU_REV == 1
-            /* rev.1 silicon */
-            MCGOUT_clock = CPU_INT_FAST_CLK_HZ;
-#else /* K60_CPU_REV */
-            /* rev.2 silicon */
             MCGOUT_clock = CPU_INT_FAST_CLK_HZ /
                            (1 << ((MCG->SC & MCG_SC_FCRDIV_MASK) >> MCG_SC_FCRDIV_SHIFT));
-#endif /* K60_CPU_REV */
         }
     }
     else if ((MCG->C1 & MCG_C1_CLKS_MASK) == MCG_C1_CLKS(0b10)) {   /* 0x80u */
         /* External reference clock is selected */
-#if K60_CPU_REV == 1
-        /* rev.1 silicon */
-        if ((SIM->SOPT2 & SIM_SOPT2_MCGCLKSEL_MASK) == 0x0u) {
-            /* System oscillator drives MCG clock */
-            MCGOUT_clock = CPU_XTAL_CLK_HZ;
-        }
-        else {
-            /* RTC 32 kHz oscillator drives MCG clock */
-            MCGOUT_clock = CPU_XTAL32k_CLK_HZ;
-        }
-
-#else /* K60_CPU_REV */
-
-        /* rev.2 silicon */
         if ((MCG->C7 & MCG_C7_OSCSEL_MASK) == 0x0u) {
             /* System oscillator drives MCG clock */
             MCGOUT_clock = CPU_XTAL_CLK_HZ;
@@ -212,8 +176,6 @@ void SystemCoreClockUpdate(void)
             /* RTC 32 kHz oscillator drives MCG clock */
             MCGOUT_clock = CPU_XTAL32k_CLK_HZ;
         }
-
-#endif /* K60_CPU_REV */
     }
     else {
         /* Reserved value */
