@@ -42,7 +42,7 @@ extern "C" {
 #endif
 
 #ifndef FMT_USE_MEMMOVE
-#define FMT_USE_MEMMOVE (1) /*<< use memmove() or internal implementation */
+#define FMT_USE_MEMMOVE (1) /**< use memmove() or internal implementation */
 #endif
 
 /**
@@ -203,8 +203,6 @@ size_t fmt_s16_dec(char *out, int16_t val);
  */
 size_t fmt_s16_dfp(char *out, int16_t val, unsigned fp_digits);
 
-size_t fmt_float(char *out, float f, unsigned precision);
-
 /**
  * @brief Count characters until '\0' (exclusive) in @p str
  *
@@ -292,8 +290,6 @@ void print_u64_hex(uint64_t val);
  * @param[in]   val  Value to print
  */
 void print_u64_dec(uint64_t val);
-
-void print_float(float f, unsigned precision);
 
 /**
  * @brief Print null-terminated string to stdout
