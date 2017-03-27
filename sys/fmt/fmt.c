@@ -259,7 +259,7 @@ size_t fmt_lpad(char *out, size_t in_len, size_t pad_len, char pad_char)
         char *pos = out + pad_len - 1;
         out += in_len -1;
 
-        for (size_t i = in_len; i > 0; i--) {
+        while(in_len--) {
             *pos-- = *out--;
         }
 
