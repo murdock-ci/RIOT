@@ -22,7 +22,7 @@
 #include "embUnit/embUnit.h"
 
 #include "tests-spiffs.h"
-#undef MTD_0
+
 /* Define MTD_0 in board.h to use the board mtd if any */
 #ifdef MTD_0
 #define _dev MTD_0
