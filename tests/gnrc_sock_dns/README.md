@@ -17,6 +17,9 @@ Start dnsmasq (in another console):
         --listen-address 2001:db8::1 \
         --host-record=example.org,10.0.0.1,2001:db8::1
 
+(NetworkManager is known to start an interfering dnsmasq instance. It needs to
+be stopped before this test.)
+
 Then run the test application
 
     $ make term
