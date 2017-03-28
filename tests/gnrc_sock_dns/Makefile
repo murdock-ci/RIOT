@@ -13,6 +13,8 @@ USEMODULE += auto_init_gnrc_netif
 
 USEMODULE += shell_commands
 
+USEMODULE += posix
+
 CFLAGS += -DDEVELHELP
 
 include $(RIOTBASE)/Makefile.include
