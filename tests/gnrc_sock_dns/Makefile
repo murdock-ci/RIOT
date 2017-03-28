@@ -3,7 +3,7 @@ include ../Makefile.tests_common
 
 RIOTBASE ?= $(CURDIR)/../..
 
-BOARD_INSUFFICIENT_MEMORY := nucleo32-f042 nucleo32-f031 nucleo-f030 nucleo-l053 nucleo32-l031 stmf0discovery
+BOARD_INSUFFICIENT_MEMORY := chronos telosb nucleo32-f042 nucleo32-f031 nucleo-f030 nucleo-l053 nucleo32-l031 stm32f0discovery
 
 USEMODULE += sock_dns
 USEMODULE += gnrc_sock_udp
@@ -17,9 +17,9 @@ USEMODULE += posix
 
 CFLAGS += -DDEVELHELP
 
-LOW_MEMORY_BOARDS := nucleo-f334 chronos msb-430h weio telosb msb-430
+LOW_MEMORY_BOARDS := nucleo-f334 msb-430 msb-430h weio
 
-ifneq (,$(filter $(BOARD),$(LOW_MEMORY_BOARDS)))
+ifeq ($(BOARD),$(filter $(BOARD),$(LOW_MEMORY_BOARDS)))
     CFLAGS += -DGNRC_PKTBUF_SIZE=512 -DGNRC_IPV6_NETIF_ADDR_NUMOF=4 -DGNRC_IPV6_NC_SIZE=1
 endif
 
