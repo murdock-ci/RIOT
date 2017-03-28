@@ -69,7 +69,7 @@ uint32_t random_prng_seed(void)
     /* Get three bytes ID. Upper byte will be filled by
        different source */
     luid_get(&res, 3);
-    DEBUG("random_prng_seed: combination of luid_ and ");
+    DEBUG("random_prng_seed: combination of luid and ");
 
 #ifdef ADC_NUMOF
 

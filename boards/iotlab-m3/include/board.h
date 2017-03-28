@@ -82,14 +82,6 @@ extern "C" {
 #define LSM303DLHC_DRDY     GPIO_PIN(PORT_B,2)
 /** @} */
 
-/**
- * @brief   ADC configuration for random seed generation
- * @{
- */
-#define RANDOM_SEED_ADC_LINE         (0)
-#define RANDOM_SEED_ADC_RES          ADC_RES_12BIT
-/** @} */
-
 #ifdef __cplusplus
 }
 #endif

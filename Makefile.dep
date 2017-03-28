@@ -590,7 +590,7 @@ ifneq (,$(filter random,$(USEMODULE)))
         USEMODULE += tinymt32
     endif
     # sources for random seed
-    FEATURES_REQUIRED += periph_hwrng
+    FEATURES_OPTIONAL += periph_hwrng
     USEMODULE += luid
     USEMODULE += xtimer
     USEMODULE += random_seed

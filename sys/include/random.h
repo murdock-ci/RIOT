@@ -46,9 +46,7 @@ extern "C" {
  * => multiple calls to @ref random_init will reset the existing
  * state of the PRNG.
  *
- * @param s seed for the PRNG. If 0 (as in auto_init), a more or
- *          less unique seed will be generated internally, dependent
- *          on hardware ressources
+ * @param s seed for the PRNG
  */
 void random_init(uint32_t s);
 

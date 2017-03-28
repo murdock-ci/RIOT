@@ -46,7 +46,18 @@ extern "C" {
 #endif
 
 /**
- * @brief   generate a seed for PRNG
+ * @brief   Generate a more or less unique seed for PRNGs.
+ *          The quality of the seed, respectively the uniqueness, depends
+ *          on the availability of hardware ressources. Sources used for seed
+            generation:
+ *          1. A hardware random number generator, if present
+ *          2. A combination of single bits taken from multiple ADC samples and
+               the CPU ID, in case an, ADC is present.
+ *          3. A combination of the CPU iD and the system time value. Please note
+               that the CPU ID might equal between similar MCUs for some families.
+
+ *          While methods 1. and 2. are likely to result in unique values, method 3
+            is prone to return equal results. Pleas check your hardware ressources!
  *
  * @return  the "unique" seed
  */
