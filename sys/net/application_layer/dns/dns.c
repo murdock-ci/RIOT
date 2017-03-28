@@ -21,6 +21,12 @@
 #include "net/sock/udp.h"
 #include "net/sock/dns.h"
 
+#ifdef RIOT_VERSION
+#include "byteorder.h"
+#define ntohs NTOHS
+#define htons HTONS
+#endif
+
 /* min domain name length is 1, so minimum record length is 7 */
 #define DNS_MIN_REPLY_LEN   (unsigned)(sizeof(sock_dns_hdr_t ) + 7)
 
