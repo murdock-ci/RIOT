@@ -20,7 +20,8 @@
 #ifndef SOCK_TYPES_H_
 #define SOCK_TYPES_H_
 
-#include "atomic.h"
+#include <stdatomic.h>
+
 #include "mbox.h"
 #include "mutex.h"
 #include "net/ipv6/addr.h"
@@ -48,7 +49,7 @@ struct sock_udp {
     mutex_t mutex;                      /**< mutex for the connection */
     mbox_t mbox;                        /**< mbox for receiving */
     msg_t mbox_queue[SOCK_MBOX_SIZE];   /**< queue for mbox */
-    atomic_int_t receivers;             /**< current number of recv calls */
+    atomic_int receivers;               /**< current number of recv calls */
     struct {
         const ipv6_addr_t *src;         /**< source address */
         const void *data;               /**< data of received packet */

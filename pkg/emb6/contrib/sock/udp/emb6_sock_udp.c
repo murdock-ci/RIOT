@@ -17,7 +17,6 @@
 #include <errno.h>
 #include <stdbool.h>
 
-#include "atomic.h"
 #include "evproc.h"
 #include "msg.h"
 #include "mutex.h"
@@ -90,7 +89,7 @@ int sock_udp_create(sock_udp_t *sock, const sock_udp_ep_t *local,
     mutex_init(&sock->mutex);
     mutex_lock(&sock->mutex);
     mbox_init(&sock->mbox, sock->mbox_queue, SOCK_MBOX_SIZE);
-    atomic_set_to_zero(&sock->receivers);
+    atomic_flag_clear(&sock->receivers);
     if ((res = _reg(&sock->sock, sock, _input_callback, local, remote)) < 0) {
         sock->sock.input_callback = NULL;
         mutex_unlock(&sock->mutex);
@@ -104,7 +103,7 @@ void sock_udp_close(sock_udp_t *sock)
 {
     assert(sock != NULL);
     if (sock->sock.input_callback != NULL) {
-        while (atomic_dec(&sock->receivers) > 0) {
+        while (atomic_fetch_sub(&sock->receivers, 1) > 0) {
             msg_t msg = { .type = _MSG_TYPE_CLOSE };
             mbox_put(&sock->mbox, &msg);
         }
@@ -163,7 +162,7 @@ int sock_udp_recv(sock_udp_t *sock, void *data, size_t max_len,
         timeout_timer.arg = &sock->mbox;
         xtimer_set(&timeout_timer, timeout);
     }
-    atomic_inc(&sock->receivers);
+    atomic_fetch_add(&sock->receivers, 1);
     if (_mbox_get(&sock->mbox, &msg, blocking) == 0) {
         return -EAGAIN;
     }
@@ -192,7 +191,7 @@ int sock_udp_recv(sock_udp_t *sock, void *data, size_t max_len,
             mutex_unlock(&sock->mutex);
             break;
     }
-    atomic_dec(&sock->receivers);
+    atomic_fetch_sub(&sock->receivers, 1);
     return res;
 }
 
