@@ -222,28 +222,31 @@ static int _open(vfs_file_t *filp, const char *name, int flags, mode_t mode, con
     (void) abs_path;
     DEBUG("spiffs: open: private_data = %p\n", filp->mp->private_data);
 
-    spiffs_flags s_flags = SPIFFS_O_RDONLY;
-    if (flags & O_APPEND) {
+    spiffs_flags s_flags = 0;
+    if ((flags & O_RDONLY) == O_RDONLY) {
+        s_flags |= SPIFFS_O_RDONLY;
+    }
+    if ((flags & O_APPEND) == O_APPEND) {
         s_flags |= SPIFFS_O_APPEND;
     }
-    if (flags & O_TRUNC) {
+    if ((flags & O_TRUNC) == O_TRUNC) {
         s_flags |= SPIFFS_O_TRUNC;
     }
-    if (flags & O_CREAT) {
+    if ((flags & O_CREAT) == O_CREAT) {
         s_flags |= SPIFFS_O_CREAT;
     }
-    if (flags & O_WRONLY) {
+    if ((flags & O_WRONLY) == O_WRONLY) {
         s_flags |= SPIFFS_O_WRONLY;
     }
-    if (flags & O_RDWR) {
+    if ((flags & O_RDWR) == O_RDWR) {
         s_flags |= SPIFFS_O_RDWR;
     }
 #ifdef __O_DIRECT
-    if (flags & __O_DIRECT) {
+    if ((flags & __O_DIRECT) == __O_DIRECT) {
         s_flags |= SPIFFS_O_DIRECT;
     }
 #endif
-    if (flags & O_EXCL) {
+    if ((flags & O_EXCL) == O_EXCL) {
         s_flags |= SPIFFS_O_EXCL;
     }
 
