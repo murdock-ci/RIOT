@@ -9,9 +9,10 @@ BOARD_INSUFFICIENT_MEMORY := airfy-beacon arduino-duemilanove arduino-mega2560 \
                              nucleo32-l031 nucleo-f030 nucleo-f070 nucleo-f072 \
                              nucleo-f091 nucleo-f103 nucleo-f302 nucleo-f334 \
                              nucleo-f410 nucleo-l053 nucleo-l073 opencm904 openmote \
-                             pba-d-01-kw2x pca10000 pca10005 remote-pa remote-reva \
-                             remote-revb saml21-xpro samr21-xpro seeeduino_arch-pro \
-                             slwstk6220a sodaq-autonomo spark-core stm32f0discovery \
+                             openmote-cc2538 pba-d-01-kw2x pca10000 pca10005 \
+                             remote-pa remote-reva remote-revb saml21-xpro \
+                             samr21-xpro seeeduino_arch-pro slwstk6220a \
+                             sodaq-autonomo spark-core stm32f0discovery \
                              stm32f3discovery telosb waspmote-pro weio wsn430-v1_3b \
                              wsn430-v1_4 yunjia-nrf51822 z1
 
