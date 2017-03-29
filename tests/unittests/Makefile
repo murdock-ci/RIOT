@@ -2,12 +2,13 @@ APPLICATION = unittests
 include ../Makefile.tests_common
 
 BOARD_INSUFFICIENT_MEMORY := airfy-beacon arduino-duemilanove arduino-mega2560 \
-                             arduino-uno arduino-zero calliope-mini cc2650stk \
-                             chronos ek-lm4f120xl limifrog-v1 maple-mini microbit \
-                             msb-430 msb-430h nrf51dongle nrf6310 nucleo32-f031 \
-                             nucleo32-f042 nucleo32-f303 nucleo32-l031 nucleo-f030 \
-                             nucleo-f070 nucleo-f072 nucleo-f091 nucleo-f103 nucleo-f302 \
-                             nucleo-f334 nucleo-f410 nucleo-l053 nucleo-l073 opencm904 \
+                             arduino-uno arduino-zero calliope-mini cc2538dk \
+                             cc2650stk chronos ek-lm4f120xl limifrog-v1 maple-mini \
+                             mbed_lpc1768 microbit msb-430 msb-430h nrf51dongle \
+                             nrf6310 nucleo32-f031 nucleo32-f042 nucleo32-f303 \
+                             nucleo32-l031 nucleo-f030 nucleo-f070 nucleo-f072 \
+                             nucleo-f091 nucleo-f103 nucleo-f302 nucleo-f334 \
+                             nucleo-f410 nucleo-l053 nucleo-l073 opencm904 openmote \
                              pba-d-01-kw2x pca10000 pca10005 remote-pa remote-reva \
                              remote-revb saml21-xpro samr21-xpro seeeduino_arch-pro \
                              slwstk6220a sodaq-autonomo spark-core stm32f0discovery \
@@ -41,7 +42,7 @@ AVR_BOARDS := arduino-mega2560 waspmote-pro arduino-uno arduino-duemilanove
 DISABLE_TEST_FOR_AVR := tests-relic
 
 MSP430_BOARDS :=  chronos msb-430 msb-430h telosb wsn430-v1_3b wsn430-v1_4 z1
-DISABLE_TEST_FOR_MSP430 := tests-relic
+DISABLE_TEST_FOR_MSP430 := tests-relic tests-spiffs
 
 ifneq (, $(filter $(ARM7_BOARDS), $(BOARD)))
 UNIT_TESTS := $(filter-out $(DISABLE_TEST_FOR_ARM7), $(UNIT_TESTS))
@@ -56,7 +57,7 @@ UNIT_TESTS := $(filter-out $(DISABLE_TEST_FOR_AVR), $(UNIT_TESTS))
 endif
 
 ifneq (, $(filter $(MSP430_BOARDS), $(BOARD)))
-UNIT_TESTS := $(filter-out $(DISABLE_TEST_FOR_AVR), $(UNIT_TESTS))
+UNIT_TESTS := $(filter-out $(DISABLE_TEST_FOR_MSP430), $(UNIT_TESTS))
 endif
 
 DISABLE_MODULE += auto_init
