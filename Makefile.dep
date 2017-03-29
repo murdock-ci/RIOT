@@ -615,6 +615,13 @@ ifneq (,$(filter vfs,$(USEMODULE)))
     endif
 endif
 
+ifneq (,$(filter spiffs,$(USEMODULE)))
+    USEPKG += spiffs
+    USEMODULE += vfs
+    USEMODULE += spiffs_fs
+    USEMODULE += mtd
+endif
+
 # include package dependencies
 -include $(USEPKG:%=$(RIOTPKG)/%/Makefile.dep)
 
