@@ -25,7 +25,7 @@
 
 /* Define MTD_0 in board.h to use the board mtd if any */
 #ifdef MTD_0
-#define _dev MTD_0
+#define _dev (MTD_0)
 #else
 /* Test mock object implementing a simple RAM-based mtd */
 #ifndef SECTOR_COUNT
@@ -108,19 +108,18 @@ static const mtd_desc_t driver = {
     .power = _power,
 };
 
-static mtd_dev_t _dev = {
+static mtd_dev_t dev = {
     .driver = &driver,
     .sector_count = SECTOR_COUNT,
     .pages_per_sector = PAGE_PER_SECTOR,
     .page_size = PAGE_SIZE,
 };
+
+static mtd_dev_t *_dev = (mtd_dev_t*) &dev;
 #endif /* MTD_0 */
 
 static struct spiffs_desc spiffs_desc = {
     .lock = MUTEX_INIT,
-#if SPIFFS_HAL_CALLBACK_EXTRA == 1
-    .dev = (mtd_dev_t*) &_dev,
-#endif
 };
 
 static vfs_mount_t _test_spiffs_mount = {
@@ -128,6 +127,13 @@ static vfs_mount_t _test_spiffs_mount = {
     .mount_point = "/test-spiffs",
     .private_data = &spiffs_desc,
 };
+
+static void test_spiffs_setup(void)
+{
+#if SPIFFS_HAL_CALLBACK_EXTRA == 1
+    spiffs_desc.dev = _dev;
+#endif
+}
 
 static void test_spiffs_teardown(void)
 {
@@ -395,7 +401,7 @@ Test *tests_spiffs_tests(void)
         new_TestFixture(tests_spiffs_write2),
     };
 
-    EMB_UNIT_TESTCALLER(spiffs_tests, NULL, test_spiffs_teardown, fixtures);
+    EMB_UNIT_TESTCALLER(spiffs_tests, test_spiffs_setup, test_spiffs_teardown, fixtures);
 
     return (Test *)&spiffs_tests;
 }
