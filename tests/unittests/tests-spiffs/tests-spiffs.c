@@ -223,11 +223,11 @@ static void tests_spiffs_write2(void)
     TEST_ASSERT(mp >= 0);
 
     int res;
-    for (int j = 0; j < 10; j++) {
+    for (int j = 0; j < 5; j++) {
         int fd = vfs_open("/test-spiffs/test.txt", O_CREAT | O_RDWR, 0);
         TEST_ASSERT(fd >= 0);
 
-        for  (int i = 0; i < 2000; i++) {
+        for  (int i = 0; i < 128; i++) {
             res = vfs_write(fd, buf, sizeof(buf));
             TEST_ASSERT_EQUAL_INT(sizeof(buf), res);
         }
