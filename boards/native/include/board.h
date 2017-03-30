@@ -81,7 +81,7 @@ extern mtd_dev_t *mtd0;
 #endif
 
 #if SPIFFS_HAL_CALLBACK_EXTRA == 0
-#define SPIFFS_MTD_DEV ((mtd_dev_t *)&MTD_0)
+#define SPIFFS_MTD_DEV (MTD_0)
 #endif
 #endif
 
