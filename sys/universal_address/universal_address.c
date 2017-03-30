@@ -303,8 +303,7 @@ void universal_address_init(void)
 
     /* cppcheck-suppress unsignedLessThanZero
      * (reason: UNIVERSAL_ADDRESS_MAX_ENTRIES may be zero in which case this
-     * code is optimized out)
-     */
+     * code is optimized out) */
     for (size_t i = 0; i < UNIVERSAL_ADDRESS_MAX_ENTRIES; ++i) {
         universal_address_table[i].use_count = 0;
         universal_address_table[i].address_size = 0;
@@ -320,8 +319,7 @@ void universal_address_reset(void)
 
     /* cppcheck-suppress unsignedLessThanZero
      * (reason: UNIVERSAL_ADDRESS_MAX_ENTRIES may be zero in which case this
-     * code is optimized out)
-     */
+     * code is optimized out) */
     for (size_t i = 0; i < UNIVERSAL_ADDRESS_MAX_ENTRIES; ++i) {
         universal_address_table[i].use_count = 0;
     }
@@ -365,8 +363,7 @@ void universal_address_print_table(void)
 
     /* cppcheck-suppress unsignedLessThanZero
      * (reason: UNIVERSAL_ADDRESS_MAX_ENTRIES may be zero in which case this
-     * code is optimized out)
-     */
+     * code is optimized out) */
     for (size_t i = 0; i < UNIVERSAL_ADDRESS_MAX_ENTRIES; ++i) {
         universal_address_print_entry(&universal_address_table[i]);
     }
