@@ -1,7 +1,7 @@
 From e78af387a5c0972cba16766541e5e659b0e08eaf Mon Sep 17 00:00:00 2001
 From: Patrick Grosse <patrick.grosse@uni-muenster.de>
 Date: Sat, 25 Mar 2017 10:35:39 +0100
-Subject: [PATCH 4/5] Increment MAX_SEGMENTS
+Subject: [PATCH 4/6] Increment MAX_SEGMENTS
 
 ---
  coap.h | 5 +++++

@@ -1,7 +1,7 @@
 From 265f4bb3d661b32fb3ec58712c48982bab433a52 Mon Sep 17 00:00:00 2001
 From: Patrick Grosse <patrick.grosse@uni-muenster.de>
 Date: Sat, 25 Mar 2017 10:35:03 +0100
-Subject: [PATCH 3/5] change flag from DEBUG to MICROCOAP_DEBUG
+Subject: [PATCH 3/6] change flag from DEBUG to MICROCOAP_DEBUG
 
 ---
  coap.c |  8 ++++----

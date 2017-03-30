@@ -1,7 +1,7 @@
 From 3d467db74c39df3f79cacfe661fb29d413e2db38 Mon Sep 17 00:00:00 2001
 From: Patrick Grosse <patrick.grosse@uni-muenster.de>
 Date: Sat, 25 Mar 2017 10:36:09 +0100
-Subject: [PATCH 5/5] fix uninitialized variable
+Subject: [PATCH 5/6] fix uninitialized variable
 
 ---
  coap.c | 2 +-
