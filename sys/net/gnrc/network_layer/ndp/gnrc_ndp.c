@@ -673,8 +673,7 @@ void gnrc_ndp_retrans_nbr_sol(gnrc_ipv6_nc_t *nc_entry)
             }
         }
         /* cppcheck-suppress knownConditionTrueFalse
-         * cppcheck bug: probes_remaining is initialized to a value > 1
-         */
+         * cppcheck bug: probes_remaining is initialized to a value > 1 */
         else if (nc_entry->probes_remaining <= 1) {
 
             /* For a 6LoWPAN router entries may be set to UNREACHABLE instead
