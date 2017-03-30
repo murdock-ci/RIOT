@@ -143,8 +143,7 @@ kernel_pid_t gnrc_sixlowpan_nd_next_hop_l2addr(uint8_t *l2addr, uint8_t *l2addr_
 #ifdef MODULE_GNRC_SIXLOWPAN_ND_ROUTER
     /* next hop determination: https://tools.ietf.org/html/rfc6775#section-6.5.4 */
     /* cppcheck-suppress redundantAssignment
-     * This path is only present for a certain configuration
-     */
+     * This path is only present for a certain configuration */
     nc_entry = gnrc_ipv6_nc_get(iface, dst);
 #ifdef MODULE_FIB
     if ((next_hop != NULL) && (nc_entry == NULL)) {
