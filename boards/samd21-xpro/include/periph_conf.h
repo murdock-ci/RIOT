@@ -104,7 +104,7 @@ extern "C" {
  * @{
  */
 static const uart_conf_t uart_config[] = {
-    {    // Virtual COM Port
+    {    /* Virtual COM Port */
         .dev    = &SERCOM3->USART,
         .rx_pin = GPIO_PIN(PA,23),
         .tx_pin = GPIO_PIN(PA,22),
@@ -112,7 +112,7 @@ static const uart_conf_t uart_config[] = {
         .rx_pad = UART_PAD_RX_1,
         .tx_pad = UART_PAD_TX_0
     },
-    {    // EXT1
+    {    /* EXT1 */
         .dev    = &SERCOM4->USART,
         .rx_pin = GPIO_PIN(PB,9),
         .tx_pin = GPIO_PIN(PB,8),
@@ -120,7 +120,7 @@ static const uart_conf_t uart_config[] = {
         .rx_pad = UART_PAD_RX_1,
         .tx_pad = UART_PAD_TX_0
     },
-    {    // EXT2/3
+    {    /* EXT2/3 */
         .dev    = &SERCOM4->USART,
         .rx_pin = GPIO_PIN(PB,11),
         .tx_pin = GPIO_PIN(PB,10),
@@ -189,9 +189,9 @@ static const spi_conf_t spi_config[] = {
 
     {
         .dev      = &SERCOM0->SPI,
-        .miso_pin = GPIO_PIN(PA, 04),
-        .mosi_pin = GPIO_PIN(PA, 06),
-        .clk_pin  = GPIO_PIN(PA, 07),
+        .miso_pin = GPIO_PIN(PA, 4),
+        .mosi_pin = GPIO_PIN(PA, 6),
+        .clk_pin  = GPIO_PIN(PA, 7),
         .miso_mux = GPIO_MUX_D,
         .mosi_mux = GPIO_MUX_D,
         .clk_mux  = GPIO_MUX_D,
@@ -243,8 +243,8 @@ static const spi_conf_t spi_config[] = {
 #define I2C_0_GCLK_ID       SERCOM2_GCLK_ID_CORE
 #define I2C_0_GCLK_ID_SLOW  SERCOM2_GCLK_ID_SLOW
 /* I2C 0 pin configuration */
-#define I2C_0_SDA           GPIO_PIN(PA, 08)
-#define I2C_0_SCL           GPIO_PIN(PA, 09)
+#define I2C_0_SDA           GPIO_PIN(PA, 8)
+#define I2C_0_SCL           GPIO_PIN(PA, 9)
 #define I2C_0_MUX           GPIO_MUX_D
 
 /**

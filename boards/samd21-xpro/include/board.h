@@ -47,7 +47,7 @@ extern "C" {
 #define LED0_PIN            GPIO_PIN(PB, 30)
 
 #define LED_PORT            PORT->Group[PB]
-#define LED0_MASK           (PB << 30)
+#define LED0_MASK           (1 << 30)
 
 #define LED0_ON             (LED_PORT.OUTCLR.reg = LED0_MASK)
 #define LED0_OFF            (LED_PORT.OUTSET.reg = LED0_MASK)
