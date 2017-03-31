@@ -650,9 +650,7 @@ devopen(const char *dev, int flags)
 {
     char t[1024];
     strcpy(t, "/dev/");
-    /* cppcheck-suppress bufferAccessOutOfBounds
-     * reason: seems to be a cppcheck bug */
-    strncat(t, dev, sizeof(t) - 5);
+    strncat(t, dev, sizeof(t) - 6);
     return open(t, flags);
 }
 
