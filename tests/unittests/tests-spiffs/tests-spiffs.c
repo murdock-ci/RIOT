@@ -133,11 +133,11 @@ static void test_spiffs_setup(void)
 #if SPIFFS_HAL_CALLBACK_EXTRA == 1
     spiffs_desc.dev = _dev;
 #endif
+    vfs_mount(&_test_spiffs_mount);
 }
 
 static void test_spiffs_teardown(void)
 {
-    vfs_mount(&_test_spiffs_mount);
     vfs_unlink("/test-spiffs/test.txt");
     vfs_unlink("/test-spiffs/test0.txt");
     vfs_unlink("/test-spiffs/test1.txt");
@@ -145,29 +145,23 @@ static void test_spiffs_teardown(void)
     vfs_umount(&_test_spiffs_mount);
 }
 
-static void test_spiffs_mount_umount(void)
+static void tests_spiffs_mount_umount(void)
 {
     int res;
-    res = vfs_mount(&_test_spiffs_mount);
+    res = vfs_umount(&_test_spiffs_mount);
     TEST_ASSERT_EQUAL_INT(0, res);
 
-    res = vfs_umount(&_test_spiffs_mount);
+    res = vfs_mount(&_test_spiffs_mount);
     TEST_ASSERT_EQUAL_INT(0, res);
 }
 
 static void tests_spiffs_open_close(void)
 {
     int res;
-    res = vfs_mount(&_test_spiffs_mount);
-    TEST_ASSERT_EQUAL_INT(0, res);
-
     res = vfs_open("/test-spiffs/test.txt", O_CREAT | O_RDWR, 0);
     TEST_ASSERT(res >= 0);
 
     res = vfs_close(res);
-    TEST_ASSERT_EQUAL_INT(0, res);
-
-    res = vfs_umount(&_test_spiffs_mount);
     TEST_ASSERT_EQUAL_INT(0, res);
 }
 
@@ -177,9 +171,6 @@ static void tests_spiffs_write(void)
     char r_buf[2 * sizeof(buf)];
 
     int res;
-    res = vfs_mount(&_test_spiffs_mount);
-    TEST_ASSERT_EQUAL_INT(0, res);
-
     int fd = vfs_open("/test-spiffs/test.txt", O_CREAT | O_RDWR, 0);
     TEST_ASSERT(fd >= 0);
 
@@ -205,45 +196,6 @@ static void tests_spiffs_write(void)
 
     res = vfs_close(fd);
     TEST_ASSERT_EQUAL_INT(0, res);
-
-    res = vfs_umount(&_test_spiffs_mount);
-    TEST_ASSERT_EQUAL_INT(0, res);
-}
-
-static void tests_spiffs_write2(void)
-{
-    char buf[256];
-    /*char r_buf[sizeof(buf) + 2];*/
-
-    for (int i = 0; i < 256; i++) {
-        buf[i] = 'A' + (i % 30);
-    }
-
-    int mp = vfs_mount(&_test_spiffs_mount);
-    TEST_ASSERT(mp >= 0);
-
-    int res;
-    for (int j = 0; j < 5; j++) {
-        int fd = vfs_open("/test-spiffs/test.txt", O_CREAT | O_RDWR, 0);
-        TEST_ASSERT(fd >= 0);
-
-        for  (int i = 0; i < 128; i++) {
-            res = vfs_write(fd, buf, sizeof(buf));
-            TEST_ASSERT_EQUAL_INT(sizeof(buf), res);
-        }
-
-        res = vfs_lseek(fd, 0, SEEK_SET);
-        TEST_ASSERT_EQUAL_INT(0, res);
-
-        res = vfs_close(fd);
-        TEST_ASSERT_EQUAL_INT(0, res);
-
-        res = vfs_unlink("/test-spiffs/test.txt");
-        TEST_ASSERT_EQUAL_INT(0, res);
-    }
-
-    res = vfs_umount(&_test_spiffs_mount);
-    TEST_ASSERT(res >= 0);
 }
 
 static void tests_spiffs_unlink(void)
@@ -251,9 +203,6 @@ static void tests_spiffs_unlink(void)
     const char buf[] = "TESTSTRING";
 
     int res;
-    res = vfs_mount(&_test_spiffs_mount);
-    TEST_ASSERT_EQUAL_INT(0, res);
-
     int fd = vfs_open("/test-spiffs/test.txt", O_CREAT | O_RDWR, 0);
     TEST_ASSERT(fd >= 0);
 
@@ -265,9 +214,6 @@ static void tests_spiffs_unlink(void)
 
     res = vfs_unlink("/test-spiffs/test.txt");
     TEST_ASSERT_EQUAL_INT(0, res);
-
-    res = vfs_umount(&_test_spiffs_mount);
-    TEST_ASSERT_EQUAL_INT(0, res);
 }
 
 static void tests_spiffs_readdir(void)
@@ -277,9 +223,6 @@ static void tests_spiffs_readdir(void)
     const char buf2[] = "TESTSTRINGSTRING";
 
     int res;
-    res = vfs_mount(&_test_spiffs_mount);
-    TEST_ASSERT_EQUAL_INT(0, res);
-
     int fd0 = vfs_open("/test-spiffs/test0.txt", O_CREAT | O_RDWR, 0);
     TEST_ASSERT(fd0 >= 0);
 
@@ -311,15 +254,17 @@ static void tests_spiffs_readdir(void)
     res = vfs_opendir(&dirp, "/test-spiffs");
 
     vfs_dirent_t entry;
-    for (int i = 0; i < 3; i++) {
+    int nb_files = 0;
+    do {
         res = vfs_readdir(&dirp, &entry);
-        TEST_ASSERT_EQUAL_INT(1, res);
-        TEST_ASSERT(strcmp("/test0.txt", &(entry.d_name[0])) == 0 ||
-                    strcmp("/test1.txt", &(entry.d_name[0])) == 0 ||
-                    strcmp("/a/test2.txt", &(entry.d_name[0])) == 0);
-    }
+        if (res == 1 && (strcmp("/test0.txt", &(entry.d_name[0])) == 0 ||
+                         strcmp("/test1.txt", &(entry.d_name[0])) == 0 ||
+                         strcmp("/a/test2.txt", &(entry.d_name[0])) == 0)) {
+            nb_files++;
+        }
+    } while (res == 1);
 
-    res = vfs_readdir(&dirp, &entry);
+    TEST_ASSERT_EQUAL_INT(3, nb_files);
     TEST_ASSERT_EQUAL_INT(0, res);
 
     res = vfs_closedir(&dirp);
@@ -333,9 +278,6 @@ static void tests_spiffs_readdir(void)
 
     res = vfs_unlink("/test-spiffs/a/test2.txt");
     TEST_ASSERT_EQUAL_INT(0, res);
-
-    res = vfs_umount(&_test_spiffs_mount);
-    TEST_ASSERT_EQUAL_INT(0, res);
 }
 
 static void tests_spiffs_rename(void)
@@ -344,9 +286,6 @@ static void tests_spiffs_rename(void)
     char r_buf[2 * sizeof(buf)];
 
     int res;
-    res = vfs_mount(&_test_spiffs_mount);
-    TEST_ASSERT_EQUAL_INT(0, res);
-
     int fd = vfs_open("/test-spiffs/test.txt", O_CREAT | O_RDWR, 0);
     TEST_ASSERT(fd >= 0);
 
@@ -384,21 +323,17 @@ static void tests_spiffs_rename(void)
 
     res = vfs_unlink("/test-spiffs/test1.txt");
     TEST_ASSERT_EQUAL_INT(0, res);
-
-    res = vfs_umount(&_test_spiffs_mount);
-    TEST_ASSERT_EQUAL_INT(0, res);
 }
 
 Test *tests_spiffs_tests(void)
 {
     EMB_UNIT_TESTFIXTURES(fixtures) {
-        new_TestFixture(test_spiffs_mount_umount),
+        new_TestFixture(tests_spiffs_mount_umount),
         new_TestFixture(tests_spiffs_open_close),
         new_TestFixture(tests_spiffs_write),
         new_TestFixture(tests_spiffs_unlink),
         new_TestFixture(tests_spiffs_readdir),
         new_TestFixture(tests_spiffs_rename),
-        new_TestFixture(tests_spiffs_write2),
     };
 
     EMB_UNIT_TESTCALLER(spiffs_tests, test_spiffs_setup, test_spiffs_teardown, fixtures);
