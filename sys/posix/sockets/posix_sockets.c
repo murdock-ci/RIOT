@@ -39,6 +39,7 @@
 /* enough to create sockets both with socket() and accept() */
 #define _ACTUAL_SOCKET_POOL_SIZE   (SOCKET_POOL_SIZE + \
                                     (SOCKET_POOL_SIZE * SOCKET_TCP_QUEUE_SIZE))
+#define SOCKET_BLKSIZE             (512)
 
 /**
  * @brief   Unitfied connection type.
@@ -91,8 +92,9 @@ const struct in6_addr in6addr_any = IN6ADDR_ANY_INIT;
 const struct in6_addr in6addr_loopback = IN6ADDR_LOOPBACK_INIT;
 
 static ssize_t socket_recvfrom(socket_t *s, void *restrict buffer,
-                 size_t length, int flags, struct sockaddr *restrict address,
-                 socklen_t *restrict address_len);
+                               size_t length, int flags,
+                               struct sockaddr *restrict address,
+                               socklen_t *restrict address_len);
 static ssize_t socket_sendto(socket_t *s, const void *buffer, size_t length,
                              int flags, const struct sockaddr *address,
                              socklen_t address_len);
@@ -289,7 +291,7 @@ static inline int socket_fstat(vfs_file_t *filp, struct stat *buf)
     (void)filp;
     memset(buf, 0, sizeof(struct stat));
     buf->st_mode |= (S_IFSOCK | S_IRWXU | S_IRWXG | S_IRWXO);
-    buf->st_blksize = 512;
+    buf->st_blksize = SOCKET_BLKSIZE;
     return 0;
 }
 
