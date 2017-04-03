@@ -593,11 +593,19 @@ ifneq (,$(filter random,$(USEMODULE)))
     ifneq (,$(filter prng_tinymt32,$(USEMODULE)))
         USEMODULE += tinymt32
     endif
-    # sources for random seed
-    FEATURES_OPTIONAL += periph_hwrng
-    USEMODULE += luid
-    USEMODULE += xtimer
+
     USEMODULE += random_seed
+
+    ifneq (,$(filter periph_hwrng,$(FEATURES_PROVIDED)))
+      FEATURES_REQUIRED += periph_hwrng
+    else
+      USEMODULE += luid
+      ifneq (,$(filter periph_adc,$(FEATURES_PROVIDED)))
+        FEATURES_REQUIRED += periph_adc
+      else
+        USEMODULE += xtimer
+      endif
+    endif
 endif
 
 ifneq (,$(filter emcute,$(USEMODULE)))
