@@ -4,6 +4,7 @@ PSEUDOMODULES += conn_ip
 PSEUDOMODULES += conn_tcp
 PSEUDOMODULES += conn_udp
 PSEUDOMODULES += core_%
+PSEUDOMODULES += cortexm_fpu
 PSEUDOMODULES += emb6_router
 PSEUDOMODULES += gnrc_ipv6_default
 PSEUDOMODULES += gnrc_ipv6_router
