@@ -19,13 +19,15 @@ BOARD_INSUFFICIENT_MEMORY := airfy-beacon arduino-duemilanove arduino-mega2560 \
 USEMODULE += embunit
 
 ifeq (, $(filter tests-%, $(MAKECMDGOALS)))
-    UNIT_TESTS := $(foreach d,$(wildcard tests-*/Makefile),$(shell dirname $(d)))
+    # the $(dir) Makefile function leaves a trailing slash after the directory
+    # name, therefore we use patsubst instead.
+    UNIT_TESTS := $(patsubst %/Makefile,%,$(wildcard tests-*/Makefile))
 else
     UNIT_TESTS := $(filter tests-%, $(MAKECMDGOALS))
 endif
 
 ARM7_BOARDS := msba2 avrextrem
-DISABLE_TEST_FOR_ARM7 := tests-relic
+DISABLE_TEST_FOR_ARM7 := tests-relic tests-cpp_%
 
 ARM_CORTEX_M_BOARDS := airfy-beacon arduino-due arduino-zero cc2538dk ek-lm4f120xl \
                        f4vi1 fox frdm-k64f iotlab-m3 limifrog-v1 mbed_lpc1768 msbiot \
@@ -41,10 +43,10 @@ ARM_CORTEX_M_BOARDS := airfy-beacon arduino-due arduino-zero cc2538dk ek-lm4f120
 DISABLE_TEST_FOR_ARM_CORTEX_M := tests-relic
 
 AVR_BOARDS := arduino-mega2560 waspmote-pro arduino-uno arduino-duemilanove
-DISABLE_TEST_FOR_AVR := tests-relic
+DISABLE_TEST_FOR_AVR := tests-relic tests-cpp_%
 
 MSP430_BOARDS :=  chronos msb-430 msb-430h telosb wsn430-v1_3b wsn430-v1_4 z1
-DISABLE_TEST_FOR_MSP430 := tests-relic tests-spiffs
+DISABLE_TEST_FOR_MSP430 := tests-relic tests-spiffs tests-cpp_%
 
 ifneq (, $(filter $(ARM7_BOARDS), $(BOARD)))
 UNIT_TESTS := $(filter-out $(DISABLE_TEST_FOR_ARM7), $(UNIT_TESTS))
@@ -60,6 +62,12 @@ endif
 
 ifneq (, $(filter $(MSP430_BOARDS), $(BOARD)))
 UNIT_TESTS := $(filter-out $(DISABLE_TEST_FOR_MSP430), $(UNIT_TESTS))
+endif
+
+ifneq (,$(filter tests-cpp_%, $(UNIT_TESTS)))
+    # We need to tell the build system to use the C++ compiler for linking
+    export FEATURES_REQUIRED += cpp
+    export CPPMIX := 1
 endif
 
 DISABLE_MODULE += auto_init
