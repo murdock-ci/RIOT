@@ -19,7 +19,7 @@ BOARD_INSUFFICIENT_MEMORY := airfy-beacon arduino-duemilanove arduino-mega2560 \
 USEMODULE += embunit
 
 ifeq (, $(filter tests-%, $(MAKECMDGOALS)))
-    UNIT_TESTS := $(foreach d,$(wildcard tests-*/Makefile),$(shell dirname $(d)))
+    UNIT_TESTS := $(patsubst %/Makefile,%,$(wildcard tests-*/Makefile))
 else
     UNIT_TESTS := $(filter tests-%, $(MAKECMDGOALS))
 endif
