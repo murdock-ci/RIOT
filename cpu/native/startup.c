@@ -43,6 +43,9 @@
 #include "native_internal.h"
 #include "tty_uart.h"
 
+#define ENABLE_DEBUG (0)
+#include "debug.h"
+
 typedef enum {
     _STDIOTYPE_STDIO = 0,   /**< leave intact */
     _STDIOTYPE_NULL,        /**< redirect to "/dev/null" */
@@ -250,6 +253,9 @@ void usage_exit(int status)
     real_exit(status);
 }
 
+extern void (*__init_array_start)(void);
+extern void (*__init_array_end)(void);
+
 __attribute__((constructor)) static void startup(int argc, char **argv)
 {
     _native_init_syscalls();
@@ -340,6 +346,39 @@ __attribute__((constructor)) static void startup(int argc, char **argv)
     _native_log_output(stderrtype, STDERR_FILENO);
     _native_null_out_file = _native_log_output(stdouttype, STDOUT_FILENO);
     _native_input(stdintype);
+
+    /* startup is a constructor which is being called from the init_array during
+     * C runtime initialization, this is normally used for code which must run
+     * before launching main(), such as C++ global object constructors etc.
+     * However, this function (startup) misbehaves a bit when we call
+     * kernel_init below, which does not return until there is an abort or a
+     * power off command.
+     * We need all C++ global constructors and other initializers to run before
+     * we enter the normal application code, which may depend on global objects
+     * having been initalized properly. Therefore, we iterate through the
+     * remainder of the init_array and call any constructors which have been
+     * placed after startup in the initialization order.
+     */
+    void (**init_func)(void) = &__init_array_start;
+    DEBUG("__init_array_start: %p\n", (void *)init_func);
+    while (init_func != &__init_array_end) {
+        /* Skip everything which has already been run */
+        DEBUG("%18p - skip\n", (void *)init_func);
+        ++init_func;
+        if ((*init_func) == (void (*)(void))startup) {
+            /* Found this function, move on */
+            DEBUG("%18p - myself\n", (void *)init_func);
+            ++init_func;
+            break;
+        }
+    }
+    while (init_func != &__init_array_end) {
+        /* call all remaining constructors */
+        DEBUG("%18p - call\n", (void *)init_func);
+        (*init_func)();
+        ++init_func;
+    }
+    DEBUG("done, __init_array_end: %p\n", (void *)init_func);
 
     native_cpu_init();
     native_interrupt_init();
