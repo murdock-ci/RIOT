@@ -253,17 +253,19 @@ void usage_exit(int status)
     real_exit(status);
 }
 
+/** @brief Initialization function pointer type */
+typedef void (*init_func_t)(void);
 #ifdef __APPLE__
 /* Taken from the sources of Apple's dyld launcher
  * https://github.com/opensource-apple/dyld/blob/3f928f32597888c5eac6003b9199d972d49857b5/src/dyldInitialization.cpp#L85-L104
  */
 /* Find the extents of the __DATA __mod_init_func section */
-extern void (*__init_array_start)(void)  __asm("section$start$__DATA$__mod_init_func");
-extern void (*__init_array_end)(void)    __asm("section$end$__DATA$__mod_init_func");
+extern init_func_t __init_array_start __asm("section$start$__DATA$__mod_init_func");
+extern init_func_t __init_array_end   __asm("section$end$__DATA$__mod_init_func");
 #else
 /* Linker script provides pointers to the beginning and end of the init array */
-extern void (*__init_array_start)(void);
-extern void (*__init_array_end)(void);
+extern init_func_t __init_array_start;
+extern init_func_t __init_array_end;
 #endif
 
 __attribute__((constructor)) static void startup(int argc, char **argv)
@@ -369,26 +371,26 @@ __attribute__((constructor)) static void startup(int argc, char **argv)
      * remainder of the init_array and call any constructors which have been
      * placed after startup in the initialization order.
      */
-    void (**init_func)(void) = &__init_array_start;
-    DEBUG("__init_array_start: %p\n", (void *)init_func);
-    while (init_func != &__init_array_end) {
+    init_func_t *init_array_ptr = &__init_array_start;
+    DEBUG("__init_array_start: %p\n", (void *)init_array_ptr);
+    while (init_array_ptr != &__init_array_end) {
         /* Skip everything which has already been run */
-        if ((*init_func) == (void (*)(void))startup) {
+        if ((*init_array_ptr) == (void (*)(void))startup) {
             /* Found ourselves, move on to calling the rest of the constructors */
-            DEBUG("%18p - myself\n", (void *)init_func);
-            ++init_func;
+            DEBUG("%18p - myself\n", (void *)init_array_ptr);
+            ++init_array_ptr;
             break;
         }
-        DEBUG("%18p - skip\n", (void *)init_func);
-        ++init_func;
+        DEBUG("%18p - skip\n", (void *)init_array_ptr);
+        ++init_array_ptr;
     }
-    while (init_func != &__init_array_end) {
+    while (init_array_ptr != &__init_array_end) {
         /* call all remaining constructors */
-        DEBUG("%18p - call\n", (void *)init_func);
-        (*init_func)();
-        ++init_func;
+        DEBUG("%18p - call\n", (void *)init_array_ptr);
+        (*init_array_ptr)();
+        ++init_array_ptr;
     }
-    DEBUG("done, __init_array_end: %p\n", (void *)init_func);
+    DEBUG("done, __init_array_end: %p\n", (void *)init_array_ptr);
 
     native_cpu_init();
     native_interrupt_init();
