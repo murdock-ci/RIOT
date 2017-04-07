@@ -254,7 +254,7 @@ void usage_exit(int status)
 }
 
 /** @brief Initialization function pointer type */
-typedef void (*init_func_t)(void);
+typedef void (*init_func_t)(int argc, char **argv, char **envp);
 #ifdef __APPLE__
 /* Taken from the sources of Apple's dyld launcher
  * https://github.com/opensource-apple/dyld/blob/3f928f32597888c5eac6003b9199d972d49857b5/src/dyldInitialization.cpp#L85-L104
@@ -268,7 +268,7 @@ extern init_func_t __init_array_start;
 extern init_func_t __init_array_end;
 #endif
 
-__attribute__((constructor)) static void startup(int argc, char **argv)
+__attribute__((constructor)) static void startup(int argc, char **argv, char **envp)
 {
     _native_init_syscalls();
 
@@ -375,7 +375,7 @@ __attribute__((constructor)) static void startup(int argc, char **argv)
     DEBUG("__init_array_start: %p\n", (void *)init_array_ptr);
     while (init_array_ptr != &__init_array_end) {
         /* Skip everything which has already been run */
-        if ((*init_array_ptr) == (init_func_t)startup) {
+        if ((*init_array_ptr) == startup) {
             /* Found ourselves, move on to calling the rest of the constructors */
             DEBUG("%18p - myself\n", (void *)init_array_ptr);
             ++init_array_ptr;
@@ -387,7 +387,7 @@ __attribute__((constructor)) static void startup(int argc, char **argv)
     while (init_array_ptr != &__init_array_end) {
         /* call all remaining constructors */
         DEBUG("%18p - call\n", (void *)init_array_ptr);
-        (*init_array_ptr)();
+        (*init_array_ptr)(argc, argv, envp);
         ++init_array_ptr;
     }
     DEBUG("done, __init_array_end: %p\n", (void *)init_array_ptr);
