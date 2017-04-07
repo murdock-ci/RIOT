@@ -307,8 +307,8 @@ typedef struct {
     uint32_t freq;             /**< Module clock frequency, usually CLOCK_CORECLOCK or CLOCK_BUSCLOCK */
     gpio_t pin_rx;             /**< RX pin, GPIO_UNDEF disables RX */
     gpio_t pin_tx;             /**< TX pin */
-    gpio_pcr_t pcr_rx;         /**< Pin mux function number for RX */
-    gpio_pcr_t pcr_tx;         /**< Pin mux function number for TX */
+    uint32_t pcr_rx;           /**< Pin configuration register bits for RX */
+    uint32_t pcr_tx;           /**< Pin configuration register bits for TX */
     IRQn_Type irqn;            /**< IRQ number for this module */
 } uart_conf_t;
 
