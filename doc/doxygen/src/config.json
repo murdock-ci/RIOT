@@ -32,7 +32,7 @@
     "@font-size-h6": "ceil((@font-size-base * 0.85))",
     "@line-height-base": "1.428571429",
     "@line-height-computed": "floor((@font-size-base * @line-height-base))",
-    "@headings-font-family": "\"MisoRegular\",@font-family-sans-serif",
+    "@headings-font-family": "\"Miso\",@font-family-sans-serif",
     "@headings-font-weight": "500",
     "@headings-line-height": "1.1",
     "@headings-color": "f6f6f6",
