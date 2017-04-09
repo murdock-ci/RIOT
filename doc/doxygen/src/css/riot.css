@@ -69,24 +69,19 @@ tr.heading h2 {
   font-weight: normal;
 }
 div.fragment {
-  overflow: auto;
-  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
-  page-break-inside: avoid;
-  display: block;
-  padding: 9.5px;
-  margin: 0 0 10px;
-  font-size: 13px;
-  line-height: 1.42857143;
-  word-break: break-all;
-  word-wrap: break-word;
-  color: inherit;
-  background-color: transparent;
   border: 1px solid #555;
   border-radius: 4px;
-  padding: 0;
-  font-size: inherit;
-  white-space: pre-wrap;
-  border-radius: 0;
+  background-color: transparent;
+  color: inherit;
+  display: block;
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: 13px;
+  line-height: 1.42857143;
+  margin: 0 0 10px;
+  overflow: visible;
+  page-break-inside: avoid;
+  word-break: break-all;
+  word-wrap: break-word;
 }
 span.lineno {
   background-color: transparent;
