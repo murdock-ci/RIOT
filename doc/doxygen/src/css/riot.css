@@ -14,12 +14,15 @@
   border-radius: 0px;
   border-bottom: 3px #555 solid;
 }
-
 #MSearchBox {
   margin-top: 15px;
 }
 #nav-tree {
   background: #222;
+}
+#nav-tree img {
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
 }
 #side-nav {
   padding-right: 3px;
@@ -60,8 +63,9 @@ tr.heading h2 {
 }
 .title {
   color: #fff;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "MisoRegular", sans-serif;
   font-size: 3em;
+  line-height: 1em;
   font-weight: normal;
 }
 div.fragment {
@@ -120,7 +124,7 @@ div.directory {
 .memTemplItemLeft,
 .memTemplItemRight,
 .memTemplParams {
-  background-color: #333333;
+  background-color: transparent;
   color: #aaa;
   border: none;
   margin: 4px;
@@ -142,7 +146,7 @@ div.directory {
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
 }
-.memdoc {
+.memdoc, dl.reflist > dd {
   border: none;
   background: inherit;
   padding: 15px;
@@ -158,7 +162,7 @@ div.directory {
   font-size: 16px;
   color: inherit;
 }
-.memproto {
+.memproto, dl.reflist > dt {
   padding: 10px 15px;
   border-bottom: 1px solid transparent;
   border-top: 1px solid #333333;
@@ -209,4 +213,84 @@ span.vhdlkeyword {
 }
 span.vhdllogic {
   color: #daf1f8;
+}
+dl.attention, dl.bug, dl.deprecated, dl.invariant, dl.post, dl.pre, dl.note,
+dl.see, dl.todo, dl.warning {
+  margin-left: 3px;
+  margin-bottom: 20px;
+  padding-left: 0px;
+  background-color: #222222;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+dl.attention > dt::before, dl.bug > dt::before, dl.deprecated > dt::before,
+dl.invariant > dt::before, dl.post > dt::before, dl.pre > dt::before,
+dl.note > dt::before, dl.see > dt::before, dl.todo > dt::before,
+dl.warning > dt::before {
+  content: "\00a0 ";
+}
+dl.attention > dd, dl.deprecated > dd, dl.bug > dd, dl.invariant > dd,
+dl.post > dd, dl.pre > dd, dl.note > dd, dl.see > dd, dl.todo > dd,
+dl.warning > dd {
+  padding: 3px;
+  margin-bottom: 0px
+}
+dl.attention, dl.warning {
+  border-color: #61151f;
+}
+dl.attention > dt, dl.warning > dt {
+  color: #f4cecd;
+  background-color: #761c19;
+  border-color: #61151f;
+}
+dl.bug {
+  border-color: #813c0b;
+}
+dl.bug a, dl.bug a:visited {
+  color: #fceedb;
+}
+dl.bug > dt {
+  color: #fceedb;
+  background-color: #985f0d;
+  border-color: #813c0b;
+}
+dl.deprecated {
+  border-color: #333333;
+}
+dl.deprecated a, dl.deprecated a:visited {
+  color: #eeeeee;
+}
+dl.deprecated > dt {
+  color: #eeeeee;
+  background-color: #333333;
+  border-color: #333333;
+}
+dl.note, dl.see {
+  border-color: #3fa687;
+}
+dl.note > dt, dl.see > dt {
+  color: #ffffff;
+  background-color: #3fa687;
+  border-color: #3fa687;
+}
+dl.post, dl.pre, dl.invariant {
+  border-color: #24441e;
+}
+dl.post > dt, dl.pre > dt, dl.invariant > dt {
+  color: #c7e6c7;
+  background-color: #255625;
+  border-color: #24441e;
+}
+dl.todo {
+  border-color: #156267;
+}
+dl.todo a, dl.todo a:visited {
+  color: #daf1f8;
+}
+dl.todo > dt {
+  color: #daf1f8;
+  background-color: #1b6d85;
+  border-color: #156267;
 }
