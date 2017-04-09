@@ -15,7 +15,56 @@
   border-bottom: 3px #555 solid;
 }
 #MSearchBox {
-  margin-top: 15px;
+  background-color: inherit;
+  float: none;
+  margin-top: 0;
+  right: auto;
+  width: auto;
+  position: static;
+  white-space: nowrap;
+}
+#MSearchClose {
+  position: absolute;
+  color: #eee;
+  right: 10px;
+  top: 6px;
+  bottom: auto;
+  height: 14px;
+  margin: auto;
+  font-size: 14px;
+  z-index: 3;
+}
+#MSearchField {
+  background: #000;
+  border: rgb(51,51,51) solid 1px;
+  color: #eee;
+  display: inline;
+  font: 14px "Helvetica Neue",Helvetica,Arial,sans-serif;
+  height: 34px;
+  width: auto;
+  padding: 6px 12px;
+  position: static;
+  outline: inherit;
+  margin: auto;
+  font-size: 14px;
+  z-index: 1;
+}
+#MSearchSelect {
+  position: relative;
+  display: inline;
+  height: auto;
+  width: auto;
+}
+.MSearchBoxActive #MSearchField {
+  color: #eee;
+}
+#MSearchSelectWindow {
+  background-color: #000;
+}
+a.SelectItem,
+a.SelectItem:focus,
+a.SelectItem:active {
+  color: #3fa687;
 }
 #nav-tree {
   background: #222;

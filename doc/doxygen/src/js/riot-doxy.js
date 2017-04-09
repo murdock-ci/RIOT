@@ -4,9 +4,8 @@
  * Distributed under terms of the LGPLv2.1 license (see LICENSE)
  */
 
-$("#MSearchBox").each(function(index) {
-    var element = $(this).detach();
-    $("#riot-searchbox").append(element);
+$("#MSearchBox").first(function(index) {
+    $(this).remove();
 });
 
 $("#navrow1 ul.tablist li").each(function(index) {

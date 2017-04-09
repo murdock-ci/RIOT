@@ -43,12 +43,25 @@
               </button>
               <a class="navbar-brand riot-logo" href="http://riot-os.org"><img height="40px" src="$projectlogo" /></a>
             </div>
-            <div class=""
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="navbar-collapse">
-              <p class="navbar-text">$projectbrief</p>
+              <p class="navbar-text navbar-left">$projectbrief</p>
               <ul id="riot-navlist" class="nav navbar-nav"></ul>
-              <div id="riot-searchbox" class="navbar-right"></div>
+              <form class="navbar-form navbar-left navbar-right hidden-sm hidden-xs">
+                 <div class="form-group">
+                   <div id="MSearchBox" class="MSearchBoxActive">
+                     <div class="input-group">
+                       <div class="input-group-addon">
+                         <span id="MSearchSelect" class="glyphicon glyphicon-search" aria-hidden="true" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"></span>
+                       </div>
+                       <input class="form-control" type="text" id="MSearchField" placeholder="Search" accesskey="S" onfocus="searchBox.OnSearchFieldFocus(true)" onblur="searchBox.OnSearchFieldFocus(false)" onkeyup="searchBox.OnSearchFieldChange(event)">
+                       <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()">
+                         <span id="search-reset" class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+                       </a>
+                     </div>
+                   </div>
+                 </div>
+              </form>
             </div><!-- /.navbar-collapse -->
           </div><!-- /.container-fluid -->
         </nav>
