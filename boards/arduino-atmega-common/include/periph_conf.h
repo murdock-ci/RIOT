@@ -28,7 +28,7 @@ extern "C" {
 #endif
 
 /**
- * @brief   Clock configuration
+ * @name   Clock configuration
  * @{
  */
 #define CLOCK_CORECLOCK     (16000000L)

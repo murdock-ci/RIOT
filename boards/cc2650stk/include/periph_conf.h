@@ -26,7 +26,7 @@ extern "C" {
 #endif
 
 /**
- * @brief   Clock configuration
+ * @name   Clock configuration
  * @{
  */
 /* the main clock is fixed to 48MHZ */

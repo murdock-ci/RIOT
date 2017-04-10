@@ -34,14 +34,19 @@ extern "C" {
 #endif
 
 /**
- * @name Tell the xtimer that we use a 16-bit peripheral timer
+ * @name Xtimer configuration
+ *
+ * Tell the xtimer that we use a 16-bit peripheral timer
+ * @{
  */
 #define XTIMER_WIDTH        (16)
+/** @} */
 
 /**
  * @name Define the interface to the AT86RF231 radio
  *
  * {spi bus, spi speed, cs pin, int pin, reset pin, sleep pin}
+ * @{
  */
 #define AT86RF2XX_PARAMS_BOARD      {.spi = SPI_DEV(0), \
                                      .spi_clk = SPI_CLK_5MHZ, \
@@ -49,6 +54,7 @@ extern "C" {
                                      .int_pin = GPIO_PIN(PORT_C, 2), \
                                      .sleep_pin = GPIO_PIN(PORT_A, 0), \
                                      .reset_pin = GPIO_PIN(PORT_C, 1)}
+/** @} */
 
 /**
  * @name Define the interface to the LPS331AP pressure sensor
@@ -81,7 +87,7 @@ extern "C" {
 /** @} */
 
 /**
- * @brief   LED pin definitions and handlers
+ * @name   LED pin definitions and handlers
  * @{
  */
 #define LED0_PIN            GPIO_PIN(PORT_B, 10)

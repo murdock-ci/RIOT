@@ -26,10 +26,10 @@ extern "C" {
 #endif
 
 /**
- * @brief   Clock configuration
- *
- * @todo    Move all clock configuration code here from the board.h
+ * @name   Clock configuration
+ * @{
  */
+/** @todo    Move all clock configuration code here from the board.h */
 #define CLOCK_CORECLOCK     (2457600U)
 
 #define CLOCK_CMCLK         CLOCK_CORECLOCK     /* no divider programmed */

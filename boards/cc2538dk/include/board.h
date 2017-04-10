@@ -28,7 +28,7 @@ extern "C" {
 #endif
 
 /**
- * @brief   LED pin definitions and handlers
+ * @name   LED pin definitions and handlers
  * @{
  */
 #define LED0_PIN            GPIO_PIN(2, 0)
@@ -63,7 +63,6 @@ extern "C" {
  * @name Flash Customer Configuration Area (CCA) parameters
  * @{
  */
-
 #ifndef UPDATE_CCA
 #define UPDATE_CCA                1
 #endif

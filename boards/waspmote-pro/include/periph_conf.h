@@ -26,7 +26,7 @@ extern "C" {
 #endif
 
 /**
- * @brief   Clock configuration
+ * @name   Clock configuration
  * @{
  */
 #define CLOCK_CORECLOCK     (14745600L)

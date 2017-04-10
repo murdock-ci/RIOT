@@ -28,7 +28,7 @@ extern "C" {
 #endif
 
 /**
- * @brief   Clock configuration
+ * @name   Clock configuration
  * @{
  */
 #define CLOCK_RCOSC         (14000000)      /* internal RC oscillator speed */

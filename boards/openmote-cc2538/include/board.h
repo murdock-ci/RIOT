@@ -29,7 +29,7 @@
 #endif
 
 /**
- * @brief   LED pin definitions and handlers
+ * @name   LED pin definitions and handlers
  * @{
  */
 #define LED0_PIN            GPIO_PIN(2, 4)

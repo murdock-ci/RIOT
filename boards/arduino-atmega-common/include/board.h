@@ -33,15 +33,17 @@ extern "C" {
 #endif
 
 /**
- * @brief As the CPU is too slow to handle 115200 baud, we set the default
- *        baudrate to 9600 for this board
+ * @name STDIO configuration
+ *
+ * As the CPU is too slow to handle 115200 baud, we set the default
+ * baudrate to 9600 for this board
  * @{
  */
 #define UART_STDIO_BAUDRATE (9600U)
 /** @} */
 
 /**
- * @brief   LED pin definitions and handlers
+ * @name   LED pin definitions and handlers
  * @{
  */
 #ifdef CPU_ATMEGA328P
@@ -85,7 +87,7 @@ extern "C" {
 #endif
 
 /**
- * @brief xtimer configuration values
+ * @name xtimer configuration values
  * @{
  */
 #define XTIMER_WIDTH                (16)

@@ -36,7 +36,7 @@ extern "C" {
 #define PERIPHERAL_CLOCK (96000000)  /* Hz */
 
 /**
- * @brief   Timer definitions
+ * @name   Timer definitions
  * @{
  */
 #define TIMER_NUMOF         (1)
@@ -44,7 +44,7 @@ extern "C" {
 /** @} */
 
 /**
-  * @brief   UART Definitions
+  * @name   UART Definitions
   *          There are 4 UARTS available on this CPU.
   *          We route debug via UART3 on this board,
   *          this is the UART connected to the MikroBUS

@@ -27,7 +27,7 @@ extern "C" {
 #endif
 
 /**
- * @brief Clock configuration
+ * @name Clock configuration
  * @{
  */
 #define CLOCK_CORECLOCK     (48000000U)
@@ -98,7 +98,7 @@ static const spi_conf_t spi_config[] = {
 /* @} */
 
 /**
- * @brief PWM configuration
+ * @name PWM configuration
  * @{
  */
 static const pwm_conf_t pwm_config[] = {

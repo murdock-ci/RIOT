@@ -26,7 +26,7 @@ extern "C" {
 #endif
 
 /**
- * @brief   Clock configuration
+ * @name   Clock configuration
  * @{
  */
 #define CLOCK_CORECLOCK     (72000000U)         /* the msba2 runs with 72MHz */
@@ -68,12 +68,14 @@ extern "C" {
 /** @} */
 
 /**
- * @brief Real Time Clock configuration
+ * @name Real Time Clock configuration
+ * @{
  */
 #define RTC_NUMOF           (1)
+/** @} */
 
 /**
- * @brief uart configuration
+ * @name uart configuration
  * @{
  */
 #define UART_NUMOF          (1)

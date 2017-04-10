@@ -28,7 +28,7 @@ extern "C" {
 #endif
 
 /**
- * @brief   Timer definitions
+ * @name   Timer definitions
  * @{
  */
 #define TIMER_NUMOF         (1)

@@ -28,7 +28,7 @@ extern "C" {
 #endif
 
 /**
- * @brief   LED pin configuration
+ * @name   LED pin configuration
  * @{
  */
 #define LED0_PIN            GPIO_PIN(0, 17)
@@ -59,7 +59,7 @@ extern "C" {
 /** @} */
 
 /**
- * @brief   Button pin configuration
+ * @name   Button pin configuration
  * @{
  */
 #define BUTTON1_PIN         (GPIO_PIN(0, 13))

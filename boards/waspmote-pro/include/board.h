@@ -166,7 +166,7 @@ extern "C" {
 /** @endcond */
 
 /**
- * @brief xtimer configuration values
+ * @name xtimer configuration values
  * @{
  */
 #define XTIMER_WIDTH                (16)
