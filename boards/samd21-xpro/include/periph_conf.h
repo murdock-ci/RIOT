@@ -32,7 +32,7 @@ extern "C" {
 #endif
 
 /**
- * @brief   External oscillator and clock configuration
+ * @name   External oscillator and clock configuration
  *
  * There are two choices for selection of CORECLOCK:
  *
