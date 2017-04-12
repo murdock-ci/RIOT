@@ -4,7 +4,13 @@
  *
  * Distributed under terms of the LGPLv2.1 license (see LICENSE file).
  */
-.riot-logo {
+table,
+div,
+p,
+dl {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+#brand-logo {
   padding: 5px 0px 5px 0px;
 }
 .navbar {
@@ -12,7 +18,15 @@
 }
 .navbar-inverse {
   border-radius: 0px;
-  border-bottom: 3px #555 solid;
+  border-bottom: 3px #1a1a1a solid;
+}
+.nav-tabs-regs {
+  margin-top: 1px;
+  border-bottom: 1px solid #1a1a1a;
+}
+.nav-tabs-regs > li.active > a {
+  border: 1px solid #1a1a1a;
+  border-bottom-color: transparent;
 }
 #MSearchBox {
   background-color: inherit;
@@ -25,7 +39,7 @@
 }
 #MSearchClose {
   position: absolute;
-  color: #eee;
+  color: #515151;
   right: 10px;
   top: 6px;
   bottom: auto;
@@ -35,13 +49,13 @@
   z-index: 3;
 }
 #MSearchField {
-  background: #000;
-  border: rgb(51,51,51) solid 1px;
-  color: #eee;
+  background: #000000;
+  border: #eeeeee solid 1px;
+  color: #ffffff;
   display: inline;
-  font: 14px "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font: 14px "Helvetica Neue", Helvetica, Arial, sans-serif;
   height: 34px;
-  width: auto;
+  width: 150px;
   padding: 6px 12px;
   position: static;
   outline: inherit;
@@ -56,18 +70,24 @@
   width: auto;
 }
 .MSearchBoxActive #MSearchField {
-  color: #eee;
+  color: #ffffff;
+}
+.MSearchBoxInactive #MSearchField {
+  color: #555555;
 }
 #MSearchSelectWindow {
-  background-color: #000;
+  background-color: #000000;
 }
 a.SelectItem,
 a.SelectItem:focus,
 a.SelectItem:active {
   color: #3fa687;
 }
+#nav-sync {
+  display: none;
+}
 #nav-tree {
-  background: #222;
+  background: #000000;
 }
 #nav-tree img {
   -webkit-box-sizing: content-box;
@@ -77,7 +97,7 @@ a.SelectItem:active {
   padding-right: 3px;
 }
 .ui-resizable-e {
-  background: #555;
+  background: #1a1a1a;
   width: 3px;
 }
 #nav-sync img {
@@ -87,38 +107,61 @@ div.toc {
   min-height: 20px;
   padding: 19px;
   margin-bottom: 20px;
-  background-color: #222222;
-  border: 1px solid #111111;
+  background-color: #f5f5f5;
+  border: 1px solid #e3e3e3;
   border-radius: 4px;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
 }
+div.toc h3 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
 div.toc li {
   background: none;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 div.ingroups {
   font-size: 10pt;
 }
 div.header {
   background: none;
-  border-bottom: 1px solid #555;
+  border-bottom: 1px solid #eeeeee;
+}
+h1.glow,
+h2.glow,
+h3.glow,
+h4.glow,
+h5.glow,
+h6.glow {
+  text-shadow: 0 0 15px #cce6c7;
 }
 h2.groupheader {
-  border-color: #555;
-  color: #ffffff;
+  border-color: #eeeeee;
+  color: inherit;
 }
 tr.heading h2 {
   margin-bottom: 0px;
 }
 .memSeparator {
-  border-bottom: 1px solid #555;
+  border-bottom: 1px solid #eeeeee;
 }
 .title {
-  color: #fff;
-  font-family: "Miso", sans-serif;
-  font-size: 3em;
-  line-height: 1em;
+  color: inherit;
+  font-family: "Miso", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 45px;
+  line-height: 64px;
   font-weight: normal;
+}
+#projectname,
+#projectbrief,
+#projectnumber {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+#projectbrief {
+  font-size: 10px;
+}
+pre.fragment {
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 div.fragment {
   border: 1px solid #555;
@@ -127,13 +170,18 @@ div.fragment {
   color: inherit;
   display: block;
   font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.42857143;
   margin: 0 0 10px;
   overflow: visible;
   page-break-inside: avoid;
   word-break: break-all;
   word-wrap: break-word;
+}
+div.line.glow {
+  background-color: #d8eed8;
+  box-shadow: 0 0 10px #cce6c7;
+  -webkit-box-shadow: 0 0 15px #cce6c7;
 }
 span.lineno {
   background-color: transparent;
@@ -148,6 +196,12 @@ span.lineno a:hover {
 div.directory {
   border: 0px;
 }
+table.directory {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.directory .arrow {
+  height: auto;
+}
 .directory .levels span {
   color: #3fa687;
 }
@@ -155,14 +209,30 @@ div.directory {
   color: #3fa687;
 }
 .contents a:hover {
-  color: #ffffff;
+  color: #2a6f5a;
+}
+.directory td.entry {
+  padding-bottom: 8px;
+  padding-top: 8px;
+}
+.directory td.desc {
+  padding-bottom: 8px;
+  padding-top: 8px;
+  border-left: 0px;
 }
 .directory tr {
+  height: 32px;
   padding-left: 0px;
 }
 .directory tr.even {
   padding-left: 0px;
-  background-color: #333333;
+  background-color: #eeeeee;
+}
+.memberdecls td.glow,
+.fieldtable tr.glow {
+  background-color: #d8eed8;
+  box-shadow: 0 0 15px #cce6c7;
+  -webkit-box-shadow: 0 0 15px #cce6c7;
 }
 .mdescLeft,
 .mdescRight,
@@ -172,34 +242,40 @@ div.directory {
 .memTemplItemRight,
 .memTemplParams {
   background-color: transparent;
-  color: #aaa;
+  color: #333333;
   border: none;
   margin: 4px;
   padding: 1px 0 0 8px;
 }
 .navpath ul {
   color: #ffffff;
-  background: #333333;
+  background: #000000;
   border: 0px;
 }
 .navpath li.footer {
   color: #ffffff;
 }
+.navpath li.navelem a {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
 .memitem {
   margin-bottom: 20px;
-  background-color: #222222;
+  background-color: #ffffff;
   border: 1px solid transparent;
   border-radius: 4px;
-  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
 }
-.memdoc, dl.reflist > dd {
+.memitem.glow {
+  box-shadow: 0 0 15px #cce6c7;
+  -webkit-box-shadow: 0 0 15px #cce6c7;
+}
+.memdoc,
+dl.reflist > dd {
   border: none;
-  background: inherit;
+  background: #ffffff;
   padding: 15px;
-  border-bottom: 1px solid #333333;
-  border-left: 1px solid #333333;
-  border-right: 1px solid #333333;
+  border-bottom: 1px solid #dddddd;
+  border-left: 1px solid #dddddd;
+  border-right: 1px solid #dddddd;
 }
 .memname {
   font-weight: normal;
@@ -209,135 +285,193 @@ div.directory {
   font-size: 16px;
   color: inherit;
 }
-.memproto, dl.reflist > dt {
+.memproto,
+dl.reflist > dt {
   padding: 10px 15px;
   border-bottom: 1px solid transparent;
-  border-top: 1px solid #333333;
-  border-left: 1px solid #333333;
-  border-right: 1px solid #333333;
+  border-top: 1px solid #dddddd;
+  border-left: 1px solid #dddddd;
+  border-right: 1px solid #dddddd;
   border-top-right-radius: 3px;
   border-top-left-radius: 3px;
-  color: #eeeeee;
-  background: #333333;
-  border-color: #333333;
+  color: #333333;
+  background: #f5f5f5;
   text-shadow: none;
-  -webkit-box-shadow: none;
 }
 /* @group Code Colorization */
 a.code {
   color: #3fa687;
 }
-span.keyword {
-  color: #ffffff;
-}
-span.keywordtype {
-  color: #ffffff;
+span.keyword,
+span.keywordtype,
+span.keywordflow,
+span.vhdlkeyword {
+  color: #1a1a1a;
 }
 span.keywordflow {
-  color: #ffffff;
   font-weight: bold;
 }
 span.comment {
-  color: #c7e6c7;
+  color: #5bc0de;
 }
 span.preprocessor {
-  color: #fceedb;
+  color: #5cb85c;
 }
 span.stringliteral {
-  color: #daf1f8;
+  color: #f0ad4e;
 }
-span.charliteral {
-  color: #daf1f8;
-}
-span.vhdldigit {
-  color: #daf1f8;
-}
-span.vhdlchar {
-  color: #daf1f8;
-}
-span.vhdlkeyword {
-  color: #ffffff;
-}
+span.charliteral,
+span.vhdldigit,
+span.vhdlchar,
 span.vhdllogic {
-  color: #daf1f8;
+  color: #bd202c;
 }
-dl.attention, dl.bug, dl.deprecated, dl.invariant, dl.post, dl.pre, dl.note,
-dl.see, dl.todo, dl.warning {
+dl.attention,
+dl.bug,
+dl.deprecated,
+dl.invariant,
+dl.post,
+dl.pre,
+dl.note,
+dl.see,
+dl.test,
+dl.todo,
+dl.warning {
   margin-left: 3px;
   margin-bottom: 20px;
   padding-left: 0px;
-  background-color: #222222;
+  background-color: #ffffff;
+  border-left: 0px;
   border: 1px solid transparent;
   border-radius: 4px;
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
 }
-dl.attention > dt::before, dl.bug > dt::before, dl.deprecated > dt::before,
-dl.invariant > dt::before, dl.post > dt::before, dl.pre > dt::before,
-dl.note > dt::before, dl.see > dt::before, dl.todo > dt::before,
-dl.warning > dt::before {
-  content: "\00a0 ";
-}
-dl.attention > dd, dl.deprecated > dd, dl.bug > dd, dl.invariant > dd,
-dl.post > dd, dl.pre > dd, dl.note > dd, dl.see > dd, dl.todo > dd,
+dl.attention > dd,
+dl.deprecated > dd,
+dl.bug > dd,
+dl.invariant > dd,
+dl.post > dd,
+dl.pre > dd,
+dl.note > dd,
+dl.see > dd,
+dl.test > dd,
+dl.todo > dd,
 dl.warning > dd {
-  padding: 3px;
-  margin-bottom: 0px
+  padding: 15px;
+  margin-bottom: 0px;
 }
-dl.attention, dl.warning {
-  border-color: #61151f;
+dl.attention > dt,
+dl.deprecated > dt,
+dl.bug > dt,
+dl.invariant > dt,
+dl.post > dt,
+dl.pre > dt,
+dl.note > dt,
+dl.see > dt,
+dl.test > dt,
+dl.todo > dt,
+dl.warning > dt {
+  padding: 10px 15px;
 }
-dl.attention > dt, dl.warning > dt {
-  color: #f4cecd;
-  background-color: #761c19;
-  border-color: #61151f;
+dl.attention,
+dl.warning {
+  border-color: #f6ccd6;
+}
+dl.attention > dt,
+dl.warning > dt {
+  color: #bd202c;
+  background-color: #fae2e4;
+  border-color: #bd202c;
 }
 dl.bug {
-  border-color: #813c0b;
+  border-color: #fce9db;
 }
-dl.bug a, dl.bug a:visited {
-  color: #fceedb;
+dl.bug a,
+dl.bug a:visited {
+  color: #f0ad4e;
+}
+dl.bug a:hover {
+  color: #df8a13;
 }
 dl.bug > dt {
-  color: #fceedb;
-  background-color: #985f0d;
-  border-color: #813c0b;
+  color: #f0ad4e;
+  background-color: #fef9f3;
+  border-color: #f0ad4e;
 }
 dl.deprecated {
-  border-color: #333333;
+  border-color: #6a6a6a;
 }
-dl.deprecated a, dl.deprecated a:visited {
-  color: #eeeeee;
+dl.deprecated a,
+dl.deprecated a:visited {
+  color: #222222;
+}
+dl.deprecated a:hover {
+  color: #000000;
 }
 dl.deprecated > dt {
-  color: #eeeeee;
-  background-color: #333333;
-  border-color: #333333;
+  color: #222222;
+  background-color: #777777;
+  border-color: #6a6a6a;
 }
-dl.note, dl.see {
+dl.note,
+dl.see {
   border-color: #3fa687;
 }
-dl.note > dt, dl.see > dt {
+dl.note > dt,
+dl.see > dt {
   color: #ffffff;
   background-color: #3fa687;
   border-color: #3fa687;
 }
-dl.post, dl.pre, dl.invariant {
-  border-color: #24441e;
+dl.post,
+dl.pre,
+dl.invariant {
+  border-color: #cce6c7;
 }
-dl.post > dt, dl.pre > dt, dl.invariant > dt {
-  color: #c7e6c7;
-  background-color: #255625;
-  border-color: #24441e;
+dl.post > dt,
+dl.pre > dt,
+dl.invariant > dt {
+  color: #5cb85c;
+  background-color: #d8eed8;
+  border-color: #cce6c7;
+}
+dl.test {
+  border-color: #d2e2f6;
+}
+dl.test a,
+dl.test a:visited {
+  color: #5b7ede;
+}
+dl.test a:hover {
+  color: #2852c5;
+}
+dl.test > dt {
+  color: #5b7ede;
+  background-color: #f0f3fc;
+  border-color: #d2e2f6;
 }
 dl.todo {
-  border-color: #156267;
+  border-color: #d2f4f6;
 }
-dl.todo a, dl.todo a:visited {
-  color: #daf1f8;
+dl.todo a,
+dl.todo a:visited {
+  color: #5bc0de;
+}
+dl.todo a:hover {
+  color: #28a1c5;
 }
 dl.todo > dt {
-  color: #daf1f8;
-  background-color: #1b6d85;
-  border-color: #156267;
+  color: #5bc0de;
+  background-color: #f0f9fc;
+  border-color: #d2f4f6;
+}
+#powerTip div {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.params .paramdir {
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+.icon {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }

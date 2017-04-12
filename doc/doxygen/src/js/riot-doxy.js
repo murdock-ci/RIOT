@@ -24,7 +24,7 @@ var prev_element = $("nav.navbar")
 for (i = 2; i < 5; i++) {
     $("#navrow" + i + " ul.tablist").each(function(index) {
         var element = $(this).detach();
-        element.attr("class", "nav nav-tabs")
+        element.attr("class", "nav nav-tabs nav-tabs-regs");
         element.children("li.current").each(function(i) {
             $(this).attr("class", "active");
         });
@@ -33,6 +33,8 @@ for (i = 2; i < 5; i++) {
     });
     $("#navrow" + i)
 }
+
+$("img").not("#brand-logo > img").not(".footer").addClass("img-responsive")
 
 if ($(window).width() < 750) {
     $("#side-nav").remove()
