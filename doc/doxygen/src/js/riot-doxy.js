@@ -34,8 +34,46 @@ for (i = 2; i < 5; i++) {
     $("#navrow" + i)
 }
 
-$("img").not("#brand-logo > img").not(".footer").addClass("img-responsive")
+$(".image > img").addClass("img-responsive")
 
-if ($(window).width() < 750) {
-    $("#side-nav").remove()
+function resize_content(sidenav)
+{
+    var side_nav_width = sidenav.outerWidth();
+    $("#doc-content").css({marginLeft:parseInt(side_nav_width)+"px"});
 }
+
+function resize_handler()
+{
+    var sidenav = $("#side-nav");
+    if ($(window).width() < 750) {
+        var toc = $(".toc");
+        if (window_before >= 750) {
+            original_sidenav_width = sidenav.width();
+        }
+        sidenav.width("0px");
+        sidenav.css("padding-right", "0px");
+        sidenav.children(".ui-resizable-e").width("0px");
+        sidenav.hide();
+        toc.removeClass("toc")
+        toc.addClass("toc-sm")
+    }
+    else {
+        var toc = $(".toc-sm");
+        sidenav.width(parseInt(original_sidenav_width)+"px");
+        sidenav.css("padding-right", original_padding);
+        sidenav.children(".ui-resizable-e").width(original_padding);
+        sidenav.show();
+        toc.removeClass("toc-sm")
+        toc.addClass("toc")
+    }
+    resize_content(sidenav)
+    window_before = $(window).width()
+}
+
+$(document).ready(function() {
+    original_padding = sidenav.css("padding-right")
+    window_before = $(window).width()
+    original_sidenav_width = (window_before >= 740) ? sidenav.width() : 275;
+    resize_handler();
+});
+$(window).resize(resize_handler);

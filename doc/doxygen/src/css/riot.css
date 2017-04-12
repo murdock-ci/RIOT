@@ -87,7 +87,7 @@ a.SelectItem:active {
   display: none;
 }
 #nav-tree {
-  background: #000000;
+  background: #f5f5f5;
 }
 #nav-tree img {
   -webkit-box-sizing: content-box;
@@ -97,15 +97,14 @@ a.SelectItem:active {
   padding-right: 3px;
 }
 .ui-resizable-e {
-  background: #1a1a1a;
+  background: #e3e3e3;
   width: 3px;
 }
 #nav-sync img {
   opacity: 0.5;
 }
-div.toc {
+div.toc, div.toc-sm {
   min-height: 20px;
-  padding: 19px;
   margin-bottom: 20px;
   background-color: #f5f5f5;
   border: 1px solid #e3e3e3;
@@ -113,12 +112,27 @@ div.toc {
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
 }
-div.toc h3 {
+div.toc {
+  padding: 19px;
+}
+div.toc-sm {
+  padding: 8px;
+}
+div.toc h3, div.toc h3 {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
-div.toc li {
+div.toc-sm h3 {
+  margin-top: 0px;
+}
+div.toc-sm ul {
+  list-style: none;
+  margin: 0;
+  padding-left: 10px;
+}
+div.toc li, div.toc-sm li {
   background: none;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin-left: 0;
 }
 div.ingroups {
   font-size: 10pt;
@@ -164,9 +178,9 @@ pre.fragment {
   font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 div.fragment {
-  border: 1px solid #555;
+  border: 1px solid #e3e3e3;
   border-radius: 4px;
-  background-color: transparent;
+  background-color: #f5f5f5;
   color: inherit;
   display: block;
   font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
@@ -185,7 +199,7 @@ div.line.glow {
 }
 span.lineno {
   background-color: transparent;
-  border-right: 2px solid #555;
+  border-right: 3px solid #e3e3e3;
 }
 span.lineno a {
   background-color: transparent;
@@ -474,4 +488,13 @@ dl.todo > dt {
 }
 .icon {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.img-responsive {
+  margin: 0 auto;
+}
+.image > img {
+  border: 1px solid #e3e3e3;
+  border-radius: 4px;
+  background-color: #f5f5f5;
+  padding: 4px 6px;
 }
