@@ -7,7 +7,7 @@
  */
 
 /**
- * @defgroup    boards_arduino-uno  Arduino Mega 2560
+ * @defgroup    boards_arduino-mega2560 Arduino Mega 2560
  * @ingroup     boards
  * @brief       Support for the Arduino Mega 2560 board
  * @{

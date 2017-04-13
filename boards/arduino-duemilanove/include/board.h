@@ -7,7 +7,7 @@
  */
 
 /**
- * @defgroup    boards_arduino-uno  Arduino Duemilanove
+ * @defgroup    boards_arduino-duemilanove Arduino Duemilanove
  * @ingroup     boards
  * @brief       Support for the Arduino Duemilanove board
  * @{
