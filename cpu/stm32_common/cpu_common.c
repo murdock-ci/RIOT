@@ -60,7 +60,7 @@ void periph_clk_en(bus_t bus, uint32_t mask)
             RCC->AHBENR |= mask;
             break;
 #elif defined(CPU_FAM_STM32F2) || defined(CPU_FAM_STM32F4) \
-            || defined(CPU_FAM_STM32L4)
+            || defined(CPU_FAM_STM32L4) || defined(CPU_FAM_STM32F7)
         case AHB1:
             RCC->AHB1ENR |= mask;
             break;
