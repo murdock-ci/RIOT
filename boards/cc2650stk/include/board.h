@@ -35,7 +35,7 @@ extern "C" {
 /** @} */
 
 /**
- * @name   On-board button configuration
+ * @name    On-board button configuration
  * @{
  */
 #define BUTTON1_DIO         GPIO_PIN(0, 4)
@@ -43,7 +43,7 @@ extern "C" {
 /** @} */
 
 /**
- * @name   Macros for controlling the on-board LEDs
+ * @name    Macros for controlling the on-board LEDs
  * @{
  */
 #define LED0_PIN            GPIO_PIN(0, 10)

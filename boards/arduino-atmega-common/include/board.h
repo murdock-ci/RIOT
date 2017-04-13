@@ -33,7 +33,7 @@ extern "C" {
 #endif
 
 /**
- * @name STDIO configuration
+ * @name    STDIO configuration
  *
  * As the CPU is too slow to handle 115200 baud, we set the default
  * baudrate to 9600 for this board
@@ -43,7 +43,7 @@ extern "C" {
 /** @} */
 
 /**
- * @name   LED pin definitions and handlers
+ * @name    LED pin definitions and handlers
  * @{
  */
 #ifdef CPU_ATMEGA328P
@@ -62,10 +62,11 @@ extern "C" {
 /** @} */
 
 /**
- ** Context swap defines
- ** Setup to use PC5 which is pin change interrupt 13 (PCINT13)
- ** This emulates a software triggered interrupt
- ***/
+ * @brief   Context swap defines
+ *
+ * Setup to use PC5 which is pin change interrupt 13 (PCINT13)
+ * This emulates a software triggered interrupt
+ */
 #ifdef CPU_ATMEGA328P
 #define AVR_CONTEXT_SWAP_INIT do { \
             DDRC |= (1 << PC5); \
@@ -87,7 +88,7 @@ extern "C" {
 #endif
 
 /**
- * @name xtimer configuration values
+ * @name    xtimer configuration values
  * @{
  */
 #define XTIMER_WIDTH                (16)
@@ -97,7 +98,7 @@ extern "C" {
 /** @} */
 
 /**
- * @brief Initialize board specific hardware, including clock, LEDs and std-IO
+ * @brief   Initialize board specific hardware, including clock, LEDs and std-IO
  */
 void board_init(void);
 

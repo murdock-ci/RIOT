@@ -34,7 +34,7 @@ extern "C" {
 #endif
 
 /**
- * @name Xtimer configuration
+ * @name    Xtimer configuration
  *
  * Tell the xtimer that we use a 16-bit peripheral timer
  * @{
@@ -43,7 +43,7 @@ extern "C" {
 /** @} */
 
 /**
- * @name Define the interface to the AT86RF231 radio
+ * @name    Define the interface to the AT86RF231 radio
  *
  * {spi bus, spi speed, cs pin, int pin, reset pin, sleep pin}
  * @{
@@ -57,7 +57,7 @@ extern "C" {
 /** @} */
 
 /**
- * @name Define the interface to the LPS331AP pressure sensor
+ * @name    Define the interface to the LPS331AP pressure sensor
  * @{
  */
 #define LPS331AP_I2C        I2C_0
@@ -65,7 +65,7 @@ extern "C" {
 /** @} */
 
 /**
- * @name Define the interface for the L3G4200D gyroscope
+ * @name    Define the interface for the L3G4200D gyroscope
  * @{
  */
 #define L3G4200D_I2C        I2C_0
@@ -75,7 +75,7 @@ extern "C" {
 /** @} */
 
 /**
- * @name Define the interface to the LSM303DLHC accelerometer and magnetometer
+ * @name    Define the interface to the LSM303DLHC accelerometer and magnetometer
  * @{
  */
 #define LSM303DLHC_I2C      I2C_0
@@ -87,7 +87,7 @@ extern "C" {
 /** @} */
 
 /**
- * @name   LED pin definitions and handlers
+ * @name    LED pin definitions and handlers
  * @{
  */
 #define LED0_PIN            GPIO_PIN(PORT_B, 10)
@@ -106,7 +106,7 @@ extern "C" {
 /** @} */
 
 /**
- * @brief Initialize board specific hardware, including clock, LEDs and std-IO
+ * @brief   Initialize board specific hardware, including clock, LEDs and std-IO
  */
 void board_init(void);
 

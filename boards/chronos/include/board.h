@@ -28,14 +28,14 @@ extern "C" {
 #endif
 
 /**
- * @name   Define the CPU model for the <msp430.h>
+ * @name    Define the CPU model for the <msp430.h>
  */
 #ifndef __CC430F6137__
 #define __CC430F6137__
 #endif
 
 /**
- * @name   Xtimer configuration
+ * @name    Xtimer configuration
  * @{
  */
 #define XTIMER_DEV                  (0)
@@ -44,7 +44,7 @@ extern "C" {
 /** @} */
 
 /**
- * @name   MSP430 core configuration
+ * @name    MSP430 core configuration
  * @{
  */
 /** @todo Move this to the periph_conf.h */
@@ -59,5 +59,5 @@ extern "C" {
 }
 #endif
 
-#endif /* _CHRONOS_BOARD_H */
+#endif /* CHRONOS_BOARD_H */
 /** @} */

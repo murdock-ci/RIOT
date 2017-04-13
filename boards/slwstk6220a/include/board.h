@@ -36,7 +36,7 @@ extern "C" {
 #define HW_TIMER            TIMER_DEV(0)
 
 /**
- * @name   Connection to the on-board temperature/humidity sensor (Si7021)
+ * @name    Connection to the on-board temperature/humidity sensor (Si7021)
  * @{
  */
 #define SI7021_I2C          (I2C_0)
@@ -58,7 +58,7 @@ extern "C" {
 /** @} */
 
 /**
- * @name   LED pin definitions
+ * @name    LED pin definitions
  * @{
  */
 #define LED0_PIN            GPIO_PIN(PF, 6)
@@ -74,7 +74,7 @@ extern "C" {
 /** @} */
 
 /**
- * @brief Initialize board specific hardware, including clock, LEDs and std-IO
+ * @brief   Initialize board specific hardware, including clock, LEDs and std-IO
  */
 void board_init(void);
 

@@ -32,7 +32,7 @@ extern "C" {
 #endif
 
 /**
- * @name   xtimer configuration
+ * @name    xtimer configuration
  * @{
  */
 #define XTIMER              TIMER_0
@@ -40,7 +40,7 @@ extern "C" {
 /** @} */
 
 /**
- * @name   LED pin definitions and handlers
+ * @name    LED pin definitions and handlers
  * @{
  */
 #define LED0_PIN            GPIO_PIN(PA, 17)
@@ -54,7 +54,7 @@ extern "C" {
 /** @} */
 
 /**
- * @brief Initialize board specific hardware, including clock, LEDs and std-IO
+ * @brief   Initialize board specific hardware, including clock, LEDs and std-IO
  */
 void board_init(void);
 

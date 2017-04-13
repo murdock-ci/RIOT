@@ -48,7 +48,7 @@ extern "C" {
 #endif
 
 /**
- * @name   CPU core configuration
+ * @name    CPU core configuration
  * @{
  */
 /** @todo Move this to the periph_conf.h */
