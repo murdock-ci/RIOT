@@ -78,14 +78,15 @@ extern "C"
 #define LPTMR_CONFIG { \
         { \
             .dev = LPTMR0, \
-            .clk_gate = (uint32_t volatile *)BITBAND_REGADDR(SIM->SCGC5, SIM_SCGC5_LPTIMER_SHIFT), \
-            .index = 0, \
+            .scgc_addr = &SIM->SCGC5, \
+            .scgc_bit = SIM_SCGC5_LPTMR_SHIFT, \
+            .irqn = LPTMR0_IRQn, \
         } \
     }
 #define TIMER_NUMOF             ((PIT_NUMOF) + (LPTMR_NUMOF))
 
 #define PIT_BASECLOCK           (CLOCK_BUSCLOCK)
-#define PIT_CLOCKGATE           (BITBAND_REG32(SIM->SCGC6, SIM_SCGC6_PIT_SHIFT))
+#define PIT_CLKEN()             (BIT_SET32(&SIM->SCGC6, SIM_SCGC6_PIT_SHIFT))
 #define PIT_ISR_0               isr_pit1
 #define PIT_ISR_1               isr_pit3
 #define LPTMR_ISR_0             isr_lptmr0
