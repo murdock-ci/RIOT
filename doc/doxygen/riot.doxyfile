@@ -1140,6 +1140,7 @@ HTML_EXTRA_FILES       = src/css/bootstrap.min.css \
                          src/js/jquery.smartmenus.min.js \
                          src/js/jquery.smartmenus.bootstrap.min.js \
                          src/js/jquery-ui.min.js \
+                         src/js/menu.js \
                          src/js/riot-doxy.js
 
 # The HTML_COLORSTYLE_HUE tag controls the color of the HTML output. Doxygen
