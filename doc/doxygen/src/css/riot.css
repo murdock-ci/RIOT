@@ -48,6 +48,9 @@ dl {
   font-size: 14px;
   z-index: 3;
 }
+#FSearchBox #MSearchField {
+  margin-left: auto;
+}
 #MSearchField {
   background: #000000;
   border: #eeeeee solid 1px;
