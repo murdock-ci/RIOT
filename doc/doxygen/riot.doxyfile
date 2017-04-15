@@ -1121,6 +1121,7 @@ HTML_EXTRA_STYLESHEET  = src/css/riot.css
 
 HTML_EXTRA_FILES       = src/css/bootstrap.min.css \
                          src/css/fonts.css \
+                         src/css/jquery.smartmenus.bootstrap.css \
                          src/css/riot.css \
                          src/favicon.png \
                          src/fonts/glyphicons-halflings-regular.eot \
@@ -1136,6 +1137,8 @@ HTML_EXTRA_FILES       = src/css/bootstrap.min.css \
                          src/js/doxy-jquery.js \
                          src/js/jquery.min.js \
                          src/js/jquery.powertip.min.js \
+                         src/js/jquery.smartmenus.min.js \
+                         src/js/jquery.smartmenus.bootstrap.min.js \
                          src/js/jquery-ui.min.js \
                          src/js/riot-doxy.js
 
