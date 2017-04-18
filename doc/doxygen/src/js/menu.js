@@ -27,7 +27,7 @@ function initMenu(relPath,searchEnabled,serverSide,searchPage,search) {
         return result;
     }
 
-    /* code adapted from original menu.js of Doxygen, but made 
+    /* code adapted from original menu.js of Doxygen, but made
      * bootstrap ready via
      * http://vadikom.github.io/smartmenus/src/demo/bootstrap-navbar.html */
     $('#riot-navlist').append(makeTree(menudata,relPath));
