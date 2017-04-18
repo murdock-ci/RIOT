@@ -53,6 +53,17 @@ static char addr_str[IPV6_ADDR_MAX_STR_LEN];
 #define GNRC_RPL_PRF_MASK                   (0x7)
 #define GNRC_RPL_PREFIX_AUTO_ADDRESS_BIT    (1 << 6)
 
+/**
+ * @brief DIS Solicited Information option (numbers)
+ * @see <a href="https://tools.ietf.org/html/rfc6550#section-6.7.9">
+ *          RFC6550, section 6.7.9, Solicited Information
+ *      </a>
+ */
+#define GNRC_RPL_DIS_SOLICITED_INFO_LENGTH  (19)
+#define GNRC_RPL_DIS_SOLICITED_INFO_FLAG_V  (1)
+#define GNRC_RPL_DIS_SOLICITED_INFO_FLAG_I  (1 << 1)
+#define GNRC_RPL_DIS_SOLICITED_INFO_FLAG_D  (1 << 2)
+
 void gnrc_rpl_send(gnrc_pktsnip_t *pkt, kernel_pid_t iface, ipv6_addr_t *src, ipv6_addr_t *dst,
                    ipv6_addr_t *dodag_id)
 {
@@ -157,11 +168,16 @@ gnrc_pktsnip_t *_dis_solicited_opt_build(gnrc_pktsnip_t *pkt, gnrc_rpl_instance_
     solicited_information = opt_snip->data;
 
     solicited_information->type = GNRC_RPL_OPT_SOLICITED_INFO;
-    solicited_information->length = 19;
+    solicited_information->length = GNRC_RPL_DIS_SOLICITED_INFO_LENGTH;
     solicited_information->instance_id = inst->id;
 
     /* For now we set all predicates as required, i.e. V|I|D flags to 1 */
-    solicited_information->VID_flags = 0x07;
+    uint8_t flags = 0;
+    flags |= GNRC_RPL_DIS_SOLICITED_INFO_FLAG_V;
+    flags |= GNRC_RPL_DIS_SOLICITED_INFO_FLAG_I;
+    flags |= GNRC_RPL_DIS_SOLICITED_INFO_FLAG_D;
+
+    solicited_information->VID_flags = flags;
     solicited_information->dodag_id = inst->dodag.dodag_id;
     solicited_information->version_number = inst->dodag.version;
 #else
@@ -390,23 +406,29 @@ bool _parse_options(int msg_type, gnrc_rpl_instance_t *inst, gnrc_rpl_opt_t *opt
                 gnrc_rpl_opt_dis_solicited_t* sol = (gnrc_rpl_opt_dis_solicited_t *) opt;
 
                 /* check expected length */
-                if (sol->length != 19) {
+                if (sol->length != GNRC_RPL_DIS_SOLICITED_INFO_LENGTH) {
+                    DEBUG("RPL: RPL SOLICITED INFO option, unexpected length: %d\n", sol->length);
                     return false;
                 }
 
                 /* check the DODAG Version */
-                if ((sol->VID_flags & 0x01) && (sol->version_number != inst->dodag.version)) {
+                if ((sol->VID_flags & GNRC_RPL_DIS_SOLICITED_INFO_FLAG_V)
+                    && (sol->version_number != inst->dodag.version)) {
+                    DEBUG("RPL: RPL SOLICITED INFO option, ignore DIS cause: DODAG Version mismatch\n");
                     return false;
                 }
 
                 /* check the Instance ID */
-                if ((sol->VID_flags & (0x01 << 1)) && (sol->instance_id != inst->id)) {
+                if ((sol->VID_flags & GNRC_RPL_DIS_SOLICITED_INFO_FLAG_I)
+                    && (sol->instance_id != inst->id)) {
+                    DEBUG("RPL: RPL SOLICITED INFO option, ignore DIS cause: InstanceID mismatch\n");
                     return false;
                 }
 
                 /* check the DODAG ID */
-                if (sol->VID_flags & (0x01 << 2)) {
+                if (sol->VID_flags & GNRC_RPL_DIS_SOLICITED_INFO_FLAG_D) {
                     if (memcmp(&sol->dodag_id, &inst->dodag.dodag_id, sizeof(ipv6_addr_t)) != 0) {
+                        DEBUG("RPL: RPL SOLICITED INFO option, ignore DIS cause: DODAGID mismatch\n");
                         return false;
                     }
                 }
