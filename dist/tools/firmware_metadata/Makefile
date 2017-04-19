@@ -7,12 +7,12 @@ METADATA_HDR := $(RIOT_INCLUDE)/hashes/sha256.h
 
 CFLAGS += -g -O3 -Wall -Wextra -pedantic -std=c99
 
-all: bin bin/generate-metadata
+all: bin/generate-metadata
 
-bin:
-	mkdir bin
+bin/:
+	mkdir -p bin
 
-bin/generate-metadata: $(METADATA_HDR) $(METADATA_SRC)
+bin/generate-metadata: bin/ $(METADATA_HDR) $(METADATA_SRC)
 	$(CC) $(CFLAGS) -I$(RIOT_INCLUDE) $(METADATA_SRC) -o $@
 
 clean:

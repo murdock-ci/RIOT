@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016, Mark Solters <msolters@gmail.com>.
- *               2016, Francisco Acosta <francisco.acosta@inria.fr>
+ *               2016, Inria
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,13 +47,13 @@
 
 #define FW_METADATA_BIN "firmware-metadata.bin"
 
-typedef struct FW_metadata {
+typedef struct firmware_metadata {
     uint8_t hash[SHA256_DIGEST_LENGTH];  /**< SHA256 Hash of firmware image */
     uint8_t shash[SHA256_DIGEST_LENGTH]; /**< Signed SHA256 */
     uint16_t version;                    /**< Integer representing firmware version */
     uint32_t size;                       /**< Size of firmware image */
     uint32_t appid;                      /**< Integer representing the application ID */
-} FW_metadata_t;
+} firmware_metadata_t;
 
 /* Input firmware .bin file */
 FILE *firmware_bin;
@@ -65,27 +65,15 @@ uint32_t firmware_size = 0;
 
 int main(int argc, char *argv[])
 {
-    FW_metadata_t metadata;
+    firmware_metadata_t metadata;
     sha256_context_t firmware_sha256;
-    uint8_t output_buffer[sizeof(FW_metadata_t)];
+    uint8_t output_buffer[sizeof(firmware_metadata_t)];
     int bytes_read = 0;
     uint8_t firmware_buffer[1024];
     char *firmware_metadata_path = FW_METADATA_BIN;
 
-    (void)argc;
-
-    if (!argv[1]) {
-        printf("Please provide a .bin file to perform SHA256 on as the first argument.\n");
-        return -1;
-    }
-
-    if (!argv[2]) {
-        printf("Please provide a 16-bit hex firmware version integer as the second argument.\n");
-        return -1;
-    }
-
-    if (!argv[3]) {
-        printf("Please provide a 32-bit hex APPID integer as the third argument.\n");
+    if (argc < 4) {
+        puts("Usage: generate-metadata <BINFILE> <VERSION> <APPID> [output path]");
         return -1;
     }
 
@@ -120,11 +108,10 @@ int main(int argc, char *argv[])
     }
 
     /* Generate FW image metadata */
-
     metadata.size = firmware_size;
     sscanf(argv[2], "%xu", (unsigned int *)&(metadata.version));
     sscanf(argv[3], "%xu", &(metadata.appid));
-    memcpy(output_buffer, (uint8_t*)&metadata, sizeof(FW_metadata_t));
+    memcpy(output_buffer, (uint8_t*)&metadata, sizeof(firmware_metadata_t));
 
     printf("Firmware Size: %d\n", metadata.size);
     printf("Firmware Version: %#x\n", metadata.version);
@@ -144,11 +131,11 @@ int main(int argc, char *argv[])
     metadata_bin = fopen(firmware_metadata_path, "w");
 
     /* Write the metadata */
-    printf("Metadata size: %lu\n", sizeof(FW_metadata_t));
+    printf("Metadata size: %lu\n", sizeof(firmware_metadata_t));
     fwrite(output_buffer, sizeof(output_buffer), 1, metadata_bin);
 
     /* 0xff spacing until firmware binary starts */
-    uint8_t blank_buffer[256 - sizeof(FW_metadata_t)];
+    uint8_t blank_buffer[256 - sizeof(firmware_metadata_t)];
 
     for (unsigned long b = 0; b < sizeof(blank_buffer); b++) {
         blank_buffer[b] = 0xff;

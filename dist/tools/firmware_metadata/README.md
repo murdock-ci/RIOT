@@ -3,13 +3,13 @@ This program will generate a binary file containing a metadata structure as
 follows:
 
 ```c
-typedef struct FW_metadata {
+typedef struct firmware_metadata {
     uint8_t hash[SHA256_DIGEST_LENGTH]; /**< SHA256 Hash of firmware image */
     uint8_t shash[SIGN_LEN];            /**< Signed SHA256 */
     uint16_t version;                   /**< Integer representing firmware version */
     uint32_t size;                      /**< Size of firmware image */
     uint32_t appid;                     /**< Integer representing the application ID */
-} FW_metadata_t;
+} firmware_metadata_t;
 ```
 
 This structure will be filled with the data obtained from the firmware.
