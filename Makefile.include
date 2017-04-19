@@ -311,7 +311,7 @@ endif
 endif # BUILD_IN_DOCKER
 
 firmware-metadata: all generate-metadata
-	$(Q)$(FW_METADATA)/bin/./generate-metadata $(BINFILE) $(VERSION) $(APPID) $(METADATA_FILE)
+	$(Q)$(FW_METADATA)/bin/generate-metadata $(BINFILE) $(VERSION) $(APPID) $(METADATA_FILE)
 
 generate-metadata: $(FW_METADATA)/bin/generate-metadata
 
