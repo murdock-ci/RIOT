@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
     uint8_t output_buffer[sizeof(firmware_metadata_t)];
     int bytes_read = 0;
     uint8_t firmware_buffer[1024];
-    char *firmware_metadata_path = FW_METADATA_BIN;
+    char firmware_metadata_path[128];
 
     if (argc < 4) {
         puts("Usage: generate-metadata <BINFILE> <VERSION> <APPID> [output path]");
@@ -78,7 +78,10 @@ int main(int argc, char *argv[])
     }
 
     if (argv[4]) {
-        firmware_metadata_path = argv[4];
+        strcpy(firmware_metadata_path, argv[4]);
+    }
+    else {
+        strcpy(firmware_metadata_path, "firmware-metadata.bin");
     }
 
     /* Open the firmware .bin file */
