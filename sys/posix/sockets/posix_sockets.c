@@ -411,12 +411,12 @@ int accept(int socket, struct sockaddr *restrict address,
     switch (s->type) {
         case SOCK_STREAM:
             new_s = _get_free_socket();
-            sock = (sock_tcp_t *)new_s->sock;
             if (new_s == NULL) {
                 errno = ENFILE;
                 res = -1;
                 break;
             }
+            sock = (sock_tcp_t *)new_s->sock;
             if ((res = sock_tcp_accept(&s->sock->tcp.queue, &sock,
                                        recv_timeout)) < 0) {
                 errno = -res;
