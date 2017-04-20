@@ -26,7 +26,7 @@
 extern "C" {
 #endif
 
-#if !BITBAND_MACROS_PROVIDED
+#if !BITBAND_FUNCTIONS_PROVIDED
 
 #ifndef CPU_HAS_BITBAND
 #if (__CORTEX_M >= 3)
@@ -53,8 +53,8 @@ extern "C" {
  */
 static inline volatile void *bitband_addr(volatile void *ptr, uintptr_t bit)
 {
-    return (volatile void *)((((uintptr_t)ptr) & 0xF0000000u) + 0x2000000 +
-        ((((uintptr_t)ptr) & 0xFFFFF) << 5) + (bit << 2));
+    return (volatile void *)((((uintptr_t)ptr) & 0xF0000000ul) + 0x2000000ul +
+        ((((uintptr_t)ptr) & 0xFFFFFul) << 5) + (bit << 2));
 }
 
 /**
@@ -74,7 +74,7 @@ static inline volatile void *bitband_addr(volatile void *ptr, uintptr_t bit)
  */
 static inline void bit_set32(volatile uint32_t *ptr, uint8_t bit)
 {
-    *((volatile uint32_t *)bitband_addr((volatile void *)ptr, bit)) = 1;
+    *((volatile uint32_t *)bitband_addr(ptr, bit)) = 1;
 }
 
 /**
@@ -94,7 +94,7 @@ static inline void bit_set32(volatile uint32_t *ptr, uint8_t bit)
  */
 static inline void bit_set16(volatile uint16_t *ptr, uint8_t bit)
 {
-    *((volatile uint16_t *)bitband_addr((volatile void *)ptr, bit)) = 1;
+    *((volatile uint16_t *)bitband_addr(ptr, bit)) = 1;
 }
 
 /**
@@ -109,12 +109,12 @@ static inline void bit_set16(volatile uint16_t *ptr, uint8_t bit)
  * There is a read-modify-write cycle occurring within the core, but this cycle
  * is atomic and can not be disrupted by IRQs
  *
- * @param[in]  ptr pointer to target word
- * @param[in]  bit bit number within the word
+ * @param[in]  ptr pointer to target byte
+ * @param[in]  bit bit number within the byte
  */
 static inline void bit_set8(volatile uint8_t *ptr, uint8_t bit)
 {
-    *((volatile uint8_t *)bitband_addr((volatile void *)ptr, bit)) = 1;
+    *((volatile uint8_t *)bitband_addr(ptr, bit)) = 1;
 }
 
 /**
@@ -134,7 +134,7 @@ static inline void bit_set8(volatile uint8_t *ptr, uint8_t bit)
  */
 static inline void bit_clear32(volatile uint32_t *ptr, uint8_t bit)
 {
-    *((volatile uint32_t *)bitband_addr((volatile void *)ptr, bit)) = 0;
+    *((volatile uint32_t *)bitband_addr(ptr, bit)) = 0;
 }
 
 /**
@@ -154,7 +154,7 @@ static inline void bit_clear32(volatile uint32_t *ptr, uint8_t bit)
  */
 static inline void bit_clear16(volatile uint16_t *ptr, uint8_t bit)
 {
-    *((volatile uint16_t *)bitband_addr((volatile void *)ptr, bit)) = 0;
+    *((volatile uint16_t *)bitband_addr(ptr, bit)) = 0;
 }
 
 /**
@@ -169,12 +169,12 @@ static inline void bit_clear16(volatile uint16_t *ptr, uint8_t bit)
  * There is a read-modify-write cycle occurring within the core, but this cycle
  * is atomic and can not be disrupted by IRQs
  *
- * @param[in]  ptr pointer to target word
- * @param[in]  bit bit number within the word
+ * @param[in]  ptr pointer to target byte
+ * @param[in]  bit bit number within the byte
  */
 static inline void bit_clear8(volatile uint8_t *ptr, uint8_t bit)
 {
-    *((volatile uint8_t *)bitband_addr((volatile void *)ptr, bit)) = 0;
+    *((volatile uint8_t *)bitband_addr(ptr, bit)) = 0;
 }
 
 /** @} */
