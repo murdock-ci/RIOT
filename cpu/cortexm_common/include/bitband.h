@@ -46,7 +46,7 @@ extern "C" {
 /**
  * @brief Convert bit band region address and bit number to bit band alias address
  *
- * @param[in] addr base address in non bit banded memory
+ * @param[in] ptr  base address in non bit banded memory
  * @param[in] bit  bit number within the word
  *
  * @return Address of the bit within the bit band memory region
