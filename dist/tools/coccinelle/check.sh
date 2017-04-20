@@ -35,6 +35,7 @@ coccinelle_checkall() {
 
     for patch in $dir/*; do
         OUT="$(spatch --very-quiet \
+            --macro-file-builtins ${RIOTBASE}/dist/tools/coccinelle/include/riot-standard.h \
             --file-groups "${COCCINELLE_TMP}" \
             --sp-file $patch | filter)"
 
