@@ -199,45 +199,6 @@ typedef enum llwu_wakeup_pin {
 
 /** @} */
 
-/**
- * @name Bit band macros
- * @{
- */
-/* Generic bitband conversion routine */
-/** @brief Convert bit-band region address and bit number to bit-band alias address
- *
- * @param[in] addr base address in non-bit-banded memory
- * @param[in] bit  bit number within the word
- *
- * @return Address of the bit within the bit-band memory region
- */
-#define BITBAND_ADDR(addr, bit) ((((uint32_t) (addr)) & 0xF0000000u) + 0x2000000 + ((((uint32_t) (addr)) & 0xFFFFF) << 5) + ((bit) << 2))
-
-/**
- * @brief Bitband 32 bit access to variable stored in SRAM_U
- *
- * @note SRAM_L is not bit band aliased on the K60, only SRAM_U (0x20000000 and up)
- * @note var must be declared 'volatile'
- */
-#define BITBAND_VAR32(var, bit) (*((uint32_t volatile*) BITBAND_ADDR(&(var), (bit))))
-
-/**
- * @brief Bitband 16 bit access to variable stored in SRAM_U
- *
- * @note SRAM_L is not bit band aliased on the K60, only SRAM_U (0x20000000 and up)
- * @note var must be declared 'volatile'
- */
-#define BITBAND_VAR16(var, bit) (*((uint16_t volatile*) BITBAND_ADDR(&(var), (bit))))
-
-/**
- * @brief Bitband 8 bit access to variable stored in SRAM_U
- *
- * @note SRAM_L is not bit band aliased on the K60, only SRAM_U (0x20000000 and up)
- * @note var must be declared 'volatile'
- */
-#define BITBAND_VAR8(var, bit) (*((uint8_t volatile*) BITBAND_ADDR(&(var), (bit))))
-
-/** @} */
 #ifdef __cplusplus
 }
 #endif
