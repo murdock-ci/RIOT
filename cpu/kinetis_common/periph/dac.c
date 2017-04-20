@@ -85,10 +85,10 @@ static inline void _dac_set_power(dac_t line, uint8_t value)
     dac = dac_config[line].dev;
 
     if (value) {
-        BIT_SET8(&dac->C0, DAC_C0_DACEN_SHIFT);
+        bit_set8(&dac->C0, DAC_C0_DACEN_SHIFT);
     }
     else {
-        BIT_CLR8(&dac->C0, DAC_C0_DACEN_SHIFT);
+        bit_clear8(&dac->C0, DAC_C0_DACEN_SHIFT);
     }
 }
 

@@ -65,11 +65,11 @@ static inline int dev_num(adc_t line)
 static inline void prep(adc_t line)
 {
     if (dev(line) == ADC0) {
-        BIT_SET32(&SIM->SCGC6, SIM_SCGC6_ADC0_SHIFT);
+        bit_set32(&SIM->SCGC6, SIM_SCGC6_ADC0_SHIFT);
     }
 #ifdef ADC1
     else {
-        BIT_SET32(SIM->SCGC3, SIM_SCGC3_ADC1_SHIFT);
+        bit_set32(&SIM->SCGC3, SIM_SCGC3_ADC1_SHIFT);
     }
 #endif
     mutex_lock(&locks[dev_num(line)]);
@@ -78,11 +78,11 @@ static inline void prep(adc_t line)
 static inline void done(adc_t line)
 {
     if (dev(line) == ADC0) {
-        BIT_CLR32(SIM->SCGC6, SIM_SCGC6_ADC0_SHIFT);
+        bit_clear32(&SIM->SCGC6, SIM_SCGC6_ADC0_SHIFT);
     }
 #ifdef ADC1
     else {
-        BIT_CLR32(SIM->SCGC3, SIM_SCGC3_ADC1_SHIFT);
+        bit_clear32(&SIM->SCGC3, SIM_SCGC3_ADC1_SHIFT);
     }
 #endif
     mutex_unlock(&locks[dev_num(line)]);

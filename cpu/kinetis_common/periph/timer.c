@@ -434,7 +434,7 @@ inline static int lptmr_init(uint8_t dev, uint32_t freq, timer_cb_t cb, void *ar
     unsigned int mask = irq_disable();
 
     /* Turn on module clock */
-    BIT_SET32(lptmr_config[dev].scgc_addr, lptmr_config[dev].scgc_bit);
+    bit_set32(lptmr_config[dev].scgc_addr, lptmr_config[dev].scgc_bit);
     /* Completely disable the module before messing with the settings */
     hw->CSR = 0;
     /* select ERCLK32K as clock source for LPTMR */
@@ -561,7 +561,7 @@ inline static void lptmr_irq_handler(tim_t tim)
     }
 
     /* Clear interrupt flag */
-    BIT_SET32(&hw->CSR, LPTMR_CSR_TCF_SHIFT);
+    bit_set32(&hw->CSR, LPTMR_CSR_TCF_SHIFT);
 
     cortexm_isr_end();
 }
