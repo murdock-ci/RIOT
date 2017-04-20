@@ -51,7 +51,11 @@ extern "C" {
  *
  * @return Address of the bit within the bit band memory region
  */
-#define BITBAND_ADDR(addr, bit) ((((uint32_t) (addr)) & 0xF0000000u) + 0x2000000 + ((((uint32_t) (addr)) & 0xFFFFF) << 5) + ((bit) << 2))
+static inline volatile void *bitband_addr(volatile void *ptr, uintptr_t bit)
+{
+    return (volatile void *)((((uintptr_t)ptr) & 0xF0000000u) + 0x2000000 +
+        ((((uintptr_t)ptr) & 0xFFFFF) << 5) + (bit << 2));
+}
 
 /**
  * @brief Set a single bit in the 32 bit word pointed to by @p ptr
@@ -68,7 +72,10 @@ extern "C" {
  * @param[in]  ptr pointer to target word
  * @param[in]  bit bit number within the word
  */
-#define BIT_SET32(ptr, bit) (*((volatile uint32_t *) BITBAND_ADDR((ptr), (bit))) = 1)
+static inline void bit_set32(volatile uint32_t *ptr, uint8_t bit)
+{
+    *((volatile uint32_t *)bitband_addr((volatile void *)ptr, bit)) = 1;
+}
 
 /**
  * @brief Set a single bit in the 16 bit word pointed to by @p ptr
@@ -85,7 +92,10 @@ extern "C" {
  * @param[in]  ptr pointer to target word
  * @param[in]  bit bit number within the word
  */
-#define BIT_SET16(ptr, bit) (*((volatile uint16_t *) BITBAND_ADDR((ptr), (bit))) = 1)
+static inline void bit_set16(volatile uint16_t *ptr, uint8_t bit)
+{
+    *((volatile uint16_t *)bitband_addr((volatile void *)ptr, bit)) = 1;
+}
 
 /**
  * @brief Set a single bit in the 8 bit byte pointed to by @p ptr
@@ -102,7 +112,10 @@ extern "C" {
  * @param[in]  ptr pointer to target word
  * @param[in]  bit bit number within the word
  */
-#define BIT_SET8(ptr, bit) (*((volatile uint8_t *) BITBAND_ADDR((ptr), (bit))) = 1)
+static inline void bit_set8(volatile uint8_t *ptr, uint8_t bit)
+{
+    *((volatile uint8_t *)bitband_addr((volatile void *)ptr, bit)) = 1;
+}
 
 /**
  * @brief Clear a single bit in the 32 bit word pointed to by @p ptr
@@ -119,7 +132,10 @@ extern "C" {
  * @param[in]  ptr pointer to target word
  * @param[in]  bit bit number within the word
  */
-#define BIT_CLR32(ptr, bit) (*((volatile uint32_t *) BITBAND_ADDR((ptr), (bit))) = 0)
+static inline void bit_clear32(volatile uint32_t *ptr, uint8_t bit)
+{
+    *((volatile uint32_t *)bitband_addr((volatile void *)ptr, bit)) = 0;
+}
 
 /**
  * @brief Clear a single bit in the 16 bit word pointed to by @p ptr
@@ -136,7 +152,10 @@ extern "C" {
  * @param[in]  ptr pointer to target word
  * @param[in]  bit bit number within the word
  */
-#define BIT_CLR16(ptr, bit) (*((volatile uint16_t *) BITBAND_ADDR((ptr), (bit))) = 0)
+static inline void bit_clear16(volatile uint16_t *ptr, uint8_t bit)
+{
+    *((volatile uint16_t *)bitband_addr((volatile void *)ptr, bit)) = 0;
+}
 
 /**
  * @brief Clear a single bit in the 8 bit byte pointed to by @p ptr
@@ -153,18 +172,44 @@ extern "C" {
  * @param[in]  ptr pointer to target word
  * @param[in]  bit bit number within the word
  */
-#define BIT_CLR8(ptr, bit) (*((volatile uint8_t *) BITBAND_ADDR((ptr), (bit))) = 0)
+static inline void bit_clear8(volatile uint8_t *ptr, uint8_t bit)
+{
+    *((volatile uint8_t *)bitband_addr((volatile void *)ptr, bit)) = 0;
+}
 
 /** @} */
 
 #else /* CPU_HAS_BITBAND */
 /* CPU does not have bitbanding, fall back to plain C */
-#define BIT_SET32(ptr, bit) (*((volatile uint32_t *)(ptr)) |=  (1 << (bit)))
-#define BIT_SET16(ptr, bit) (*((volatile uint16_t *)(ptr)) |=  (1 << (bit)))
-#define BIT_SET8(ptr, bit)  (*((volatile  uint8_t *)(ptr)) |=  (1 << (bit)))
-#define BIT_CLR32(ptr, bit) (*((volatile uint32_t *)(ptr)) &= ~(1 << (bit)))
-#define BIT_CLR16(ptr, bit) (*((volatile uint16_t *)(ptr)) &= ~(1 << (bit)))
-#define BIT_CLR8(ptr, bit)  (*((volatile  uint8_t *)(ptr)) &= ~(1 << (bit)))
+static inline void bit_set32(volatile uint32_t *ptr, uint8_t bit)
+{
+    *ptr |= (1 << (bit));
+}
+
+static inline void bit_set16(volatile uint16_t *ptr, uint8_t bit)
+{
+    *ptr |= (1 << (bit));
+}
+
+static inline void bit_set8(volatile uint8_t *ptr, uint8_t bit)
+{
+    *ptr |= (1 << (bit));
+}
+
+static inline void bit_clear32(volatile uint32_t *ptr, uint8_t bit)
+{
+    *ptr &= ~(1 << (bit));
+}
+
+static inline void bit_clear16(volatile uint16_t *ptr, uint8_t bit)
+{
+    *ptr &= ~(1 << (bit));
+}
+
+static inline void bit_clear8(volatile uint8_t *ptr, uint8_t bit)
+{
+    *ptr &= ~(1 << (bit));
+}
 
 #endif
 #endif /* !HAVE_BITBAND_MACROS */
