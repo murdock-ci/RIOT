@@ -37,9 +37,9 @@ extern "C" {
 
 #if CPU_HAS_BITBAND || DOXYGEN
 /* Cortex-M3 and higher provide a bitband address space for atomically accessing
- * single bits of registers (and sometimes RAM) */
+ * single bits of peripheral registers, and sometimes for RAM as well */
 /**
- * @name Bit band macros
+ * @name Bit manipulation functions
  * @{
  */
 /* Generic bit band conversion routine */
@@ -60,10 +60,10 @@ static inline volatile void *bitband_addr(volatile void *ptr, uintptr_t bit)
 /**
  * @brief Set a single bit in the 32 bit word pointed to by @p ptr
  *
- * This is the same as:
+ * The effect is the same as for the following snippet:
  *
  * @code{c}
- *   *((uint32_t *)ptr) |= (1 << bit);
+ *   *((volatile uint32_t *)ptr) |= (1 << bit);
  * @endcode
  *
  * There is a read-modify-write cycle occurring within the core, but this cycle
@@ -80,10 +80,10 @@ static inline void bit_set32(volatile uint32_t *ptr, uint8_t bit)
 /**
  * @brief Set a single bit in the 16 bit word pointed to by @p ptr
  *
- * This is the same as:
+ * The effect is the same as for the following snippet:
  *
  * @code{c}
- *   *((uint16_t *)ptr) |= (1 << bit);
+ *   *((volatile uint16_t *)ptr) |= (1 << bit);
  * @endcode
  *
  * There is a read-modify-write cycle occurring within the core, but this cycle
@@ -100,10 +100,10 @@ static inline void bit_set16(volatile uint16_t *ptr, uint8_t bit)
 /**
  * @brief Set a single bit in the 8 bit byte pointed to by @p ptr
  *
- * This is the same as:
+ * The effect is the same as for the following snippet:
  *
  * @code{c}
- *   *((uint8_t *)ptr) |= (1 << bit);
+ *   *((volatile uint8_t *)ptr) |= (1 << bit);
  * @endcode
  *
  * There is a read-modify-write cycle occurring within the core, but this cycle
@@ -120,10 +120,10 @@ static inline void bit_set8(volatile uint8_t *ptr, uint8_t bit)
 /**
  * @brief Clear a single bit in the 32 bit word pointed to by @p ptr
  *
- * This is the same as:
+ * The effect is the same as for the following snippet:
  *
  * @code{c}
- *   *((uint32_t *)ptr) &= ~(1 << bit);
+ *   *((volatile uint32_t *)ptr) &= ~(1 << bit);
  * @endcode
  *
  * There is a read-modify-write cycle occurring within the core, but this cycle
@@ -140,10 +140,10 @@ static inline void bit_clear32(volatile uint32_t *ptr, uint8_t bit)
 /**
  * @brief Clear a single bit in the 16 bit word pointed to by @p ptr
  *
- * This is the same as:
+ * The effect is the same as for the following snippet:
  *
  * @code{c}
- *   *((uint16_t *)ptr) &= ~(1 << bit);
+ *   *((volatile uint16_t *)ptr) &= ~(1 << bit);
  * @endcode
  *
  * There is a read-modify-write cycle occurring within the core, but this cycle
@@ -160,10 +160,10 @@ static inline void bit_clear16(volatile uint16_t *ptr, uint8_t bit)
 /**
  * @brief Clear a single bit in the 8 bit byte pointed to by @p ptr
  *
- * This is the same as:
+ * The effect is the same as for the following snippet:
  *
  * @code{c}
- *   *((uint8_t *)ptr) &= ~(1 << bit);
+ *   *((volatile uint8_t *)ptr) &= ~(1 << bit);
  * @endcode
  *
  * There is a read-modify-write cycle occurring within the core, but this cycle
