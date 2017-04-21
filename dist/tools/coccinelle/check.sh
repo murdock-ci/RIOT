@@ -10,6 +10,8 @@
 
 . ${RIOTBASE}/dist/tools/ci/changed_files.sh
 
+EXIT_CODE=0
+
 filter() {
     if [ $COCCINELLE_QUIET -eq 0 ]; then
         cat
@@ -18,10 +20,27 @@ filter() {
     fi
 }
 
-EXIT_CODE=0
-
 indent() {
     sed 's/^/    /g'
+}
+
+coccinelle_checkone() {
+    OUT="$(spatch --very-quiet \
+        --macro-file-builtins ${RIOTBASE}/dist/tools/coccinelle/include/riot-standard.h \
+        --file-groups "${COCCINELLE_TMP}" \
+        --sp-file $patch | filter)"
+
+    if [ -n "$OUT" ]; then
+        if [ $COCCINELLE_QUIET -eq 1 ]; then
+            echo "$patch:"
+            echo "$OUT" | indent
+            if [ COCCINELLE_WARNONLY -eq 0 ]; then
+                EXIT_CODE=1
+            fi
+        else
+            echo "$OUT"
+        fi
+    fi
 }
 
 coccinelle_checkall() {
@@ -34,22 +53,7 @@ coccinelle_checkall() {
     }
 
     for patch in $dir/*; do
-        OUT="$(spatch --very-quiet \
-            --macro-file-builtins ${RIOTBASE}/dist/tools/coccinelle/include/riot-standard.h \
-            --file-groups "${COCCINELLE_TMP}" \
-            --sp-file $patch | filter)"
-
-        if [ -n "$OUT" ]; then
-            if [ $COCCINELLE_QUIET -eq 1 ]; then
-                echo "$patch:"
-                echo "$OUT" | indent
-                if [ COCCINELLE_WARNONLY -eq 0 ]; then
-                    EXIT_CODE=1
-                fi
-            else
-                echo "$OUT"
-            fi
-        fi
+        coccinelle_checkone $patch
     done
 }
 
@@ -71,9 +75,15 @@ echo "$FILES" > ${COCCINELLE_TMP}
 
 : ${COCCINELLE_QUIET:=0}
 
-coccinelle_checkall ${RIOTBASE}/dist/tools/coccinelle/force
+if [ -z "$*" ]; then
+    coccinelle_checkall ${RIOTBASE}/dist/tools/coccinelle/force
 
-COCCINELLE_WARNONLY=1 \
-    coccinelle_checkall ${RIOTBASE}/dist/tools/coccinelle/warn
+    COCCINELLE_WARNONLY=1 \
+        coccinelle_checkall ${RIOTBASE}/dist/tools/coccinelle/warn
+else
+    for patch in "$@"; do
+        coccinelle_checkone "$patch"
+    done
+fi
 
 exit $EXIT_CODE
