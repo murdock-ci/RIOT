@@ -57,7 +57,7 @@ coccinelle_checkall() {
     done
 }
 
-FILES=$(FILEREGEX='\.c$' changed_files)
+: ${FILES:=$(FILEREGEX='\.c$' changed_files)}
 
 if [ -z "${FILES}" ]; then
     exit
