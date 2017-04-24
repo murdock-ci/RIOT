@@ -1,5 +1,5 @@
 PKG_NAME     = fatfs
-PKG_URL      = elm-chan.org/fsw/ff/arc/
+PKG_URL      = elm-chan.org/fsw/ff/arc
 PKG_VERSION  = ff12b
 PKG_EXT      = zip
 PKG_BUILDDIR = $(BINDIRBASE)/pkg/$(BOARD)/$(PKG_NAME)
