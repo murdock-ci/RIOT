@@ -12,7 +12,7 @@ all: bin/generate-metadata
 bin/:
 	mkdir -p bin
 
-bin/generate-metadata: bin/ $(METADATA_HDR) $(METADATA_SRC)
+bin/generate-metadata: $(METADATA_HDR) $(METADATA_SRC) | bin/
 	$(CC) $(CFLAGS) -I$(RIOT_INCLUDE) $(METADATA_SRC) -o $@
 
 clean:
