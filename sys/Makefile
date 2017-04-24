@@ -100,6 +100,7 @@ endif
 ifneq (,$(filter sema,$(USEMODULE)))
     DIRS += sema
 endif
+<<<<<<< HEAD
 ifneq (,$(filter gcoap,$(USEMODULE)))
     DIRS += net/application_layer/coap
 endif
