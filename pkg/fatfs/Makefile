@@ -36,7 +36,7 @@ $(PKG_BUILDDIR)/.prepared: $(PKG_BUILDDIR)/.extracted
 	$(AD)mv $(PKG_BUILDDIR)/src/* $(PKG_BUILDDIR)/
 	$(AD)rm -rf $(PKG_BUILDDIR)/src
 	$(AD)rm -rf $(PKG_BUILDDIR)/doc
-	
+
 #this file is only a dummy that should be replaced by a compatible implementation
 	$(AD)rm $(PKG_BUILDDIR)/diskio.c
 	$(AD)cp $(MODULE_MAKEFILE) $(PKG_BUILDDIR)/Makefile
