@@ -68,10 +68,6 @@ extern "C"
 #define LPTIMER_DEV      (LPTMR0) /**< LPTIMER hardware module */
 #define LPTIMER_CLKEN()  (bit_set32(&SIM->SCGC5, SIM_SCGC5_LPTMR_SHIFT)) /**< Enable LPTMR0 clock gate */
 
-/**
- * @name PIT module settings
- */
-
 #ifdef __cplusplus
 }
 #endif
