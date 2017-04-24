@@ -434,7 +434,7 @@ inline static int lptmr_init(uint8_t dev, uint32_t freq, timer_cb_t cb, void *ar
     unsigned int mask = irq_disable();
 
     /* Turn on module clock */
-    bit_set32(lptmr_config[dev].scgc_addr, lptmr_config[dev].scgc_bit);
+    LPTIMER_CLKEN();
     /* Completely disable the module before messing with the settings */
     hw->CSR = 0;
     /* select ERCLK32K as clock source for LPTMR */

@@ -78,8 +78,6 @@ extern "C"
 #define LPTMR_CONFIG { \
         { \
             .dev = LPTMR0, \
-            .scgc_addr = &SIM->SCGC5, \
-            .scgc_bit = SIM_SCGC5_LPTMR_SHIFT, \
             .irqn = LPTMR0_IRQn, \
         } \
     }

@@ -68,29 +68,19 @@ extern "C"
 #define PIN_INTERRUPT_EDGE 0b1011
 /** @} */
 
-/** @name PORT module clock gates */
-/** @{ */
-#define PORTA_CLOCK_GATE (BITBAND_REG32(SIM->SCGC5, SIM_SCGC5_PORTA_SHIFT))
-#define PORTB_CLOCK_GATE (BITBAND_REG32(SIM->SCGC5, SIM_SCGC5_PORTB_SHIFT))
-#define PORTC_CLOCK_GATE (BITBAND_REG32(SIM->SCGC5, SIM_SCGC5_PORTC_SHIFT))
-#define PORTD_CLOCK_GATE (BITBAND_REG32(SIM->SCGC5, SIM_SCGC5_PORTD_SHIFT))
-#define PORTE_CLOCK_GATE (BITBAND_REG32(SIM->SCGC5, SIM_SCGC5_PORTE_SHIFT))
-/** @} */
-
 /**
  * @name Clock settings for the LPTMR0 timer
  * @{
  */
-#define LPTIMER_DEV                      (LPTMR0) /**< LPTIMER hardware module */
-#define LPTIMER_CLKEN()                  (BITBAND_REG32(SIM->SCGC5, SIM_SCGC5_LPTIMER_SHIFT) = 1)    /**< Enable LPTMR0 clock gate */
-#define LPTIMER_CLKDIS()                 (BITBAND_REG32(SIM->SCGC5, SIM_SCGC5_LPTIMER_SHIFT) = 0)    /**< Disable LPTMR0 clock gate */
-#define LPTIMER_CLKSRC_MCGIRCLK          0    /**< internal reference clock (4MHz) */
-#define LPTIMER_CLKSRC_LPO               1    /**< PMC 1kHz output */
-#define LPTIMER_CLKSRC_ERCLK32K          2    /**< RTC clock 32768Hz */
-#define LPTIMER_CLKSRC_OSCERCLK          3    /**< system oscillator output, clock from RF-Part */
+#define LPTIMER_DEV              (LPTMR0) /**< LPTIMER hardware module */
+#define LPTIMER_CLKEN()          (bit_set32(&SIM->SCGC5, SIM_SCGC5_LPTMR_SHIFT))    /**< Enable LPTMR0 clock gate */
+#define LPTIMER_CLKSRC_MCGIRCLK  0    /**< internal reference clock (4MHz) */
+#define LPTIMER_CLKSRC_LPO       1    /**< PMC 1kHz output */
+#define LPTIMER_CLKSRC_ERCLK32K  2    /**< RTC clock 32768Hz */
+#define LPTIMER_CLKSRC_OSCERCLK  3    /**< system oscillator output */
 
 #ifndef LPTIMER_CLKSRC
-#define LPTIMER_CLKSRC                   LPTIMER_CLKSRC_ERCLK32K    /**< default clock source */
+#define LPTIMER_CLKSRC           LPTIMER_CLKSRC_ERCLK32K    /**< default clock source */
 #endif
 
 #if (LPTIMER_CLKSRC == LPTIMER_CLKSRC_MCGIRCLK)

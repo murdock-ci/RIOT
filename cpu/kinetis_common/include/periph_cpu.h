@@ -249,10 +249,6 @@ typedef struct {
 typedef struct {
     /** LPTMR device base pointer */
     LPTMR_Type *dev;
-    /** Pointer to clock gate register */
-    volatile uint32_t *scgc_addr;
-    /** Bit within the SCGC register for the clock gate */
-    uint8_t scgc_bit;
     /** IRQn interrupt number */
     uint8_t irqn;
 } lptmr_conf_t;
