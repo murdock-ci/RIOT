@@ -32,6 +32,7 @@
 #define ENABLE_DEBUG (0)
 #include "debug.h"
 
+#define TCB_EQUAL(a,b)      ((a == b) ? 1 : 0)
 /**
  * @brief Checks if a given port number is currently used by a TCB as local_port.
  *
@@ -45,12 +46,8 @@
 static int _is_local_port_in_use(const uint16_t port_number)
 {
     gnrc_tcp_tcb_t *iter = NULL;
-    LL_FOREACH(_list_tcb_head, iter) {
-        if (iter->local_port == port_number) {
-            return 1;
-        }
-    }
-    return 0;
+    LL_SEARCH_SCALAR(_list_tcb_head, iter, local_port, port_number);
+    return (iter != NULL);
 }
 
 /**
@@ -113,6 +110,8 @@ static int _restart_timewait_timer(gnrc_tcp_tcb_t *tcb)
  */
 static int _transition_to(gnrc_tcp_tcb_t *tcb, fsm_state_t state)
 {
+    DEBUG("_transition_to: %d\n", state);
+
     gnrc_tcp_tcb_t *iter = NULL;
 
     switch (state) {
@@ -122,14 +121,7 @@ static int _transition_to(gnrc_tcp_tcb_t *tcb, fsm_state_t state)
 
             /* Remove connection from active connections */
             mutex_lock(&_list_tcb_lock);
-            LL_FOREACH(_list_tcb_head, iter) {
-                if (iter == tcb) {
-                    break;
-                }
-            }
-            if (iter != NULL) {
-                LL_DELETE(_list_tcb_head, iter);
-            }
+            LL_DELETE(_list_tcb_head, tcb);
             mutex_unlock(&_list_tcb_lock);
 
             /* Free potencially allocated receive buffer */
@@ -156,13 +148,9 @@ static int _transition_to(gnrc_tcp_tcb_t *tcb, fsm_state_t state)
 
             /* Add connection to active connections (if not already active) */
             mutex_lock(&_list_tcb_lock);
-            LL_FOREACH(_list_tcb_head, iter) {
-                if (iter == tcb) {
-                    break;
-                }
-            }
+            LL_SEARCH(_list_tcb_head, iter, tcb, TCB_EQUAL);
             if (iter == NULL) {
-                LL_APPEND(_list_tcb_head, tcb);
+                LL_PREPEND(_list_tcb_head, tcb);
             }
             mutex_unlock(&_list_tcb_lock);
             break;
@@ -175,11 +163,7 @@ static int _transition_to(gnrc_tcp_tcb_t *tcb, fsm_state_t state)
 
             /* Add connection to active connections (if not already active) */
             mutex_lock(&_list_tcb_lock);
-            LL_FOREACH(_list_tcb_head, iter) {
-                if (iter == tcb) {
-                    break;
-                }
-            }
+            LL_SEARCH(_list_tcb_head, iter, tcb, TCB_EQUAL);
             /* If connection is not already active: Check port number, append TCB */
             if (iter == NULL) {
                 /* Check if port number was specified */
@@ -195,7 +179,7 @@ static int _transition_to(gnrc_tcp_tcb_t *tcb, fsm_state_t state)
                 else {
                     tcb->local_port = _get_random_local_port();
                 }
-                LL_APPEND(_list_tcb_head, tcb);
+                LL_PREPEND(_list_tcb_head, tcb);
             }
             mutex_unlock(&_list_tcb_lock);
             break;
