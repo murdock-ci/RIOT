@@ -11,7 +11,7 @@
  * @{
  *
  * @file
- * @brief   Definitions for tests/lwip/
+ * @brief   Definitions for tests/emb6/
  *
  * @author  Martine Lenders <mlenders@inf.fu-berlin.de>
  */
@@ -29,7 +29,7 @@ extern "C" {
  * @brief   Application configuration
  * @{
  */
-#define CONN_INBUF_SIZE         (256)
+#define SOCK_INBUF_SIZE         (256)
 #define SERVER_MSG_QUEUE_SIZE   (8)
 #define SERVER_BUFFER_SIZE      (64)
 /**
