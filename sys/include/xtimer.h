@@ -8,7 +8,6 @@
  */
 
 /**
- * @defgroup  sys_xtimer Timers
  * @ingroup   sys
  * @brief     Provides a high level timer module to register
  *            timers, get current system time, and let a thread sleep for
