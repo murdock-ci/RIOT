@@ -12,7 +12,7 @@ BOARD_INSUFFICIENT_MEMORY := msb-430 msb-430h nucleo32-l031 nucleo32-f031 \
 USEPKG += emb6
 
 USEMODULE += emb6_router
-USEMODULE += emb6_conn_udp
+USEMODULE += emb6_sock_udp
 USEMODULE += ipv6_addr
 USEMODULE += shell
 USEMODULE += shell_commands
