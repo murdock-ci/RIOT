@@ -199,7 +199,6 @@ int sock_udp_recv(sock_udp_t *sock, void *data, size_t max_len,
 int sock_udp_send(sock_udp_t *sock, const void *data, size_t len,
                   const sock_udp_ep_t *remote)
 {
-    int res;
     struct udp_socket tmp;
     _send_cmd_t send_cmd = { .block = MUTEX_INIT,
                              .remote = remote,
@@ -234,7 +233,13 @@ int sock_udp_send(sock_udp_t *sock, const void *data, size_t len,
     if ((remote == NULL) && (sock->sock.udp_conn->rport == 0)) {
         return -ENOTCONN;
     }
+    /* cppcheck-supress nullPointerRedundantCheck
+     * remote == NULL implies that sock != NULL (see assert at start of functon)
+     * that's why it is okay in the if-statement above to check sock->...
+     * without checking (sock != NULL) first => this check afterwards isn't
+     * redundant */
     if (sock == NULL) {
+        int res;
         if ((res = _reg(&tmp, NULL, NULL, NULL, NULL)) < 0) {
             return res;
         }
