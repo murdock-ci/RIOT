@@ -31,7 +31,7 @@
 #include "xtimer.h"
 
 #ifdef MODULE_EMB6_SOCK_UDP
-static char sock_inbuf[CONN_INBUF_SIZE];
+static char sock_inbuf[SOCK_INBUF_SIZE];
 static bool server_running;
 static sock_udp_t server_sock;
 static char server_stack[THREAD_STACKSIZE_DEFAULT];

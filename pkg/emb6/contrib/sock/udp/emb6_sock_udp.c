@@ -92,11 +92,9 @@ int sock_udp_create(sock_udp_t *sock, const sock_udp_ep_t *local,
     atomic_flag_clear(&sock->receivers);
     if ((res = _reg(&sock->sock, sock, _input_callback, local, remote)) < 0) {
         sock->sock.input_callback = NULL;
-        mutex_unlock(&sock->mutex);
-        return res;
     }
     mutex_unlock(&sock->mutex);
-    return 0;
+    return res;
 }
 
 void sock_udp_close(sock_udp_t *sock)
@@ -164,6 +162,8 @@ int sock_udp_recv(sock_udp_t *sock, void *data, size_t max_len,
     }
     atomic_fetch_add(&sock->receivers, 1);
     if (_mbox_get(&sock->mbox, &msg, blocking) == 0) {
+        /* do not need to remove xtimer, since we only get here in non-blocking
+         * mode (timeout > 0) */
         return -EAGAIN;
     }
     switch (msg.type) {
