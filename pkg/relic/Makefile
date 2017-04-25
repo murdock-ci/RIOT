@@ -1,6 +1,6 @@
 PKG_NAME=relic
 PKG_URL=https://github.com/tfar/relic.git
-PKG_VERSION=28f29a2c9dccf8af47a3b9a8d5e670034274021e
+PKG_VERSION=947aae085127956580cef5b581622285b1b3818d
 PKG_LICENSE=LGPL-2.1
 
 .PHONY: all
@@ -15,7 +15,7 @@ $(PKG_BUILDDIR)/comp-options.cmake: git-download
 $(PKG_BUILDDIR)/Makefile: $(PKG_BUILDDIR)/comp-options.cmake
 	cd "$(PKG_BUILDDIR)" && COMP="$(filter-out -Werror=old-style-definition -Werror=strict-prototypes, $(CFLAGS) ) " cmake -DCMAKE_TOOLCHAIN_FILE=comp-options.cmake -DCHECK=off -DTESTS=0 -DBENCH=0 -DSHLIB=off -Wno-dev $(RELIC_CONFIG_FLAGS) .
 
-CFLAGS += -Wno-gnu-zero-variadic-macro-arguments -Wno-unused-function
+CFLAGS += -Wno-unused-function
 
 clean::
 	@rm -rf $(BINDIR)/$(PKG_NAME).a
