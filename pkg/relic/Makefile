@@ -9,7 +9,7 @@ all: $(PKG_BUILDDIR)/Makefile
 	"$(MAKE)" -C $(PKG_BUILDDIR) && \
 	cp $(PKG_BUILDDIR)/lib/librelic_s.a $(BINDIR)/$(PKG_NAME).a
 
-$(PKG_BUILDDIR)/comp-options.cmake:
+$(PKG_BUILDDIR)/comp-options.cmake: git-download
 	cd "$(PKG_BUILDDIR)" && perl $(PKG_DIR)/generate-cmake-xcompile.perl > comp-options.cmake
 
 $(PKG_BUILDDIR)/Makefile: $(PKG_BUILDDIR)/comp-options.cmake
