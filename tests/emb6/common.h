@@ -58,7 +58,7 @@ size_t hex2ints(uint8_t *out, const char *in);
  */
 int ping_cmd(int argc, char **argv);
 
-#ifdef MODULE_CONN_UDP
+#ifdef MODULE_EMB6_SOCK_UDP
 /**
  * @brief   UDP IP shell command
  *
