@@ -340,7 +340,7 @@ void hard_fault_default(void)
 #endif /* DEVELHELP */
 
 #if defined(CPU_ARCH_CORTEX_M3) || defined(CPU_ARCH_CORTEX_M4) || \
-    defined(CPU_ARCH_CORTEX_M4F)
+    defined(CPU_ARCH_CORTEX_M4F) || defined(CPU_ARCH_CORTEX_M7)
 void mem_manage_default(void)
 {
     core_panic(PANIC_MEM_MANAGE, "MEM MANAGE HANDLER");
