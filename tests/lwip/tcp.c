@@ -25,12 +25,13 @@
 #include "net/af.h"
 #include "net/sock/tcp.h"
 #include "net/ipv6.h"
+#include "shell.h"
 #include "thread.h"
 #include "xtimer.h"
 
 #ifdef MODULE_SOCK_TCP
 static char sock_inbuf[SOCK_INBUF_SIZE];
-static bool server_running, client_running = false;
+static bool server_running = false, client_running = false;
 static sock_tcp_t server_sock, client_sock;
 static sock_tcp_queue_t server_queue;
 static char server_stack[THREAD_STACKSIZE_DEFAULT];
@@ -43,7 +44,7 @@ static void *_server_thread(void *args)
 
     msg_init_queue(server_msg_queue, SERVER_MSG_QUEUE_SIZE);
     /* parse port */
-    server_addr.port = (uint16_t)atoi((char *)args);
+    server_addr.port = atoi(args);
     if ((res = sock_tcp_listen(&server_queue, &server_addr, &server_sock, 1,
                                0)) < 0) {
         printf("Unable to open TCP server on port %" PRIu16 " (error code %d)\n",
@@ -108,9 +109,9 @@ static int tcp_connect(char *addr_str, char *port_str, char *local_port_str)
         return 1;
     }
     /* parse port */
-    dst.port = (uint16_t)atoi(port_str);
+    dst.port = atoi(port_str);
     if (local_port_str != NULL) {
-        local_port = (uint16_t)atoi(port_str);
+        local_port = atoi(port_str);
     }
     if (sock_tcp_connect(&client_sock, &dst, local_port, 0) < 0) {
         puts("Error: unable to connect");
@@ -129,7 +130,7 @@ static int tcp_disconnect(void)
 
 static int tcp_send(char *data, unsigned int num, unsigned int delay)
 {
-    uint8_t byte_data[strlen(data) / 2];
+    uint8_t byte_data[SHELL_DEFAULT_BUFSIZE / 2];
     size_t data_len;
 
     data_len = hex2ints(byte_data, data);
@@ -187,10 +188,10 @@ int tcp_cmd(int argc, char **argv)
             return 1;
         }
         if (argc > 3) {
-            num = (uint32_t)atoi(argv[3]);
+            num = atoi(argv[3]);
         }
         if (argc > 4) {
-            delay = (uint32_t)atoi(argv[4]);
+            delay = atoi(argv[4]);
         }
         return tcp_send(argv[2], num, delay);
     }

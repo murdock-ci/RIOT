@@ -25,6 +25,7 @@
 #include "net/af.h"
 #include "net/sock/ip.h"
 #include "net/ipv6.h"
+#include "shell.h"
 #include "thread.h"
 #include "xtimer.h"
 
@@ -42,7 +43,7 @@ static void *_server_thread(void *args)
 
     msg_init_queue(server_msg_queue, SERVER_MSG_QUEUE_SIZE);
     /* parse protocol */
-    protocol = (uint8_t)atoi((char *)args);
+    protocol = atoi(args);
     if (sock_ip_create(&server_sock, &server_addr, NULL, protocol, 0) < 0) {
         return NULL;
     }
@@ -76,7 +77,7 @@ static int ip_send(char *addr_str, char *port_str, char *data, unsigned int num,
 {
     sock_ip_ep_t dst = SOCK_IPV6_EP_ANY;
     uint8_t protocol;
-    uint8_t byte_data[strlen(data) / 2];
+    uint8_t byte_data[SHELL_DEFAULT_BUFSIZE / 2];
     size_t data_len;
 
     /* parse destination address */
@@ -85,7 +86,7 @@ static int ip_send(char *addr_str, char *port_str, char *data, unsigned int num,
         return 1;
     }
     /* parse protocol */
-    protocol = (uint8_t)atoi(port_str);
+    protocol = atoi(port_str);
     data_len = hex2ints(byte_data, data);
     for (unsigned int i = 0; i < num; i++) {
         sock_ip_t *sock = NULL;
@@ -131,10 +132,10 @@ int ip_cmd(int argc, char **argv)
             return 1;
         }
         if (argc > 5) {
-            num = (uint32_t)atoi(argv[5]);
+            num = atoi(argv[5]);
         }
         if (argc > 6) {
-            delay = (uint32_t)atoi(argv[6]);
+            delay = atoi(argv[6]);
         }
         return ip_send(argv[2], argv[3], argv[4], num, delay);
     }
