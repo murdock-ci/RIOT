@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Freie Universität Berlin
+ * Copyright (C) 2017 Freie Universität Berlin
  *
  * This file is subject to the terms and conditions of the GNU Lesser
  * General Public License v2.1. See the file LICENSE in the top level
@@ -181,7 +181,7 @@ int tcp_cmd(int argc, char **argv)
     }
     else if (strcmp(argv[1], "send") == 0) {
         uint32_t num = 1;
-        uint32_t delay = 1000000;
+        uint32_t delay = 1000000UL;
         if (argc < 3) {
             printf("usage: %s send <hex data> [<num> [<delay in us>]]\n",
                    argv[0]);
