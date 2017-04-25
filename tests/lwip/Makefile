@@ -6,9 +6,9 @@ include ../Makefile.tests_common
 BOARD_BLACKLIST := arduino-uno arduino-duemilanove arduino-mega2560 chronos \
                    msb-430 msb-430h telosb waspmote-pro wsn430-v1_3b \
                    wsn430-v1_4 z1
-BOARD_INSUFFICIENT_MEMORY := airfy-beacon nrf6310 nucleo32-f031  nucleo32-f042 \
-                             nucleo-f030 nucleo-f334 pca10005 stm32f0discovery \
-                             weio yunjia-nrf51822
+BOARD_INSUFFICIENT_MEMORY := airfy-beacon nrf6310 nucleo32-f031 nucleo32-f042 \
+                             nucleo32-l031 nucleo-f030 nucleo-f334 nucleo-l053 \
+                             pca10005 stm32f0discovery weio yunjia-nrf51822
 
 # including lwip_ipv6_mld would currently break this test on at86rf2xx radios
 USEMODULE += lwip lwip_ipv6_autoconfig lwip_sock_ip lwip_netdev
