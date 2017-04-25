@@ -17,6 +17,7 @@
 #include <errno.h>
 #include <stdbool.h>
 
+#include "byteorder.h"
 #include "evproc.h"
 #include "msg.h"
 #include "mutex.h"
@@ -119,7 +120,7 @@ int sock_udp_get_local(sock_udp_t *sock, sock_udp_ep_t *ep)
         (sock->sock.udp_conn->lport != 0)) {
         mutex_lock(&sock->mutex);
         memset(&ep->addr, 0, sizeof(ipv6_addr_t));
-        ep->port = NTOHS(sock->sock.udp_conn->lport);
+        ep->port = ntohs(sock->sock.udp_conn->lport);
         mutex_unlock(&sock->mutex);
         return sizeof(ipv6_addr_t);
     }
@@ -133,7 +134,7 @@ int sock_udp_get_remote(sock_udp_t *sock, sock_udp_ep_t *ep)
         (sock->sock.udp_conn->rport != 0)) {
         mutex_lock(&sock->mutex);
         memcpy(&ep->addr, &sock->sock.udp_conn->ripaddr, sizeof(ipv6_addr_t));
-        ep->port = NTOHS(sock->sock.udp_conn->rport);
+        ep->port = ntohs(sock->sock.udp_conn->rport);
         mutex_unlock(&sock->mutex);
         return sizeof(ipv6_addr_t);
     }
