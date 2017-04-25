@@ -245,7 +245,7 @@ int sock_udp_send(sock_udp_t *sock, const void *data, size_t len,
     mutex_lock(&send_cmd.block);
     /* change to emb6 thread context */
     if (evproc_putEvent(E_EVPROC_TAIL, EVENT_TYPE_CONN_SEND, &send_cmd) == E_SUCCESS) {
-        /* block thread until data was send */
+        /* block thread until data was sent */
         mutex_lock(&send_cmd.block);
     }
     else {
