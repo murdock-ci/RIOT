@@ -7,8 +7,8 @@
  */
 
 /**
- * @defgroup
- * @ingroup
+ * @defgroup pkg_emb6_sock  emb6-specific implementation of the sock API
+ * @ingroup  pkg_emb6
  * @brief
  * @{
  *
