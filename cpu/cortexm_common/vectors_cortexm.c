@@ -229,6 +229,8 @@ __attribute__((used)) void hard_fault_handler(uint32_t* sp, uint32_t corrupted, 
     /* Initialize these variables even if they're never used uninitialized.
      * Fixes wrong compiler warning by gcc < 6.0. */
     uint32_t pc = 0;
+    /* cppcheck-suppress variableScope
+     * variable used in assembly-code below */
     uint32_t* orig_sp = NULL;
 
     /* Check if the ISR stack overflowed previously. Not possible to detect
