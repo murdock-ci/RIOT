@@ -35,7 +35,7 @@
 /**
  * @brief Helper macro for LL_SEARCH to compare TCBs
  */
-#define TCB_EQUAL(a,b)      ((a) == (b))
+#define TCB_EQUAL(a,b)      ((a) != (b))
 
 /**
  * @brief Checks if a given port number is currently used by a TCB as local_port.
