@@ -32,7 +32,11 @@
 #define ENABLE_DEBUG (0)
 #include "debug.h"
 
-#define TCB_EQUAL(a,b)      ((a == b) ? 1 : 0)
+/**
+ * @brief Helper macro for LL_SEARCH to compare TCBs
+ */
+#define TCB_EQUAL(a,b)      ((a) == (b))
+
 /**
  * @brief Checks if a given port number is currently used by a TCB as local_port.
  *
