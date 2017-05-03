@@ -79,6 +79,13 @@ extern "C" {
 /** @} */
 
 /**
+ * @brief   cpu voltage for wait states
+ * @{
+ */
+#define VDD_MILLIVOLTS		3300
+/** @} */
+
+/**
  * @name    Timer peripheral configuration
  * @{
  */
