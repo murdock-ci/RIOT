@@ -35,7 +35,8 @@ static void clk_init(void)
     PM->APBAMASK.reg = (PM_APBAMASK_PM | PM_APBAMASK_SYSCTRL |
                         PM_APBAMASK_GCLK);
 
-    /* adjust NVM wait states, see table 36-39 , page 968 */
+    /* adjust NVM wait states, see SAMD21 datasheet
+       Rev A (2017) table 37-40 , page 816 */
     PM->APBBMASK.reg |= PM_APBBMASK_NVMCTRL;
 #if (VDD_MILLIVOLTS > 2700)
 #if (CLOCK_CORECLOCK > 24000000)
