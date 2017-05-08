@@ -31,6 +31,7 @@ endif
 $(PKG_BUILDDIR)/.patched: $(PKG_BUILDDIR)/.prepared
 	$(AD)$(foreach p, $(ffconf_patches), patch $(PKG_BUILDDIR)/ffconf.h < $(p);)
 	$(AD)patch $(PKG_BUILDDIR)/integer.h < $(CURDIR)/patches/remove_int_type.patch
+	$(AD)patch $(PKG_BUILDDIR)/ff.c < $(CURDIR)/patches/fix_for_guards.patch
 	$(AD)touch $@
 
 $(PKG_BUILDDIR)/.prepared: $(PKG_BUILDDIR)/.extracted
