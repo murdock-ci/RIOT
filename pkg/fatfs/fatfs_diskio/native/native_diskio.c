@@ -92,27 +92,28 @@ DSTATUS disk_status(BYTE pdrv)
 DSTATUS disk_initialize(BYTE pdrv)
 {
     dummy_volume_t *volume = get_volume_file(pdrv);
-
+    DEBUG("disk_initialize: %d\n", pdrv);
     if (volume == NULL) {
         return STA_NODISK;
     }
-    else if (!volume->opened) {
-        /* open file for r/w but don't create if it doesn't exist */
-        FILE *fd = fopen(volume->image_path, "r+");
-        DEBUG("fd: %p\n", (void *)fd);
-        if (fd == NULL) {
-            DEBUG("diskio_native.c: disk_initialize: fopen: "
-                  "errno: 0x%08x\n", errno);
-            return STA_NOINIT;
-        }
-        else {
-            volume->fd = fd;
-            volume->opened = true;
-            return FATFS_DISKIO_DSTASTUS_OK;
-        }
+
+    if (volume->opened) { /* if volume is already opened close it first */
+        fclose(volume->fd);
+        volume->opened = false;
+    }
+
+    /* open file for r/w but don't create if it doesn't exist */
+    FILE *fd = fopen(volume->image_path, "r+");
+    DEBUG("fd: %p\n", (void *)fd);
+    if (fd == NULL) {
+        DEBUG("diskio_native.c: disk_initialize: fopen: "
+              "errno: 0x%08x\n", errno);
+        return STA_NOINIT;
     }
     else {
-        return STA_NOINIT;
+        volume->fd = fd;
+        volume->opened = true;
+        return FATFS_DISKIO_DSTASTUS_OK;
     }
 }
 

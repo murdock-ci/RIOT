@@ -20,6 +20,7 @@ all: $(PKG_BUILDDIR)/.patched
 ffconf_patches += $(CURDIR)/patches/enable_use_lable.patch
 ffconf_patches += $(CURDIR)/patches/set_code_page_to_ascii.patch
 ffconf_patches += $(CURDIR)/patches/enable_use_mkfs.patch
+ffconf_patches += $(CURDIR)/patches/enable_fs_tiny.patch
 
 #if periph_rtc is available use it. Otherwise use static timestamps
 ifeq (, $(filter $(periph_rtc), $(FEATURES_PROVIDED)))
