@@ -79,7 +79,7 @@ extern "C" {
 /** @} */
 
 /**
- * @brief   cpu voltage for wait states
+ * @name CPU voltage used to determine wait states in clock initialization
  * @{
  */
 #define VDD_MILLIVOLTS		3300
