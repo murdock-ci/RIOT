@@ -160,12 +160,12 @@ static int _read(int argc, char **argv)
         return -1;
     }
 
-    char buffer[TEST_FATFS_READ_BUFFER_SIZE];
-
     FRESULT open_resu = f_open(&fd, argv[1], FA_READ | FA_OPEN_EXISTING);
     if (open_resu == FR_OK) {
         UINT read_chunk;
         uint32_t len = ((argc == 3) ? (uint32_t)atoi(argv[2]) : f_size(&fd));
+
+        char buffer[TEST_FATFS_READ_BUFFER_SIZE];
 
         for (uint32_t read = 0; read < len; read += read_chunk) {
             uint32_t to_read = len - read;
