@@ -237,8 +237,8 @@ DRESULT disk_ioctl(
             }
             return RES_ERROR;
 
-        case GET_BLOCK_SIZE
-            * buff = FIXED_BLOCK_SIZE;
+        case GET_BLOCK_SIZE:
+            *(DWORD *)buff = FIXED_BLOCK_SIZE;
             return RES_OK;
         #endif
 
