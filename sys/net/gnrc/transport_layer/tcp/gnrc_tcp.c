@@ -239,7 +239,7 @@ void gnrc_tcp_tcb_init(gnrc_tcp_tcb_t *tcb)
     tcb->rtt_var = RTO_UNINITIALIZED;
     tcb->srtt = RTO_UNINITIALIZED;
     tcb->rto = RTO_UNINITIALIZED;
-    mbox_init(&(tcb->mbox), tcb->mbox_raw, GNRC_TCP_TCB_MSG_QUEUE_SIZE);
+    mbox_init(&(tcb->mbox), tcb->mbox_raw, GNRC_TCP_TCB_MBOX_SIZE);
     mutex_init(&(tcb->fsm_lock));
     mutex_init(&(tcb->function_lock));
 }
