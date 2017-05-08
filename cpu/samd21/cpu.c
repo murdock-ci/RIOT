@@ -22,6 +22,15 @@
 #include "periph_conf.h"
 #include "periph/init.h"
 
+#ifndef VDD_MILLIVOLTS
+#define VDD_MILLIVOLTS 3300
+#endif
+
+#define CLOCK_14MHZ 14000000
+#define CLOCK_24MHZ 24000000
+#define CLOCK_28MHZ 28000000
+#define CLOCK_42MHZ 42000000
+
 /**
  * @brief   Configure clock sources and the cpu frequency
  */
@@ -31,12 +40,27 @@ static void clk_init(void)
     PM->APBAMASK.reg = (PM_APBAMASK_PM | PM_APBAMASK_SYSCTRL |
                         PM_APBAMASK_GCLK);
 
-    /* adjust NVM wait states, see table 42.30 (p. 1070) in the datasheet */
-#if (CLOCK_CORECLOCK > 24000000)
+    /* adjust NVM wait states, see SAMD21 datasheet
+       Rev A (2017) table 37-40 , page 816 */
     PM->APBBMASK.reg |= PM_APBBMASK_NVMCTRL;
+#if (VDD_MILLIVOLTS > 2700)
+#if (CLOCK_CORECLOCK > CLOCK_24MHZ)
     NVMCTRL->CTRLB.reg |= NVMCTRL_CTRLB_RWS(1);
-    PM->APBBMASK.reg &= ~PM_APBBMASK_NVMCTRL;
+#else
+    NVMCTRL->CTRLB.reg |= NVMCTRL_CTRLB_RWS(0);
 #endif
+#else /* VDD_MILLIVOLTS <= 2700 */
+#if (CLOCK_CORECLOCK > CLOCK_42MHZ)
+    NVMCTRL->CTRLB.reg |= NVMCTRL_CTRLB_RWS(3);
+#elif (CLOCK_CORECLOCK > CLOCK_28MHZ)
+    NVMCTRL->CTRLB.reg |= NVMCTRL_CTRLB_RWS(2);
+#elif (CLOCK_CORECLOCK > CLOCK_14MHZ)
+    NVMCTRL->CTRLB.reg |= NVMCTRL_CTRLB_RWS(1);
+#else
+    NVMCTRL->CTRLB.reg |= NVMCTRL_CTRLB_RWS(0);
+#endif
+#endif /* VDD_MILLIVOLTS */
+    PM->APBBMASK.reg &= ~PM_APBBMASK_NVMCTRL;
 
     /* configure internal 8MHz oscillator to run without prescaler */
     SYSCTRL->OSC8M.bit.PRESC = 0;
