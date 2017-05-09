@@ -174,10 +174,8 @@ ssize_t gnrc_tcp_recv(gnrc_tcp_tcb_t *tcb, void *data, const size_t max_len,
  * @pre @p tcb must not be NULL.
  *
  * @param[in,out] tcb   TCB holding the connection information.
- *
- * @returns   Zero on success.
  */
-int gnrc_tcp_close(gnrc_tcp_tcb_t *tcb);
+void gnrc_tcp_close(gnrc_tcp_tcb_t *tcb);
 
 /**
  * @brief Abort a TCP connection.
@@ -186,10 +184,8 @@ int gnrc_tcp_close(gnrc_tcp_tcb_t *tcb);
  * @pre @p tcb must not be NULL.
  *
  * @param[in,out] tcb   TCB holding the connection information.
- *
- * @returns   Zero on success.
  */
-int gnrc_tcp_abort(gnrc_tcp_tcb_t *tcb);
+void gnrc_tcp_abort(gnrc_tcp_tcb_t *tcb);
 
 /**
  * @brief Calculate and set checksum in TCP header.
