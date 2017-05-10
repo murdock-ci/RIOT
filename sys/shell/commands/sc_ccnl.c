@@ -96,7 +96,7 @@ int _ccnl_content(int argc, char **argv)
 
     int arg_len;
     char *body = (char*) _default_content;
-    char buf[BUF_SIZE];
+    char buf[BUF_SIZE+1]; /* add one extra space to fit trailing '\0' */
 
     if (argc > 2) {
         unsigned pos = 0;
