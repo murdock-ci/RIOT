@@ -5,10 +5,6 @@ PKG_EXT      = zip
 PKG_FILE     = $(PKG_NAME)-$(PKG_VERSION).$(PKG_EXT)
 PKG_BUILDDIR = $(PKGDIRBASE)/$(PKG_NAME)
 MODULE_MAKEFILE := $(CURDIR)/Makefile.module
-PKG_SRCDIR=$(PKG_BUILDDIR)/src
-
-# import list of provided features
-include $(RIOTBASE)/boards/$(BOARD)/Makefile.features
 
 ifneq ($(RIOTBASE),)
 include $(RIOTBASE)/Makefile.base
@@ -30,33 +26,33 @@ FEATURES_REQUIRED += periph_rtc
 endif
 
 $(PKG_BUILDDIR)/.patched: $(PKG_BUILDDIR)/.prepared
-	@$(foreach p, $(ffconf_patches), patch $(PKG_BUILDDIR)/ffconf.h < $(p);)
-	@patch $(PKG_BUILDDIR)/integer.h < $(CURDIR)/patches/remove_int_type.patch
-	@patch $(PKG_BUILDDIR)/ff.c < $(CURDIR)/patches/fix_for_guards.patch
-	@touch $@
+	$(foreach p, $(ffconf_patches), patch $(PKG_BUILDDIR)/ffconf.h < $(p);)
+	patch $(PKG_BUILDDIR)/integer.h < $(CURDIR)/patches/remove_int_type.patch
+	patch $(PKG_BUILDDIR)/ff.c < $(CURDIR)/patches/fix_for_guards.patch
+	touch $@
 
 $(PKG_BUILDDIR)/.prepared: $(PKG_BUILDDIR)/.extracted
-	@mv $(PKG_BUILDDIR)/src/* $(PKG_BUILDDIR)/
-	@rm -rf $(PKG_BUILDDIR)/src
-	@rm -rf $(PKG_BUILDDIR)/doc
+	mv $(PKG_BUILDDIR)/src/* $(PKG_BUILDDIR)/
+	rm -rf $(PKG_BUILDDIR)/src
+	rm -rf $(PKG_BUILDDIR)/doc
 
 #this file is only a dummy that should be replaced by a compatible implementation
-	@rm $(PKG_BUILDDIR)/diskio.c
-	@cp $(MODULE_MAKEFILE) $(PKG_BUILDDIR)/Makefile
-	@cp $(MODULE_MAKEFILE) $(PKG_BUILDDIR)/option
-	@touch $@
+	rm $(PKG_BUILDDIR)/diskio.c
+	cp $(MODULE_MAKEFILE) $(PKG_BUILDDIR)/Makefile
+	touch $@
 
 $(PKG_BUILDDIR)/.extracted: $(PKG_BUILDDIR)/$(PKG_FILE)
-	@mkdir -p $(@D)
-	@cd $(@D) && $(UNZIP_HERE) $(<)
-	@touch $@
+	mkdir -p $(@D)
+	cd $(@D) && $(UNZIP_HERE) $(<)
+	touch $@
 
 $(PKG_BUILDDIR)/$(PKG_FILE):
-	@mkdir -p $(@D)
-	@$(DOWNLOAD_TO_FILE) $@ $(PKG_URL)/$(PKG_VERSION).$(PKG_EXT)
+	mkdir -p $(@D)
+	$(DOWNLOAD_TO_FILE) $@ $(PKG_URL)/$(PKG_VERSION).$(PKG_EXT)
 
 clean::
-	@rm -rf $(PKG_SRCDIR)
+#delete all files except the downloaded zip file
+	cd $(PKG_BUILDDIR) && ls -A | grep -v *.zip | xargs rm -rf
 
 distclean::
-	@rm -rf $(PKG_BUILDDIR)
+	rm -rf $(PKG_BUILDDIR)
