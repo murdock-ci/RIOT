@@ -8,7 +8,7 @@
 # General Public License v2.1. See the file LICENSE in the top level
 # directory for more details.
 
-. ${RIOTBASE:+${RIOTBASE}/}dist/tools/ci/changed_files.sh
+source ${RIOTBASE:+${RIOTBASE}/}dist/tools/ci/changed_files.sh
 
 # Don't show warnings about unusedStructMembers by default
 DEFAULT_SUPPRESSIONS="${1}"
