@@ -22,14 +22,23 @@
 #include "periph_conf.h"
 #include "periph/init.h"
 
-#ifndef VDD_MILLIVOLTS
-#define VDD_MILLIVOLTS 3300
+#ifndef VDD
+/**
+ * @brief   Set default system voltage level in mV (used for determine flash wait states)
+ *
+ * @note    Override this value in your boards periph_conf.h file if a different system
+ *               voltage is used.
+ */
+#define VDD                 (3300U)
 #endif
 
-#define CLOCK_14MHZ 14000000
-#define CLOCK_24MHZ 24000000
-#define CLOCK_28MHZ 28000000
-#define CLOCK_42MHZ 42000000
+/* determine the needed flash wait states based on the system voltage (Vdd)
+ * see SAMD21 datasheet Rev A (2017) table 37-40 , page 816 */
+#if (VDD > 2700)
+#define WAITSTATES          ((CLOCK_CORECLOCK - 1) / 24000000)
+#else
+#define WAITSTATES          ((CLOCK_CORECLOCK - 1) / 14000000)
+#endif
 
 /**
  * @brief   Configure clock sources and the cpu frequency
@@ -40,26 +49,9 @@ static void clk_init(void)
     PM->APBAMASK.reg = (PM_APBAMASK_PM | PM_APBAMASK_SYSCTRL |
                         PM_APBAMASK_GCLK);
 
-    /* adjust NVM wait states, see SAMD21 datasheet
-       Rev A (2017) table 37-40 , page 816 */
+    /* adjust NVM wait states */
     PM->APBBMASK.reg |= PM_APBBMASK_NVMCTRL;
-#if (VDD_MILLIVOLTS > 2700)
-#if (CLOCK_CORECLOCK > CLOCK_24MHZ)
-    NVMCTRL->CTRLB.reg |= NVMCTRL_CTRLB_RWS(1);
-#else
-    NVMCTRL->CTRLB.reg |= NVMCTRL_CTRLB_RWS(0);
-#endif
-#else /* VDD_MILLIVOLTS <= 2700 */
-#if (CLOCK_CORECLOCK > CLOCK_42MHZ)
-    NVMCTRL->CTRLB.reg |= NVMCTRL_CTRLB_RWS(3);
-#elif (CLOCK_CORECLOCK > CLOCK_28MHZ)
-    NVMCTRL->CTRLB.reg |= NVMCTRL_CTRLB_RWS(2);
-#elif (CLOCK_CORECLOCK > CLOCK_14MHZ)
-    NVMCTRL->CTRLB.reg |= NVMCTRL_CTRLB_RWS(1);
-#else
-    NVMCTRL->CTRLB.reg |= NVMCTRL_CTRLB_RWS(0);
-#endif
-#endif /* VDD_MILLIVOLTS */
+    NVMCTRL->CTRLB.reg |= NVMCTRL_CTRLB_RWS(WAITSTATES);
     PM->APBBMASK.reg &= ~PM_APBBMASK_NVMCTRL;
 
     /* configure internal 8MHz oscillator to run without prescaler */

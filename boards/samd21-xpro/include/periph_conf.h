@@ -79,13 +79,6 @@ extern "C" {
 /** @} */
 
 /**
- * @name CPU voltage used to determine wait states in clock initialization
- * @{
- */
-#define VDD_MILLIVOLTS		3300
-/** @} */
-
-/**
  * @name Timer peripheral configuration
  * @{
  */
