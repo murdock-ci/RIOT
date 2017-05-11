@@ -57,6 +57,7 @@ extern "C" {
 */
 #define VTOR_RESET_HANDLER  (0x4) /** One pointer after the beginning */
 
+#if defined(FLASHPAGE_SIZE) && defined(FLASHPAGE_NUMOF) && defined (FW_SLOT_PAGES)
 /**
  * @brief  Defines for slot management
  */
@@ -66,6 +67,7 @@ extern "C" {
 #define FW_SLOT_1_END       FW_SLOT_1 + FW_SLOT_SIZE
 #define FW_SLOT_2           FW_SLOT_1_END
 #define FW_SLOT_2_END       FW_SLOT_2 + FW_SLOT_SIZE
+#endif
 
 /**
 * @brief     _estack pointer needed to reset PSP position for
@@ -83,6 +85,7 @@ void cpu_init(void);
  */
 void cortexm_init(void);
 
+#if defined(FW_SLOT_1) && defined(FW_SLOT_2)
 /**
  * @brief Get FW internal address for a given slot
  *
@@ -104,7 +107,9 @@ static inline uint32_t get_slot_address(uint8_t slot)
 
     return 0;
 }
+#endif
 
+#if defined(FW_SLOT_1_PAGE) && defined(FW_SLOT_2_PAGE)
 /**
  * @brief Get internal page for a given slot
  *
@@ -126,6 +131,7 @@ static inline uint32_t get_slot_page(uint8_t slot)
 
     return 0;
 }
+#endif
 
 /**
  * @brief   Prints the current content of the link register (lr)
