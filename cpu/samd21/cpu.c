@@ -24,10 +24,10 @@
 
 #ifndef VDD
 /**
- * @brief   Set default system voltage level in mV (used for determine flash wait states)
+ * @brief   Set system voltage level in mV (determines flash wait states)
  *
- * @note    Override this value in your boards periph_conf.h file if a different system
- *               voltage is used.
+ * @note    Override this value in your boards periph_conf.h file
+ *          if a different system voltage is used.
  */
 #define VDD                 (3300U)
 #endif
