@@ -60,12 +60,14 @@ extern "C" {
 /**
  * @brief  Defines for slot management
  */
+#ifdef FLASHPAGE_SIZE
 #define BOOTLOADER_SPACE    (0x4000)
 #define FW_SLOT_SIZE        FLASHPAGE_SIZE * FW_SLOT_PAGES
 #define FW_SLOT_1           FLASH_BASE + BOOTLOADER_SPACE
 #define FW_SLOT_1_END       FW_SLOT_1 + FW_SLOT_SIZE
 #define FW_SLOT_2           FW_SLOT_1_END
 #define FW_SLOT_2_END       FW_SLOT_2 + FW_SLOT_SIZE
+#endif
 
 /**
 * @brief     _estack pointer needed to reset PSP position for
