@@ -33,13 +33,13 @@ expression *E;
 @@
 
 (
-  E == 
+  E ==
 - 0
-+ NULL  
++ NULL
 |
   E !=
 - 0
-+ NULL  
++ NULL
 |
 - 0
 + NULL
