@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
     fclose(firmware_bin);
 
     /*
-     * TODO Sign hash
+     * Fill with 0 the signed hash, as it's not yet implemented
      */
     for (unsigned long i = 0; i < sizeof(metadata.shash); i++) {
         metadata.shash[i] = 0;

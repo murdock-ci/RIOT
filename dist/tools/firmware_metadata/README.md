@@ -1,5 +1,5 @@
 # Metadata generator for firmware verification
-This program will generate a binary file containing a metadata structure as
+This program generates a binary file containing a metadata structure as
 follows:
 
 ```c
@@ -12,7 +12,7 @@ typedef struct firmware_metadata {
 } firmware_metadata_t;
 ```
 
-This structure will be filled with the data obtained from the firmware.
+This structure is filled with the data obtained from the firmware.
 
 ## Usage
 To use, you should call `generate-metadata` with the following arguments:
@@ -31,5 +31,6 @@ _\<appid\>_\: ID for the application in 32-bit HEX
 
 _\<output-path\>_\: The path for fimrware_metadata.bin
 
-The results will be printed if the operation is successful, and a binary
-called "firmware-metadata.bin" will be created.
+If the operation succeeds, the results are printed out and a binary called
+"firmware-metadata.bin" is written, if no _output-path_ option is specified,
+in which case the file is written to the given path with the given name.
