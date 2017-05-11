@@ -20,9 +20,8 @@
 
 MEMORY
 {
-    rom (rx)    : ORIGIN = 0x08000000, LENGTH = 1024K
-    ram (rwx)   : ORIGIN = 0x20000000, LENGTH = 256K
-    ccmram (rwx): ORIGIN = 0x10000000, LENGTH = 64K
+    rom (rx)    : ORIGIN = 0x08000000, LENGTH = 1M
+    ram (rwx)   : ORIGIN = 0x20000000, LENGTH = 320K
     cpuid (r)   : ORIGIN = 0x1fff7a10, LENGTH = 12
 }
 
