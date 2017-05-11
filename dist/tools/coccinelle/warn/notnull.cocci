@@ -1,4 +1,4 @@
-// this detects NULL tests that can only be reached when the value is known 
+// this detects NULL tests that can only be reached when the value is known
 // not to be NULL
 //
 // Confidence: High
