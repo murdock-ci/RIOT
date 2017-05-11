@@ -629,6 +629,12 @@ ifneq (,$(filter spiffs,$(USEMODULE)))
     USEMODULE += mtd
 endif
 
+ifneq (,$(filter fw_slots,$(USEMODULE)))
+  FEATURES_REQUIRED += periph_flashpage
+  FEATURES_REQUIRED += flash_slots
+  USEMODULE += hashes
+endif
+
 # include package dependencies
 -include $(USEPKG:%=$(RIOTPKG)/%/Makefile.dep)
 
