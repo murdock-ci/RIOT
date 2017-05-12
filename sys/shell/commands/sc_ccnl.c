@@ -221,6 +221,7 @@ int _ccnl_interest(int argc, char **argv)
     if (ccnl_wait_for_chunk(_cont_buf, BUF_SIZE, 0) > 0) {
         gnrc_netreg_unregister(GNRC_NETTYPE_CCN_CHUNK, &_ne);
         printf("Content received: %s\n", _cont_buf);
+        free_prefix(prefix);
         return 0;
     }
     free_prefix(prefix);
