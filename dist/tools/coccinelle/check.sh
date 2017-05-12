@@ -27,8 +27,7 @@ indent() {
 coccinelle_checkone() {
     OUT="$(spatch --very-quiet \
         --macro-file-builtins ${RIOTBASE}/dist/tools/coccinelle/include/riot-standard.h \
-        --file-groups "${COCCINELLE_TMP}" \
-        --sp-file $patch | filter)"
+        --sp-file $patch ${FILES} | filter)"
 
     if [ -n "$OUT" ]; then
         if [ $COCCINELLE_QUIET -eq 1 ]; then
@@ -62,16 +61,6 @@ coccinelle_checkall() {
 if [ -z "${FILES}" ]; then
     exit
 fi
-
-trap 'rm -f ${COCCINELLE_TMP}' EXIT
-
-COCCINELLE_TMP=$(mktemp)
-[ -f "$COCCINELLE_TMP" ] || {
-    echo "$0: cannot create tempfile"
-    exit 1
-}
-
-echo "$FILES" > ${COCCINELLE_TMP}
 
 : ${COCCINELLE_QUIET:=0}
 
