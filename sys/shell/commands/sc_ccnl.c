@@ -218,17 +218,18 @@ int _ccnl_interest(int argc, char **argv)
 
     struct ccnl_prefix_s *prefix = ccnl_URItoPrefix(argv[1], CCNL_SUITE_NDNTLV, NULL, 0);
     ccnl_send_interest(prefix, _int_buf, BUF_SIZE);
+    int res = 0;
     if (ccnl_wait_for_chunk(_cont_buf, BUF_SIZE, 0) > 0) {
-        gnrc_netreg_unregister(GNRC_NETTYPE_CCN_CHUNK, &_ne);
         printf("Content received: %s\n", _cont_buf);
-        return 0;
+        res = -1;
+    }
+    else {
+        printf("Timeout! No content received in response to the Interest for %s.\n", argv[1]);
     }
     free_prefix(prefix);
     gnrc_netreg_unregister(GNRC_NETTYPE_CCN_CHUNK, &_ne);
 
-    printf("Timeout! No content received in response to the Interest for %s.\n", argv[1]);
-
-    return -1;
+    return res;
 }
 
 static void _ccnl_fib_usage(char *argv)
