@@ -14,7 +14,7 @@ else
     # when BOSSA is used (default), use a different flash map
     # refer https://github.com/shumatech/BOSSA for this programmer
     export PROGRAMMER = bossa
-    export LINKER_SCRIPT ?= $(RIOTCPU)/$(CPU)/ldscripts/$(CPU_MODEL)_mkr1000.ld
+    export LINKER_SCRIPT ?= $(RIOTCPU)/sam0_common/ldscripts/$(CPU_MODEL)_mkr1000.ld
 
     # define board specific flasher options
     export FLASHER = $(RIOTBOARD)/$(BOARD)/dist/flash.sh
