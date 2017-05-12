@@ -44,7 +44,7 @@ static void *_server_thread(void *args)
     uint8_t protocol;
     msg_init_queue(server_msg_queue, SERVER_MSG_QUEUE_SIZE);
     /* parse protocol */
-    protocol = (uint8_t)atoi((char *)args);
+    protocol = atoi((char *)args);
     if (conn_ip_create(&server_conn, &server_addr, sizeof(server_addr), AF_INET6, protocol) < 0) {
         return NULL;
     }
@@ -128,7 +128,7 @@ static int ip_send(char *addr_str, char *port_str, char *data, unsigned int num,
         return 1;
     }
     /* parse protocol */
-    protocol = (uint8_t)atoi(port_str);
+    protocol = atoi(port_str);
     data_len = _parse_data(byte_data, data);
     for (unsigned int i = 0; i < num; i++) {
         if (conn_ip_sendto(byte_data, data_len, &src, sizeof(src), (struct sockaddr *)&dst,
@@ -169,10 +169,10 @@ int ip_cmd(int argc, char **argv)
             return 1;
         }
         if (argc > 5) {
-            num = (uint32_t)atoi(argv[5]);
+            num = atoi(argv[5]);
         }
         if (argc > 6) {
-            delay = (uint32_t)atoi(argv[6]);
+            delay = atoi(argv[6]);
         }
         return ip_send(argv[2], argv[3], argv[4], num, delay);
     }
