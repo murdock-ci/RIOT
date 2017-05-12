@@ -220,11 +220,12 @@ ISR_VECTORS const void *interrupt_vector[] = {
     (void*) isr_usart6,             /* USART6 */
     (void*) isr_i2c3_ev,            /* I2C3 event */
     (void*) isr_i2c3_er,            /* I2C3 error */
-#if defined(CPU_MODEL_STM32F413ZH)
+#if defined(CPU_MODEL_STM32F413ZH) || defined(CPU_MODEL_STM32F413VG)
     (void*) isr_can3_tx,            /* CAN3 TX */
     (void*) isr_can3_rx0,           /* CAN3 RX0 */
     (void*) isr_can3_rx1,           /* CAN3 RX1 */
     (void*) isr_can3_sce,           /* CAN3 SCE */
+    (void*) (0UL),                  /* Reserved */
     (void*) (0UL),                  /* Reserved */
 #else
     (void*) isr_otg_hs_ep1_out,     /* USB OTG HS End Point 1 Out */
@@ -232,8 +233,30 @@ ISR_VECTORS const void *interrupt_vector[] = {
     (void*) isr_otg_hs_wkup,        /* USB OTG HS Wakeup through EXTI */
     (void*) isr_otg_hs,             /* USB OTG HS */
     (void*) isr_dcmi,               /* DCMI */
-#endif
     (void*) isr_cryp,               /* CRYP crypto */
+#endif
     (void*) isr_hash_rng,           /* Hash and Rng */
     (void*) isr_fpu,                /* FPU */
+#if defined(CPU_MODEL_STM32F413ZH) || defined(CPU_MODEL_STM32F413VG)
+    (void*) isr_usart7,             /* USART7 */
+    (void*) isr_usart8,             /* USART8 */
+    (void*) isr_spi4,               /* SPI4 */
+    (void*) isr_spi5,               /* SPI5 */
+    (void*) (0UL),                  /* Reserved */
+    (void*) isr_sai1,               /* SAI1 */
+    (void*) isr_uart9,              /* UART9 */
+    (void*) isr_uart10,             /* UART10 */
+    (void*) (0UL),                  /* Reserved */
+    (void*) (0UL),                  /* Reserved */
+    (void*) isr_quadspi,            /* QuadSPI */
+    (void*) (0UL),                  /* Reserved */
+    (void*) (0UL),                  /* Reserved */
+    (void*) isr_fmpi2c1_ev,         /* FMPI2C1 Event */
+    (void*) isr_fmpi2c1_er,         /* FMPI2C1 Error */
+    (void*) isr_lptim1,             /* LP TIM1 */
+    (void*) isr_dfsdm2_flt0,        /* DFSDM2 Filter 0 */
+    (void*) isr_dfsdm2_flt1,        /* DFSDM2 Filter 1 */
+    (void*) isr_dfsdm2_flt2,        /* DFSDM2 Filter 2 */
+    (void*) isr_dfsdm2_flt3,        /* DFSDM2 Filter 3 */
+#endif
 };
