@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Freie Universität Berlin
+ * Copyright (C) 2017 Freie Universität Berlin
  *
  * This file is subject to the terms and conditions of the GNU Lesser
  * General Public License v2.1. See the file LICENSE in the top level
@@ -7,14 +7,12 @@
  */
 
 /**
- * @ingroup     examples
+ * @ingroup     tests
  * @{
  *
  * @file
- * @brief       Demonstrating the sending and receiving of UDP data
  *
- * @author      Hauke Petersen <hauke.petersen@fu-berlin.de>
- *
+ * @author      Martine Lenders <m.lenders@fu-berlin.de>
  * @}
  */
 
@@ -59,7 +57,7 @@ static void *_eventloop(void *arg)
         switch (msg.type) {
             case GNRC_NETAPI_MSG_TYPE_RCV:
                 printf("Packets received: %d\n", ++rcv_count);
-                gnrc_pktbuf_release((gnrc_pktsnip_t *)msg.content.ptr);
+                gnrc_pktbuf_release(msg.content.ptr);
                 break;
             case GNRC_NETAPI_MSG_TYPE_GET:
             case GNRC_NETAPI_MSG_TYPE_SET:
@@ -90,13 +88,13 @@ static void send(char *addr_str, char *port_str, char *data_len_str, unsigned in
         return;
     }
     /* parse port */
-    port = (uint16_t)atoi(port_str);
+    port = atoi(port_str);
     if (port == 0) {
         puts("Error: unable to parse destination port");
         return;
     }
 
-    data_len = (size_t)atoi(data_len_str);
+    data_len = atoi(data_len_str);
     if (data_len == 0) {
         puts("Error: unable to parse data_len");
         return;
@@ -150,7 +148,7 @@ static void start_server(char *port_str)
         return;
     }
     /* parse port */
-    port = (uint16_t)atoi(port_str);
+    port = atoi(port_str);
     if (port == 0) {
         puts("Error: invalid port specified");
         return;
@@ -194,17 +192,17 @@ int udp_cmd(int argc, char **argv)
 
     if (strcmp(argv[1], "send") == 0) {
         uint32_t num = 1;
-        uint32_t delay = 1000000;
+        uint32_t delay = 1000000LU;
         if (argc < 5) {
             printf("usage: %s send <addr> <port> <bytes> [<num> [<delay in us>]]\n",
                    argv[0]);
             return 1;
         }
         if (argc > 5) {
-            num = (uint32_t)atoi(argv[5]);
+            num = atoi(argv[5]);
         }
         if (argc > 6) {
-            delay = (uint32_t)atoi(argv[6]);
+            delay = atoi(argv[6]);
         }
         send(argv[2], argv[3], argv[4], num, delay);
     }
