@@ -9,7 +9,8 @@
  */
 
 /**
- * @ingroup     cbor
+ * @defgroup    sys_cbor    CBOR
+ * @ingroup     sys
  * @{
  */
 
