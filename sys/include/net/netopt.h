@@ -248,6 +248,11 @@ typedef enum {
      * @note    Interfaces are not meant to respond to that.
      */
     NETOPT_NUMOF,
+
+    /**
+     * @brief   add/remove an address to the link layer filter list
+     */
+    NETOPT_L2FILTER,
 } netopt_t;
 
 /**
