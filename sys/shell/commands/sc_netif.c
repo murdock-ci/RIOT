@@ -27,6 +27,7 @@
 
 #include "thread.h"
 #include "net/netstats.h"
+#include "net/l2filter.h"
 #include "net/ipv6/addr.h"
 #include "net/gnrc/ipv6/netif.h"
 #include "net/gnrc/netif.h"
@@ -143,6 +144,9 @@ static void _set_usage(char *cmd_name)
          "       * \"chan\" - alias for \"channel\"\n"
          "       * \"csma_retries\" - set max. number of channel access attempts\n"
          "       * \"cca_threshold\" - set ED threshold during CCA in dBm\n"
+#ifdef MODULE_L2FILTER
+         "       * \"l2filter\" - add link layer address to filter\n"
+#endif
          "       * \"nid\" - sets the network identifier (or the PAN ID)\n"
          "       * \"page\" - set the channel page (IEEE 802.15.4)\n"
          "       * \"pan\" - alias for \"nid\"\n"
@@ -499,6 +503,30 @@ static void _netif_list(kernel_pid_t dev)
     }
 #endif
 
+#ifdef MODULE_L2FILTER
+    l2filter_t *filter = NULL;
+    res = gnrc_netapi_get(dev, NETOPT_L2FILTER, 0, &filter, sizeof(filter));
+    if (res > 0) {
+#ifdef MODULE_L2FILTER_WHITELIST
+        puts("\n           White-listed link layer addresses:");
+#else
+        puts("\n           Black-listed link layer addresses:");
+#endif
+        int count = 0;
+        for (unsigned i = 0; i < L2FILTER_LISTSIZE; i++) {
+            if (filter[i].addr_len > 0) {
+                char hwaddr_str[filter[i].addr_len * 3];
+                gnrc_netif_addr_to_str(hwaddr_str, sizeof(hwaddr_str),
+                                    filter[i].addr, filter[i].addr_len);
+                printf("            %2i: %s\n", count++, hwaddr_str);
+            }
+        }
+        if (count == 0) {
+            puts("            --- none ---");
+        }
+    }
+#endif
+
 #ifdef MODULE_NETSTATS_L2
     puts("");
     _netif_stats(dev, NETSTATS_LAYER2, false);
@@ -771,6 +799,25 @@ static int _netif_set_encrypt_key(kernel_pid_t dev, netopt_t opt, char *key_str)
     return 0;
 }
 
+#ifdef MODULE_L2FILTER
+static int _netif_set_l2filter(kernel_pid_t dev, char *val)
+{
+    uint8_t addr[MAX_ADDR_LEN];
+    size_t addr_len = gnrc_netif_addr_from_str(addr, sizeof(addr), val);
+
+    if ((addr_len == 0) || (addr_len > L2FILTER_ADDR_MAXLEN)) {
+        puts("error: given address is invalid");
+        return 1;
+    }
+
+    if (gnrc_netapi_set(dev, NETOPT_L2FILTER, 0, addr, addr_len) < 0) {
+        puts("unable to set link layer filter address");
+        return 1;
+    }
+    return 0;
+}
+#endif
+
 static int _netif_set(char *cmd_name, kernel_pid_t dev, char *key, char *value)
 {
     if ((strcmp("addr", key) == 0) || (strcmp("addr_short", key) == 0)) {
@@ -813,6 +860,11 @@ static int _netif_set(char *cmd_name, kernel_pid_t dev, char *key, char *value)
     else if (strcmp("key", key) == 0) {
         return _netif_set_encrypt_key(dev, NETOPT_ENCRYPTION_KEY, value);
     }
+#ifdef MODULE_L2FILTER
+    else if (strcmp("l2filter", key) == 0) {
+        return _netif_set_l2filter(dev, value);
+    }
+#endif
 
     _set_usage(cmd_name);
     return 1;
