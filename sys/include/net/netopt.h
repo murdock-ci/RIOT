@@ -250,9 +250,14 @@ typedef enum {
     NETOPT_NUMOF,
 
     /**
-     * @brief   add/remove an address to the link layer filter list
+     * @brief   add/remove an address to/from the link layer filter list
+     *
+     * Get expexts a pointer to a @ref l2filter_t struct. Set expexts a pointer
+     * to a hardware address, usually a uint8_t array. These options are used for both,
+     * blacklisting and whitelisting.
      */
     NETOPT_L2FILTER,
+    NETOPT_L2FILTER_RM, /**< get will always return -ENOTSUP */
 } netopt_t;
 
 /**
