@@ -594,6 +594,12 @@ ifneq (,$(filter spiffs,$(USEMODULE)))
   USEMODULE += mtd
 endif
 
+ifneq (,$(filter gcoap,$(USEMODULE)))
+USEPKG += nanocoap
+# Required by nanocoap, but only due to issue #5959.
+USEMODULE += posix
+endif
+
 # include package dependencies
 -include $(USEPKG:%=$(RIOTPKG)/%/Makefile.dep)
 
