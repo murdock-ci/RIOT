@@ -29,12 +29,6 @@ extern "C" {
 #endif
 
 /**
- * @name LED pin definitions
- * @{
- */
-/** @} */
-
-/**
  * @name Macros for controlling the on-board LEDs.
  * @{
  */
@@ -52,21 +46,21 @@ extern "C" {
 #define LED2_MASK           (1 << 12)
 #define LED3_MASK           (1 << 4)
 
-#define LED0_ON             (LED_PORT->BSRR = LED0_MASK)
-#define LED0_OFF            (LED_PORT->BSRR = (LED0_MASK << 16))
-#define LED0_TOGGLE         (LED_PORT->ODR  ^= LED0_MASK)
+#define LED0_ON             (LED0_PORT->BSRR = LED0_MASK)
+#define LED0_OFF            (LED0_PORT->BSRR = (LED0_MASK << 16))
+#define LED0_TOGGLE         (LED0_PORT->ODR  ^= LED0_MASK)
 
-#define LED1_ON             (LED_PORT->BSRR = LED1_MASK)
-#define LED1_OFF            (LED_PORT->BSRR = (LED1_MASK << 16))
-#define LED1_TOGGLE         (LED_PORT->ODR  ^= LED1_MASK)
+#define LED1_ON             (LED1_PORT->BSRR = LED1_MASK)
+#define LED1_OFF            (LED1_PORT->BSRR = (LED1_MASK << 16))
+#define LED1_TOGGLE         (LED1_PORT->ODR  ^= LED1_MASK)
 
-#define LED2_ON             (LED_PORT->BSRR = LED2_MASK)
-#define LED2_OFF            (LED_PORT->BSRR = (LED2_MASK << 16))
-#define LED2_TOGGLE         (LED_PORT->ODR  ^= LED2_MASK)
+#define LED2_ON             (LED2_PORT->BSRR = LED2_MASK)
+#define LED2_OFF            (LED2_PORT->BSRR = (LED2_MASK << 16))
+#define LED2_TOGGLE         (LED2_PORT->ODR  ^= LED2_MASK)
 
-#define LED3_ON             (LED_PORT->BSRR = LED3_MASK)
-#define LED3_OFF            (LED_PORT->BSRR = (LED3_MASK << 16))
-#define LED3_TOGGLE         (LED_PORT->ODR  ^= LED3_MASK)
+#define LED3_ON             (LED3_PORT->BSRR = LED3_MASK)
+#define LED3_OFF            (LED3_PORT->BSRR = (LED3_MASK << 16))
+#define LED3_TOGGLE         (LED3_PORT->ODR  ^= LED3_MASK)
 /** @} */
 
 /**
