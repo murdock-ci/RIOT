@@ -146,6 +146,7 @@ static void _set_usage(char *cmd_name)
          "       * \"cca_threshold\" - set ED threshold during CCA in dBm\n"
 #ifdef MODULE_L2FILTER
          "       * \"l2filter\" - add link layer address to filter\n"
+         "       * \"l2filter_rm\" - remove link layer address from filter\n"
 #endif
          "       * \"nid\" - sets the network identifier (or the PAN ID)\n"
          "       * \"page\" - set the channel page (IEEE 802.15.4)\n"
@@ -816,6 +817,22 @@ static int _netif_set_l2filter(kernel_pid_t dev, char *val)
     }
     return 0;
 }
+static int _netif_set_l2filter_rm(kernel_pid_t dev, char *val)
+{
+    uint8_t addr[MAX_ADDR_LEN];
+    size_t addr_len = gnrc_netif_addr_from_str(addr, sizeof(addr), val);
+
+    if ((addr_len == 0) || (addr_len > L2FILTER_ADDR_MAXLEN)) {
+        puts("error: given address is invalid");
+        return 1;
+    }
+
+    if (gnrc_netapi_set(dev, NETOPT_L2FILTER_RM, 0, addr, addr_len) < 0) {
+        puts("unable to remove link layer address from filter");
+        return 1;
+    }
+    return 0;
+}
 #endif
 
 static int _netif_set(char *cmd_name, kernel_pid_t dev, char *key, char *value)
@@ -863,6 +880,9 @@ static int _netif_set(char *cmd_name, kernel_pid_t dev, char *key, char *value)
 #ifdef MODULE_L2FILTER
     else if (strcmp("l2filter", key) == 0) {
         return _netif_set_l2filter(dev, value);
+    }
+    else if (strcmp("l2filter_rm", key) == 0) {
+        return _netif_set_l2filter_rm(dev, value);
     }
 #endif
 
