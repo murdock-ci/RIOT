@@ -26,10 +26,6 @@ BOARD_BLACKLIST := nrf52dk
 #GCOAP_TOKENLEN = 2
 #CFLAGS += -DGCOAP_TOKENLEN=$(GCOAP_TOKENLEN)
 
-USEPKG += nanocoap
-# Required by nanocoap, but only due to issue #5959.
-USEMODULE += posix
-
 # Include packages that pull up and auto-init the link layer.
 # NOTE: 6LoWPAN will be included if IEEE802.15.4 devices are present
 USEMODULE += gnrc_netdev_default
