@@ -144,10 +144,6 @@ static void _set_usage(char *cmd_name)
          "       * \"chan\" - alias for \"channel\"\n"
          "       * \"csma_retries\" - set max. number of channel access attempts\n"
          "       * \"cca_threshold\" - set ED threshold during CCA in dBm\n"
-#ifdef MODULE_L2FILTER
-         "       * \"l2filter\" - add link layer address to filter\n"
-         "       * \"l2filter_rm\" - remove link layer address from filter\n"
-#endif
          "       * \"nid\" - sets the network identifier (or the PAN ID)\n"
          "       * \"page\" - set the channel page (IEEE 802.15.4)\n"
          "       * \"pan\" - alias for \"nid\"\n"
@@ -826,6 +822,11 @@ static int _netif_addrm_l2filter(kernel_pid_t dev, char *val, bool add)
     puts("successfully added address to filter");
     return 0;
 }
+
+static void _l2filter_usage(const char *cmd)
+{
+    printf("usage: %s <if_id> l2filter {add|del} <addr>\n", cmd);
+}
 #endif
 
 static int _netif_set(char *cmd_name, kernel_pid_t dev, char *key, char *value)
@@ -870,14 +871,6 @@ static int _netif_set(char *cmd_name, kernel_pid_t dev, char *key, char *value)
     else if (strcmp("key", key) == 0) {
         return _netif_set_encrypt_key(dev, NETOPT_ENCRYPTION_KEY, value);
     }
-#ifdef MODULE_L2FILTER
-    else if (strcmp("l2filter", key) == 0) {
-        return _netif_addrm_l2filter(dev, value, true);
-    }
-    else if (strcmp("l2filter_rm", key) == 0) {
-        return _netif_addrm_l2filter(dev, value, false);
-    }
-#endif
 
     _set_usage(cmd_name);
     return 1;
@@ -1218,6 +1211,24 @@ int _netif_config(int argc, char **argv)
 
                 return _netif_mtu((kernel_pid_t)dev, argv[3]);
             }
+#ifdef MODULE_L2FILTER
+            else if (strcmp(argv[2], "l2filter") == 0) {
+                if (argc < 5) {
+                    _l2filter_usage(argv[2]);
+                }
+                else if (strcmp(argv[3], "add") == 0) {
+                    return _netif_addrm_l2filter(dev, argv[4], true);
+                    puts("add filter");
+                }
+                else if (strcmp(argv[3], "del") == 0) {
+                    return _netif_addrm_l2filter(dev, argv[4], false);
+                }
+                else {
+                    _l2filter_usage(argv[2]);
+                }
+                return 1;
+            }
+#endif
 #ifdef MODULE_NETSTATS
             else if (strcmp(argv[2], "stats") == 0) {
                 uint8_t module;
@@ -1295,6 +1306,9 @@ int _netif_config(int argc, char **argv)
     _flag_usage(argv[0]);
     _add_usage(argv[0]);
     _del_usage(argv[0]);
+#ifdef MODULE_L2FILTER
+    _l2filter_usage(argv[0]);
+#endif
 #ifdef MODULE_NETSTATS
     _stats_usage(argv[0]);
 #endif
