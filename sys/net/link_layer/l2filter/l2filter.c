@@ -48,11 +48,12 @@ int l2filter_add(l2filter_t *list, const void *addr, size_t addr_len)
 
     int res = -ENOMEM;
 
-    for (unsigned i = 0; (i < L2FILTER_LISTSIZE) && (res != 0); i++) {
+    for (unsigned i = 0; i < L2FILTER_LISTSIZE; i++) {
         if (list[i].addr_len == 0) {
             list[i].addr_len = addr_len;
             memcpy(list[i].addr, addr, addr_len);
             res = 0;
+            break;
         }
     }
 
@@ -65,10 +66,11 @@ int l2filter_rm(l2filter_t *list, const void *addr, size_t addr_len)
 
     int res = -ENOENT;
 
-    for (unsigned i = 0; (i < L2FILTER_LISTSIZE) && (res != 0); i++) {
+    for (unsigned i = 0; i < L2FILTER_LISTSIZE; i++) {
         if (match(&list[i], addr, addr_len)) {
             list[i].addr_len = 0;
             res = 0;
+            break;
         }
     }
 
@@ -79,28 +81,27 @@ bool l2filter_pass(const l2filter_t *list, const void *addr, size_t addr_len)
 {
     assert(list && addr && (addr_len <= L2FILTER_ADDR_MAXLEN));
 
-
 #ifdef MODULE_L2FILTER_WHITELIST
-
+    bool res = false;
     for (unsigned i = 0; i < L2FILTER_LISTSIZE; i++) {
         if (match(&list[i], addr, addr_len)) {
             DEBUG("[l2filter] whitelist: address match -> packet passes\n");
-            return true;
+            res = true;
+            break;
         }
     }
     DEBUG("[l2filter] whitelist: no match -> packet dropped\n");
-    return false;
-
 #else
-
+    bool res = true;
     for (unsigned i = 0; i < L2FILTER_LISTSIZE; i++) {
         if (match(&list[i], addr, addr_len)) {
             DEBUG("[l2filter] blacklist: address match -> packet dropped\n");
-            return false;
+            res = false;
+            break;
         }
     }
     DEBUG("[l2fitler] blacklist: no match -> packet passes\n");
-    return true;
-
 #endif
+
+    return res;
 }
