@@ -812,14 +812,15 @@ static int _netif_addrm_l2filter(kernel_pid_t dev, char *val, bool add)
             puts("unable to add link layer address to filter");
             return 1;
         }
+        puts("successfully added address to filter");
     }
     else {
         if (gnrc_netapi_set(dev, NETOPT_L2FILTER_RM, 0, addr, addr_len) < 0) {
             puts("unable to remove link layer address from filter");
             return 1;
         }
+        puts("successfully removed address to filter");
     }
-    puts("successfully added address to filter");
     return 0;
 }
 
@@ -1218,7 +1219,6 @@ int _netif_config(int argc, char **argv)
                 }
                 else if (strcmp(argv[3], "add") == 0) {
                     return _netif_addrm_l2filter(dev, argv[4], true);
-                    puts("add filter");
                 }
                 else if (strcmp(argv[3], "del") == 0) {
                     return _netif_addrm_l2filter(dev, argv[4], false);
