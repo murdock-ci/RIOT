@@ -30,8 +30,11 @@
 #include "mutex.h"
 #include "net/ipv6.h"
 #include "net/ipv6/addr.h"
-#include "net/netstats.h"
 #include "xtimer.h"
+
+#ifdef MODULE_NETSTATS_IPV6
+#include "net/netstats.h"
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -595,6 +598,7 @@ static inline bool gnrc_ipv6_netif_addr_is_non_unicast(const ipv6_addr_t *addr)
  */
 void gnrc_ipv6_netif_init_by_dev(void);
 
+
 /**
  * @brief   Get sent and received statistics about IPv6 traffic on this interface.
  *
@@ -605,7 +609,9 @@ void gnrc_ipv6_netif_init_by_dev(void);
  * @return  A @ref netstats_t pointer to the statistics.
  * @return  NULL if no statistics are available.
  */
+#if defined(MODULE_NETSTATS_IPV6) || DOXYGEN
 netstats_t *gnrc_ipv6_netif_get_stats(kernel_pid_t pid);
+#endif
 
 #ifdef __cplusplus
 }
