@@ -240,6 +240,26 @@ typedef enum {
      */
     NETOPT_RF_TESTMODE,
 
+    /**
+     * @brief   add an address to a link layer filter list
+     *
+     * 'Getting' this option from a device will return a pointer of type
+     * @ref l2filter_t to the first entry of a filter list.
+     * When 'Setting' this option a pointer to an link layer address as well as
+     * the length of the address are expected as parameters.
+     */
+    NETOPT_L2FILTER,
+
+    /**
+     * @brief   remove an address from a link layer filter list
+     *
+     * 'Getting' this value always returns -ENOTSUP.
+     * When 'Setting' this option a pointer to an link layer address as well as
+     * the length of the address are expected as parameters. 'Setting' this
+     * option will lead to the given address being removed from the filer list.
+     */
+    NETOPT_L2FILTER_RM,
+
     /* add more options if needed */
 
     /**
@@ -248,16 +268,6 @@ typedef enum {
      * @note    Interfaces are not meant to respond to that.
      */
     NETOPT_NUMOF,
-
-    /**
-     * @brief   add/remove an address to/from the link layer filter list
-     *
-     * Get expexts a pointer to a @ref l2filter_t struct. Set expexts a pointer
-     * to a hardware address, usually a uint8_t array. These options are used for both,
-     * blacklisting and whitelisting.
-     */
-    NETOPT_L2FILTER,
-    NETOPT_L2FILTER_RM, /**< get will always return -ENOTSUP */
 } netopt_t;
 
 /**
