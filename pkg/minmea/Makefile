@@ -1,6 +1,6 @@
 PKG_NAME=minmea
-PKG_URL=https://github.com/cloudyourcar/minmea
-PKG_VERSION=48ba91275c57838150979eb2820b6e10f5a894b2
+PKG_URL=https://github.com/kaspar030/minmea
+PKG_VERSION=f3253039a32af98924b0606316a83c8129dff4d4
 PKG_LICENSE=WTFPL
 
 .PHONY: all
