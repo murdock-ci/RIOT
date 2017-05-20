@@ -36,7 +36,7 @@ int main(void)
     char lon[16];
 
     while(1) {
-        int res = gps_get_loc((gps_t*)&gps, lat, lon, 2000000LU);
+        int res = gps_get_loc((gps_t*)&gps, lat, lon, 2000000LLU);
         if (!res) {
             printf("lat=%s lon=%s\n", lat, lon);
         }
