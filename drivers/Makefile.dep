@@ -100,6 +100,10 @@ ifneq (,$(filter ethos,$(USEMODULE)))
     USEMODULE += tsrb
 endif
 
+ifneq (,$(filter gps_%,$(USEMODULE)))
+  USEMODULE += gps
+endif
+
 ifneq (,$(filter hdc1000,$(USEMODULE)))
   USEMODULE += xtimer
 endif
