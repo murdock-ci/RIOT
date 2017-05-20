@@ -18,12 +18,12 @@
  * @}
  */
 
+
+#include <stdio.h>
+
 #include "gps.h"
-#include "fmt.h"
-
-#include "periph/uart.h"
-
 #include "gps/serial.h"
+#include "periph/uart.h"
 
 static gps_serial_t gps;
 static const gps_serial_params_t gps_serial_params = { .uart=UART_DEV(1), .baudrate=9600 };
