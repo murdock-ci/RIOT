@@ -74,6 +74,9 @@ static int _get_loc(gps_t *dev, char *lat, char *lon, unsigned maxwait)
 
 static int _power(gps_t *dev, gps_powermode_t mode)
 {
+    (void)dev;
+    (void)mode;
+
     return -ENOTSUP;
 }
 
