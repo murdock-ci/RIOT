@@ -52,7 +52,7 @@ out:
     return res;
 }
 
-static int _get_loc(gps_t *dev, char *lat, char *lon, unsigned maxwait)
+static int _get_loc(gps_t *dev, char *lat, char *lon, uint32_t maxwait)
 {
     gps_serial_t *gps_serial = (gps_serial_t*) dev;
 
