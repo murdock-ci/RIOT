@@ -51,7 +51,7 @@ typedef enum {
  */
 struct gps_driver {
     /** ptr to get_loc implementation */
-    int(*get_loc)(gps_t *dev, char *lat, char *lon, unsigned wait_fix);
+    int(*get_loc)(gps_t *dev, char *lat, char *lon, uint32_t wait_fix);
 
     /** ptr to power implementation */
     int(*power)(gps_t *dev, gps_powermode_t mode);
@@ -81,7 +81,7 @@ struct gps_driver {
  * @returns     -ETIMEOUT on timeout
  * @returns     <0 on other errors
  */
-static inline int gps_get_loc(gps_t *gpsdev, char *lat, char *lon, unsigned maxwait)
+static inline int gps_get_loc(gps_t *gpsdev, char *lat, char *lon, uint32_t maxwait)
 {
     return gpsdev->driver->get_loc(gpsdev, lat, lon, maxwait);
 }
