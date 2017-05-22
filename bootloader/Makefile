@@ -19,7 +19,7 @@ BOOTLOADER = 1
 INTERACTIVE_BOOTLOADER ?= 1
 CFLAGS += -DINTERACTIVE_BOOTLOADER=$(INTERACTIVE_BOOTLOADER)
 
-# Import metadata space size, otherwise it will be defaulted to 0x100 by 
+# Import metadata space size, otherwise it will be defaulted to 0x100 by
 # the code
 CFLAGS += -DFW_METADATA_SPACE=$(FW_METADATA_SPACE)
 
