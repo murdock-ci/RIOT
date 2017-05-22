@@ -287,7 +287,9 @@ BASELIBS += $(SINGLE_SLOT)
 
 ELFFILE ?= $(BINDIR)/$(APPLICATION).elf
 HEXFILE ?= $(ELFFILE:.elf=.hex)
+ifdef FW_SLOT
 BINFILE ?= $(ELFFILE:.elf=.bin)
+endif
 
 # variables used to compile and link c++
 CPPMIX ?= $(if $(wildcard *.cpp),1,)
