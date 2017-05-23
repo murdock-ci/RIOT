@@ -20,7 +20,7 @@
 
 #include <stdint.h>
 
-#ifndef NETSTATS_RPL_H
+#ifndef NET_RPL_RPL_NETSTATS_H
 #define NETSTATS_RPL_H
 
 #ifdef __cplusplus
@@ -73,5 +73,5 @@ typedef struct {
 }
 #endif
 
-#endif /* NETSTATS_RPL_H */
+#endif /* NET_RPL_RPL_NETSTATS_H */
 /** @} */

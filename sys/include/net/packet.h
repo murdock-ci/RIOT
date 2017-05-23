@@ -18,7 +18,7 @@
  * @author  Oliver Hahm <oliver.hahm@inria.fr>
  */
 
-#ifndef PACKET_H
+#ifndef NET_PACKET_H
 #define PACKET_H
 
 #ifdef __cplusplus
@@ -45,4 +45,4 @@ struct sockaddr_ll {
 /**
  * @}
  */
-#endif /* PACKET_H */
+#endif /* NET_PACKET_H */

@@ -19,7 +19,7 @@
  *
  * @author  Martine Lenders <mlenders@inf.fu-berlin.de>
  */
-#ifndef GNRC_NDP_INTERNAL_H
+#ifndef NET_GNRC_NDP_INTERNAL_H
 #define GNRC_NDP_INTERNAL_H
 
 #include "kernel_types.h"
@@ -211,5 +211,5 @@ static inline void gnrc_ndp_internal_reset_nbr_sol_timer(gnrc_ipv6_nc_t *nc_entr
 }
 #endif
 
-#endif /* GNRC_NDP_INTERNAL_H */
+#endif /* NET_GNRC_NDP_INTERNAL_H */
 /** @} */

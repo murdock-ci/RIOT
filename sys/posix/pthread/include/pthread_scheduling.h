@@ -15,7 +15,7 @@
  * @note    Do not include this header file directly, but pthread.h.
  */
 
-#ifndef SYS__POSIX__PTHREAD_SCHEDULING__H
+#ifndef PTHREAD_SCHEDULING_H
 #define SYS__POSIX__PTHREAD_SCHEDULING__H
 
 #ifdef __cplusplus
@@ -55,7 +55,7 @@ int pthread_setschedprio(pthread_t target_thread, int prio);
 }
 #endif
 
-#endif /* SYS__POSIX__PTHREAD_SCHEDULING__H */
+#endif /* PTHREAD_SCHEDULING_H */
 
 /**
  * @}

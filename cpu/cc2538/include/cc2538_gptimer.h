@@ -17,7 +17,7 @@
  * @author          Ian Martin <ian@locicontrols.com>
  */
 
-#ifndef GPTIMER_H
+#ifndef CC2538_GPTIMER_H
 #define GPTIMER_H
 
 #include <stdint.h>
@@ -180,6 +180,6 @@ void isr_timer3_chan1(void);                /**< RIOT Timer 3 Channel 1 Interrup
 } /* end extern "C" */
 #endif
 
-#endif /* GPTIMER_H */
+#endif /* CC2538_GPTIMER_H */
 
 /* @} */

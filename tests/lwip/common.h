@@ -15,7 +15,7 @@
  *
  * @author  Martine Lenders <mlenders@inf.fu-berlin.de>
  */
-#ifndef MAIN_H
+#ifndef COMMON_H
 #define MAIN_H
 
 #include <stdint.h>
@@ -90,5 +90,5 @@ int udp_cmd(int argc, char **argv);
 }
 #endif
 
-#endif /* MAIN_H */
+#endif /* COMMON_H */
 /** @} */

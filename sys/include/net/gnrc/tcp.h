@@ -19,7 +19,7 @@
  * @author      Simon Brummer <simon.brummer@posteo.de>
  */
 
-#ifndef GNRC_TCP_H
+#ifndef NET_GNRC_TCP_H
 #define GNRC_TCP_H
 
 #include <stdint.h>
@@ -216,5 +216,5 @@ gnrc_pktsnip_t *gnrc_tcp_hdr_build(gnrc_pktsnip_t *payload, uint16_t src, uint16
 }
 #endif
 
-#endif /* GNRC_TCP_H */
+#endif /* NET_GNRC_TCP_H */
 /** @} */

@@ -18,7 +18,7 @@
 /* without the GCC pragma above #include_next will trigger a pedantic error */
 #include_next <sys/statvfs.h>
 #else
-#ifndef SYS_STATVFS_H_
+#ifndef SYS_STATVFS_H
 #define SYS_STATVFS_H_
 
 #include <sys/types.h> /* for fsblkcnt_t, fsfilcnt_t */
@@ -71,7 +71,7 @@ enum {
 }
 #endif
 
-#endif /* SYS_STATVFS_H_ */
+#endif /* SYS_STATVFS_H */
 
 #endif /* CPU_NATIVE */
 

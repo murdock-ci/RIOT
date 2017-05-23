@@ -21,7 +21,7 @@
  * @author      Shuguo Zhuo  <shuguo.zhuo@inria.fr>
  */
 
-#ifndef GNRC_MAC_H
+#ifndef NET_GNRC_MAC_MAC_H
 #define GNRC_MAC_H
 
 #ifdef __cplusplus
@@ -60,5 +60,5 @@ extern "C" {
 }
 #endif
 
-#endif /* GNRC_MAC_H */
+#endif /* NET_GNRC_MAC_MAC_H */
 /** @} */

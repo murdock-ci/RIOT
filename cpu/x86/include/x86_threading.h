@@ -26,7 +26,7 @@
  * @author     René Kijewski <rene.kijewski@fu-berlin.de>
  */
 
-#ifndef CPU__X86__THREADING__H__
+#ifndef X86_THREADING_H
 #define CPU__X86__THREADING__H__
 
 #include <stdbool.h>
@@ -52,6 +52,6 @@ extern bool x86_in_isr;
 }
 #endif
 
-#endif
+#endif /* X86_THREADING_H */
 
 /** @} */

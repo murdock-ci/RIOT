@@ -22,7 +22,7 @@
  * @author      Kaspar Schleiser <kaspar@schleiser.de>
  */
 
-#ifndef NETOPT_H
+#ifndef NET_NETOPT_H
 #define NETOPT_H
 
 #ifdef __cplusplus
@@ -323,5 +323,5 @@ const char *netopt2str(netopt_t opt);
 }
 #endif
 
-#endif /* NETOPT_H */
+#endif /* NET_NETOPT_H */
 /** @} */

@@ -18,7 +18,7 @@
  * @author      Alexandre Abadie <alexandre.abadie@inria.fr>
  */
 
-#ifndef TSL2561_H_
+#ifndef TSL2561_H
 #define TSL2561_H_
 
 #include "saul.h"
@@ -109,5 +109,5 @@ uint16_t tsl2561_read_illuminance(tsl2561_t *dev);
 }
 #endif
 
-#endif /* TSL2561_H_ */
+#endif /* TSL2561_H */
 /** @} */

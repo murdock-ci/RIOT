@@ -16,7 +16,7 @@
  *
  */
 
-#ifndef CC26x0_GPIO_H
+#ifndef CC26X0_GPIO_H
 #define CC26x0_GPIO_H
 
 #include "cc26x0.h"
@@ -58,6 +58,6 @@ typedef struct {
 } /* end extern "C" */
 #endif
 
-#endif /* CC26x0_GPIO_H */
+#endif /* CC26X0_GPIO_H */
 
 /** @} */

@@ -22,7 +22,7 @@
  */
 
 
-#ifndef BOARDCONF_H
+#ifndef BOARD_H
 #define BOARDCONF_H
 #include "bitarithm.h"
 #include "msba2_common.h"
@@ -60,4 +60,4 @@ void init_clks1(void);
 #endif
 
 /** @} */
-#endif /* BOARDCONF_H */
+#endif /* BOARD_H */

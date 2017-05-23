@@ -17,7 +17,7 @@
  * @author      Joakim Nohlgård <joakim.nohlgard@eistec.se
  */
 
-#ifndef RIOT_MSP430_STDLIB_H
+#ifndef STDLIB_H
 #define RIOT_MSP430_STDLIB_H
 
 /*
@@ -37,4 +37,4 @@ extern "C" {
 }
 #endif
 
-#endif /* RIOT_MSP430_STDLIB_H */
+#endif /* STDLIB_H */

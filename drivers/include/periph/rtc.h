@@ -23,7 +23,7 @@
  * @author      Thomas Eichinger <thomas.eichinger@fu-berlin.de>
  */
 
-#ifndef RTC_H
+#ifndef PERIPH_RTC_H
 #define RTC_H
 
 #include <time.h>
@@ -114,5 +114,5 @@ void rtc_poweroff(void);
 }
 #endif
 
-#endif /* RTC_H */
+#endif /* PERIPH_RTC_H */
 /** @} */

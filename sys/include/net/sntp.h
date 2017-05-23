@@ -20,7 +20,7 @@
  * @author      Martine Lenders <m.lenders@fu-berlin.de>
  */
 
-#ifndef SNTP_H
+#ifndef NET_SNTP_H
 #define SNTP_H
 
 #include <stdint.h>
@@ -66,5 +66,5 @@ static inline uint64_t sntp_get_unix_usec(void)
 }
 #endif
 
-#endif /* SNTP_H */
+#endif /* NET_SNTP_H */
 /** @} */

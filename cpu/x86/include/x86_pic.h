@@ -25,7 +25,7 @@
  * @author  René Kijewski <rene.kijewski@fu-berlin.de>
  */
 
-#ifndef CPU__X86__PIC__H__
+#ifndef X86_PIC_H
 #define CPU__X86__PIC__H__
 
 #include <stdint.h>
@@ -171,6 +171,6 @@ void x86_pic_disable_irq(unsigned num);
 }
 #endif
 
-#endif
+#endif /* X86_PIC_H */
 
 /** @} */

@@ -18,7 +18,7 @@
  * @author      Alexandre Abadie <alexandre.abadie@inria.fr>
  */
 
-#ifndef BOARD_H_
+#ifndef BOARD_H
 #define BOARD_H_
 
 #include "board_common.h"
@@ -41,5 +41,5 @@ extern "C" {
 }
 #endif
 
-#endif /* BOARD_H_ */
+#endif /* BOARD_H */
 /** @} */

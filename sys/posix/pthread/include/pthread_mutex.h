@@ -14,7 +14,7 @@
  * @note    Do not include this header file directly, but pthread.h.
  */
 
-#ifndef SYS__POSIX__PTHREAD_MUTEX__H
+#ifndef PTHREAD_MUTEX_H
 #define SYS__POSIX__PTHREAD_MUTEX__H
 
 #include <time.h>
@@ -112,7 +112,7 @@ int pthread_mutex_setprioceiling(pthread_mutex_t *mutex, int prioceiling, int *o
 }
 #endif
 
-#endif /* SYS__POSIX__PTHREAD_MUTEX__H */
+#endif /* PTHREAD_MUTEX_H */
 
 /**
  * @}

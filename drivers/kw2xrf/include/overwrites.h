@@ -31,7 +31,7 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef OVERWRITES_H_
+#ifndef OVERWRITES_H
 #define OVERWRITES_H_
 
 #ifdef __cplusplus
@@ -311,4 +311,4 @@ end of deprecated versions */
 #ifdef __cplusplus
 }
 #endif
-#endif  //OVERWRITES_H_
+#endif /* OVERWRITES_H */

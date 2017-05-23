@@ -29,7 +29,7 @@
 
 /* This file was imported into RIOT from newlib 2.3.0 */
 
-#ifndef STDATOMIC_H_
+#ifndef STDATOMIC_H
 #define STDATOMIC_H_
 
 #include <sys/cdefs.h>
@@ -423,4 +423,4 @@ atomic_flag_clear(volatile atomic_flag *__object)
 }
 #endif
 
-#endif /* !_STDATOMIC_H_ */
+#endif /* STDATOMIC_H */

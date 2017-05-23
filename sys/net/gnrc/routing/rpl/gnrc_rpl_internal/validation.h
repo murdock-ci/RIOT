@@ -16,7 +16,7 @@
  * @author      Cenk Gündoğan <mail@cgundogan.de>
  */
 
-#ifndef GNRC_RPL_VALIDATION_H
+#ifndef VALIDATION_H
 #define GNRC_RPL_VALIDATION_H
 
 #ifdef __cplusplus
@@ -143,5 +143,5 @@ static inline bool gnrc_rpl_validation_DAO_ACK(gnrc_rpl_dao_ack_t *dao_ack, uint
 }
 #endif
 
-#endif /* GNRC_RPL_VALIDATION_H */
+#endif /* VALIDATION_H */
 /** @} */

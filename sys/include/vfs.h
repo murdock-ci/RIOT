@@ -50,7 +50,7 @@
  * @author  Joakim Nohlgård <joakim.nohlgard@eistec.se>
  */
 
-#ifndef VFS_H_
+#ifndef VFS_H
 #define VFS_H_
 
 #include <stdint.h>
@@ -830,6 +830,6 @@ const vfs_mount_t *vfs_iterate_mounts(const vfs_mount_t *cur);
 }
 #endif
 
-#endif
+#endif /* VFS_H */
 
 /** @} */

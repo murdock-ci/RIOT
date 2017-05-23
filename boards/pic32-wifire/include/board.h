@@ -25,7 +25,7 @@
  * @author      Neil Jones <Neil.Jones@imgtec.com>
  */
 
-#ifndef _BOARD_H_
+#ifndef BOARD_H
 #define _BOARD_H_
 
 #include "periph_conf.h"
@@ -56,5 +56,5 @@ void board_init(void);
 }
 #endif
 
-#endif /* _BOARD_H_ */
+#endif /* BOARD_H */
 /** @} */

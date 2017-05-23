@@ -14,7 +14,7 @@
  * @note    Do not include this header file directly, but pthread.h.
  */
 
-#ifndef SYS__POSIX__PTHREAD_THREADING_ATTR__H
+#ifndef PTHREAD_THREADING_ATTR_H
 #define SYS__POSIX__PTHREAD_THREADING_ATTR__H
 
 #ifdef __cplusplus
@@ -206,7 +206,7 @@ int pthread_attr_setstacksize(pthread_attr_t *attr, size_t stacksize);
 }
 #endif
 
-#endif /* SYS__POSIX__PTHREAD_THREADING_ATTR__H */
+#endif /* PTHREAD_THREADING_ATTR_H */
 
 /**
  * @}

@@ -17,7 +17,7 @@
  *
  * @author  Martine Lenders <m.lenders@fu-berlin.de>
  */
-#ifndef CONSTANTS_H_
+#ifndef CONSTANTS_H
 #define CONSTANTS_H_
 
 
@@ -45,5 +45,5 @@ extern "C" {
 }
 #endif
 
-#endif /* CONSTANTS_H_ */
+#endif /* CONSTANTS_H */
 /** @} */

@@ -20,7 +20,7 @@
 
 /* This file was imported into RIOT from newlib 2.3.0 */
 
-#ifndef _SYS_FEATURES_H
+#ifndef SYS_FEATURES_H
 #define _SYS_FEATURES_H
 
 #ifdef __cplusplus
@@ -511,4 +511,4 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
-#endif /* _SYS_FEATURES_H */
+#endif /* SYS_FEATURES_H */

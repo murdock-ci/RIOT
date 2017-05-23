@@ -20,7 +20,7 @@
  * @author      Kaspar Schleiser <kaspar@schleiser.de>
  */
 
-#ifndef PM_H
+#ifndef PERIPH_PM_H
 #define PM_H
 
 #include "assert.h"
@@ -51,5 +51,5 @@ void pm_set_lowest(void);
 }
 #endif
 
-#endif /* __PM_H */
+#endif /* PERIPH_PM_H */
 /** @} */

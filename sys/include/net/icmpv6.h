@@ -20,7 +20,7 @@
  *
  * @author  Martine Lenders <mlenders@inf.fu-berlin.de>
  */
-#ifndef ICMPV6_H
+#ifndef NET_ICMPV6_H
 #define ICMPV6_H
 
 #include <stdint.h>
@@ -228,5 +228,5 @@ void icmpv6_hdr_print(icmpv6_hdr_t *hdr);
 }
 #endif
 
-#endif /* ICMPV6_H */
+#endif /* NET_ICMPV6_H */
 /** @} */

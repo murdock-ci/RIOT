@@ -16,7 +16,7 @@
  * @author          Ian Martin <ian@locicontrols.com>
  */
 
-#ifndef _CC2538_
+#ifndef CC2538_H
 #define _CC2538_
 
 #ifdef __cplusplus
@@ -815,6 +815,6 @@ typedef volatile uint32_t cc2538_reg_t; /**< Least-significant 32 bits of the IE
 }
 #endif
 
-#endif /* _CC2538_ */
+#endif /* CC2538_H */
 
 /*@}*/

@@ -31,7 +31,7 @@
  * @author  René Kijewski <rene.kijewski@fu-berlin.de>
  */
 
-#ifndef CPU__X86__PIT__H__
+#ifndef X86_PIT_H
 #define CPU__X86__PIT__H__
 
 #include <stdbool.h>
@@ -117,6 +117,6 @@ bool x86_pit_set(unsigned channel, unsigned mode, unsigned hz);
 }
 #endif
 
-#endif
+#endif /* X86_PIT_H */
 
 /** @} */

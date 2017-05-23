@@ -22,7 +22,7 @@
  */
 
 
-#ifndef GNRC_IPV6_EXT_H
+#ifndef NET_GNRC_IPV6_EXT_H
 #define GNRC_IPV6_EXT_H
 
 #include <stdbool.h>
@@ -81,7 +81,7 @@ gnrc_pktsnip_t *gnrc_ipv6_ext_build(gnrc_pktsnip_t *ipv6, gnrc_pktsnip_t *next,
 }
 #endif
 
-#endif /* GNRC_IPV6_EXT_H */
+#endif /* NET_GNRC_IPV6_EXT_H */
 /**
  * @}
  */

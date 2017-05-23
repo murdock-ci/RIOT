@@ -17,7 +17,7 @@
  *
  * @author  Kaspar Schleiser <kaspar@schleiser.de>
  */
-#ifndef UIO_H
+#ifndef SYS_UIO_H
 #define UIO_H
 
 #include <stdlib.h>
@@ -39,4 +39,4 @@ struct iovec {
 }
 #endif
 /** @} */
-#endif /* UIO_H */
+#endif /* SYS_UIO_H */

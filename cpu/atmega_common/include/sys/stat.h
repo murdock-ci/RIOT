@@ -12,7 +12,7 @@
  * @author  Joakim Nohlgård <joakim.nohlgard@eistec.se>
  */
 
-#ifndef SYS_STAT_H_
+#ifndef SYS_STAT_H
 #define SYS_STAT_H_
 
 #include <time.h> /* for struct timespec */
@@ -115,6 +115,6 @@ int    utimensat(int, const char *, const struct timespec [2], int);
 }
 #endif
 
-#endif /* SYS_STAT_H_ */
+#endif /* SYS_STAT_H */
 
 /** @} */

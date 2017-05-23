@@ -20,7 +20,7 @@
  *
  * @author  Martine Lenders <mlenders@inf.fu-berlin.de>
  */
-#ifndef _NETINET_IN_H
+#ifndef NETINET_IN_H
 #define _NETINET_IN_H
 
 #include <inttypes.h>
@@ -271,4 +271,4 @@ extern const struct in6_addr in6addr_loopback;
 /**
  * @}
  */
-#endif /* _NETINET_IN_H */
+#endif /* NETINET_IN_H */

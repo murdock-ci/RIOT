@@ -21,7 +21,7 @@
  * @author      Vincent Dupont <vincent@otakeys.com>
  */
 
-#ifndef MTD_SPI_NOR_H_
+#ifndef MTD_SPI_NOR_H
 #define MTD_SPI_NOR_H_
 
 #include <stdint.h>
@@ -144,5 +144,5 @@ extern const mtd_spi_nor_opcode_t mtd_spi_nor_opcode_default;
 }
 #endif
 
-#endif /* MTD_SPI_NOR_H_ */
+#endif /* MTD_SPI_NOR_H */
 /** @} */
