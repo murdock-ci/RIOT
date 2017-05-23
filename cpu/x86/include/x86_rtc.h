@@ -28,7 +28,7 @@
  * @author  René Kijewski <rene.kijewski@fu-berlin.de>
  */
 
-#ifndef CPU__X86__RTC__H__
+#ifndef X86_RTC_H
 #define CPU__X86__RTC__H__
 
 #include "msg.h"
@@ -215,6 +215,6 @@ void x86_rtc_set_update_callback(x86_rtc_callback_t cb);
 }
 #endif
 
-#endif
+#endif /* X86_RTC_H */
 
 /** @} */

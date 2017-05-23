@@ -23,7 +23,7 @@
  *
  * @author  Martine Lenders <mlenders@inf.fu-berlin.de>
  */
-#ifndef GNRC_SIXLOWPAN_CTX_H
+#ifndef NET_GNRC_SIXLOWPAN_CTX_H
 #define GNRC_SIXLOWPAN_CTX_H
 
 #include <inttypes.h>
@@ -136,5 +136,5 @@ void gnrc_sixlowpan_ctx_reset(void);
 }
 #endif
 
-#endif /* GNRC_SIXLOWPAN_CTX_H */
+#endif /* NET_GNRC_SIXLOWPAN_CTX_H */
 /** @} */

@@ -20,7 +20,7 @@
  *
  * @author  Martine Lenders <mlenders@inf.fu-berlin.de>
  */
-#ifndef GNRC_RPL_SRH_H
+#ifndef NET_GNRC_RPL_SRH_H
 #define GNRC_RPL_SRH_H
 
 #include "net/ipv6/hdr.h"
@@ -70,5 +70,5 @@ int gnrc_rpl_srh_process(ipv6_hdr_t *ipv6, gnrc_rpl_srh_t *rh);
 }
 #endif
 
-#endif /* GNRC_RPL_SRH_H */
+#endif /* NET_GNRC_RPL_SRH_H */
 /** @} */

@@ -20,7 +20,7 @@
  * @author      Neil Jones <neil.jones@imgtec.com>
  */
 
-#ifndef _PERIPH_CONF_H_
+#ifndef PERIPH_CONF_H
 #define _PERIPH_CONF_H_
 
 #ifdef __cplusplus
@@ -55,5 +55,5 @@ extern "C" {
 }
 #endif
 
-#endif /*_PERIPH_CONF_H_*/
+#endif /* PERIPH_CONF_H */
 /** @} */

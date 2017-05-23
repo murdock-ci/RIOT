@@ -20,7 +20,7 @@
  * @author      Neil Jones <neil.jones@imgtec.com>
  */
 
-#ifndef _BOARD_H_
+#ifndef BOARD_H
 #define _BOARD_H_
 
 #ifdef __cplusplus
@@ -42,5 +42,5 @@ void board_init(void);
 }
 #endif
 
-#endif /* _BOARD_H_ */
+#endif /* BOARD_H */
 /** @} */

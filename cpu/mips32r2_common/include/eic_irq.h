@@ -17,7 +17,7 @@
  * @author      Neil Jones <neil.jones@imgtec.com>
  */
 
-#ifndef EIC_IRQ_H_
+#ifndef EIC_IRQ_H
 #define EIC_IRQ_H_
 
 #ifdef __cplusplus
@@ -65,5 +65,5 @@ void eic_irq_ack(int irq_num);
 }
 #endif
 
-#endif
+#endif /* EIC_IRQ_H */
 /** @} */

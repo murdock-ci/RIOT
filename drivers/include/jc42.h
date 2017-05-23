@@ -28,7 +28,7 @@
  * @author      Koen Zandberg <koen@bergzand.net>
  */
 
-#ifndef JC42_TEMP_H
+#ifndef JC42_H
 #define JC42_TEMP_H
 
 #include "periph/i2c.h"
@@ -122,4 +122,4 @@ int jc42_get_temperature(jc42_t* dev, int16_t* temperature);
 #endif
 
 /** @} */
-#endif /* JC42_TEMP_H */
+#endif /* JC42_H */

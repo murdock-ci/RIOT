@@ -17,7 +17,7 @@
  *
  * @author  Martine Lenders <mlenders@inf.fu-berlin.de>
  */
-#ifndef SOCK_TYPES_H_
+#ifndef SOCK_TYPES_H
 #define SOCK_TYPES_H_
 
 #include <stdatomic.h>
@@ -62,5 +62,5 @@ struct sock_udp {
 }
 #endif
 
-#endif /* SOCK_TYPES_H_ */
+#endif /* SOCK_TYPES_H */
 /** @} */

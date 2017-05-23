@@ -43,7 +43,7 @@
  *
  * @author  Wojciech Bober <wojciech.bober@nordicsemi.no>
  */
-#ifndef DEV_BLE_H
+#ifndef BLE_CORE_H
 #define DEV_BLE_H
 
 #include <stdint.h>
@@ -80,7 +80,7 @@ void ble_get_mac(uint8_t addr[8]);
 }
 #endif
 
-#endif /* DEV_BLE_H */
+#endif /* BLE_CORE_H */
 
 /**
  * @}

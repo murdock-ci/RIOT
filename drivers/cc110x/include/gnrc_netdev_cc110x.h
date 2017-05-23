@@ -19,7 +19,7 @@
 #include "net/gnrc/netdev.h"
 #include "cc110x-netdev.h"
 
-#ifndef GNRC_CC110X_H
+#ifndef GNRC_NETDEV_CC110X_H
 #define GNRC_CC110X_H
 
 #ifdef __cplusplus
@@ -41,5 +41,5 @@ int gnrc_netdev_cc110x_init(gnrc_netdev_t *gnrc_netdev, netdev_cc110x_t *dev);
 }
 #endif
 
-#endif /* GNRC_CC110X_H */
+#endif /* GNRC_NETDEV_CC110X_H */
 /** @} */

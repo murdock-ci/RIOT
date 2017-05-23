@@ -17,7 +17,7 @@
  * @author      Alexandre Abadie <alexandre.abadie@inria.fr>
  */
 
-#ifndef TSL2561_REGS_H_
+#ifndef TSL2561_INTERNALS_H
 #define TSL2561_REGS_H_
 
 #ifdef __cplusplus
@@ -104,5 +104,5 @@ extern "C" {
 }
 #endif
 
-#endif /* TSL2561_REGS_H_ */
+#endif /* TSL2561_INTERNALS_H */
 /** @} */

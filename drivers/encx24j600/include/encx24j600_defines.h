@@ -17,7 +17,7 @@
  * @author      Kaspar Schleiser <kaspar@schleiser.de>
  */
 
-#ifndef ENCX24J600_REGS_H
+#ifndef ENCX24J600_DEFINES_H
 #define ENCX24J600_REGS_H
 
 #ifdef __cplusplus
@@ -202,5 +202,5 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
-#endif /* ENCX24J600_REGS_H */
+#endif /* ENCX24J600_DEFINES_H */
 /** @} */

@@ -28,7 +28,7 @@
  * @author      René Kijewski <rene.kijewski@fu-berlin.de>
  */
 
-#ifndef UBJSON_H__
+#ifndef UBJSON_H
 #define UBJSON_H__
 
 #include <stdbool.h>
@@ -581,5 +581,5 @@ ssize_t ubjson_close_object(ubjson_cookie_t *__restrict cookie);
 }
 #endif
 
-#endif /* ifndef UBJSON_H__ */
+#endif /* UBJSON_H */
 /** @} */

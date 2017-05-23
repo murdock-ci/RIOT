@@ -17,7 +17,7 @@
  * @author      Hauke Petersen <hauke.petersen@fu-berlin.de>
  */
 
-#ifndef PDC8544_INTERNAL_H
+#ifndef PCD8544_INTERNAL_H
 #define PDC8544_INTERNAL_H
 
 #ifdef __cplusplus
@@ -72,5 +72,5 @@
 }
 #endif
 
-#endif /* PDC8544_INTERNAL_H */
+#endif /* PCD8544_INTERNAL_H */
 /** @} */

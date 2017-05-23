@@ -16,7 +16,7 @@
  * @author      Cenk Gündoğan <mail@cgundogan.de>
  */
 
-#ifndef RPL_NETSTATS_H
+#ifndef NETSTATS_H
 #define RPL_NETSTATS_H
 
 #ifdef __cplusplus
@@ -187,5 +187,5 @@ static inline void gnrc_rpl_netstats_tx_DAO_ACK(netstats_rpl_t *netstats, size_t
 }
 #endif
 
-#endif /* RPL_NETSTATS_H */
+#endif /* NETSTATS_H */
 /** @} */

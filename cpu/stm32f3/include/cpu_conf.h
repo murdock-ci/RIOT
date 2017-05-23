@@ -19,7 +19,7 @@
  * @author          Katja Kirstein <katja.kirstein@haw-hamburg.de>
  */
 
-#ifndef STM32F3_CPU_CONF_H
+#ifndef CPU_CONF_H
 #define STM32F3_CPU_CONF_H
 
 #include "cpu_conf_common.h"
@@ -54,5 +54,5 @@ extern "C" {
 }
 #endif
 
-#endif /* STM32F3_CPU_CONF_H */
+#endif /* CPU_CONF_H */
 /** @} */

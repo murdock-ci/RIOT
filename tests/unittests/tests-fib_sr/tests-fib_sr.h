@@ -15,7 +15,7 @@
  *
  * @author      Martin Landsmann <Martin.Landsmann@HAW-Hamburg.de>
  */
-#ifndef TESTS_FIB_H
+#ifndef TESTS_FIB_SR_H
 #define TESTS_FIB_H
 #include "embUnit/embUnit.h"
 
@@ -39,5 +39,5 @@ Test *tests_fib_sr_tests(void);
 }
 #endif
 
-#endif /* TESTS_FIB_H */
+#endif /* TESTS_FIB_SR_H */
 /** @} */

@@ -7,7 +7,7 @@
  * directory for more details.
  */
 
-#ifndef Z1_BOARD_H
+#ifndef BOARD_H
 #define Z1_BOARD_H
 
 /**
@@ -123,4 +123,4 @@ extern "C" {
 #endif
 
 /** @} */
-#endif /*  Z1_BOARD_H */
+#endif /* BOARD_H */

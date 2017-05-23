@@ -22,7 +22,7 @@
  * @author  Joakim Nohlgård <joakim.nohlgard@eistec.se>
  */
 
-#ifndef DEVFS_H_
+#ifndef FS_DEVFS_H
 #define DEVFS_H_
 
 #include "clist.h"
@@ -89,6 +89,6 @@ int devfs_unregister(devfs_t *node);
 }
 #endif
 
-#endif
+#endif /* FS_DEVFS_H */
 
 /** @} */

@@ -20,7 +20,7 @@
  * @author      Raphael Hiesgen <raphael.hiesgen@haw-hamburg.de>
  */
 
-#ifndef NATIVE_SCHEDULER_H
+#ifndef NATIVE_SCHED_H
 #define NATIVE_SCHEDULER_H
 
 #ifdef __cplusplus
@@ -54,5 +54,5 @@ inline int sched_yield(void)
 }
 #endif
 
-#endif /* NATIVE_SCHEDULER_H */
+#endif /* NATIVE_SCHED_H */
 /** @} */

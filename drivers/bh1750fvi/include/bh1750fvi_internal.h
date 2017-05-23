@@ -16,7 +16,7 @@
  * @author      Hauke Petersen <hauke.petersen@fu-berlin.de>
  */
 
-#ifndef BH1750FVI_REGS_H
+#ifndef BH1750FVI_INTERNAL_H
 #define BH1750FVI_REGS_H
 
 
@@ -63,5 +63,5 @@ extern "C" {
 }
 #endif
 
-#endif /* BH1750FVI_REGS_H */
+#endif /* BH1750FVI_INTERNAL_H */
 /** @} */

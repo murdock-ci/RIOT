@@ -26,7 +26,7 @@
  */
 
 
-#ifndef GNRC_IPV6_H
+#ifndef NET_GNRC_IPV6_H
 #define GNRC_IPV6_H
 
 #include "kernel_types.h"
@@ -170,7 +170,7 @@ ipv6_hdr_t *gnrc_ipv6_get_header(gnrc_pktsnip_t *pkt);
 }
 #endif
 
-#endif /* GNRC_IPV6_H */
+#endif /* NET_GNRC_IPV6_H */
 /**
  * @}
  */

@@ -18,7 +18,7 @@
  * @author      Cenk Gündoğan <mail@cgundogan.de>
  */
 
-#ifndef GNRC_RPL_P2P_STRUCTS_H
+#ifndef NET_GNRC_RPL_P2P_STRUCTS_H
 #define GNRC_RPL_P2P_STRUCTS_H
 
 #ifdef __cplusplus
@@ -100,7 +100,7 @@ typedef struct {
 }
 #endif
 
-#endif /* GNRC_RPL_P2P_STRUCTS_H */
+#endif /* NET_GNRC_RPL_P2P_STRUCTS_H */
 /**
  * @}
  */

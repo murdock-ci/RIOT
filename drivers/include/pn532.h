@@ -18,7 +18,7 @@
  * @author      Víctor Ariño <victor.arino@triagnosys.com>
  */
 
-#ifndef NFC_READER_INCLUDE_PN532_H
+#ifndef PN532_H
 #define NFC_READER_INCLUDE_PN532_H
 
 #ifdef __cplusplus
@@ -383,5 +383,5 @@ void pn532_release_passive(pn532_t *dev, unsigned target_id);
 }
 #endif
 
-#endif /* NFC_READER_INCLUDE_PN532_H */
+#endif /* PN532_H */
 /** @} */

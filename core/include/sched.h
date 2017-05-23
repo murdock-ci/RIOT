@@ -77,7 +77,7 @@
  * @author      Kaspar Schleiser <kaspar@schleiser.de>
  */
 
-#ifndef SCHEDULER_H
+#ifndef SCHED_H
 #define SCHEDULER_H
 
 #include <stddef.h>
@@ -202,5 +202,5 @@ void sched_register_cb(void (*callback)(uint32_t, uint32_t));
 }
 #endif
 
-#endif /* SCHEDULER_H */
+#endif /* SCHED_H */
 /** @} */

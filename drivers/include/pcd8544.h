@@ -19,7 +19,7 @@
  * @author      Hauke Petersen <hauke.petersen@fu-berlin.de>
  */
 
-#ifndef PDC8544_H
+#ifndef PCD8544_H
 #define PDC8544_H
 
 #include <stdint.h>
@@ -198,5 +198,5 @@ void pcd8544_riot(pcd8544_t *dev);
 }
 #endif
 
-#endif /* PDC8544_H */
+#endif /* PCD8544_H */
 /** @} */

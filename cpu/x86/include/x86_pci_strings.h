@@ -25,7 +25,7 @@
  * @author  René Kijewski <rene.kijewski@fu-berlin.de>
  */
 
-#ifndef CPU__X86__PCI_NAMES__H__
+#ifndef X86_PCI_STRINGS_H
 #define CPU__X86__PCI_NAMES__H__
 
 #ifdef __cplusplus
@@ -56,6 +56,6 @@ const char *x86_pci_device_id_to_string(unsigned vendor_id, unsigned device_id, 
 }
 #endif
 
-#endif
+#endif /* X86_PCI_STRINGS_H */
 
 /** @} */
