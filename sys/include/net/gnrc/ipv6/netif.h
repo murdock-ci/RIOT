@@ -30,8 +30,11 @@
 #include "mutex.h"
 #include "net/ipv6.h"
 #include "net/ipv6/addr.h"
-#include "net/netstats.h"
 #include "xtimer.h"
+
+#ifdef MODULE_NETSTATS_IPV6
+#include "net/netstats.h"
+#endif
 
 #ifdef __cplusplus
 extern "C" {
