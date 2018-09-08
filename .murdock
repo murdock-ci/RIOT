@@ -24,9 +24,6 @@ check_label() {
     check_label "CI: run tests" && RUN_TESTS=1
 }
 
-export BOARDS=samr21-xpro
-export APPS=tests/minimal
-
 error() {
     echo "$@"
     exit 1
